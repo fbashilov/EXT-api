@@ -84,6 +84,7 @@ mgr.events.addSilentRenewError(function (e) {
 });
 
 mgr.events.addUserLoaded(function (user) {
+    localStorage.setItem('accessToken', user.access_token);
     console.log("user loaded", user);
     mgr.getUser().then(function(){
        console.log("getUser loaded user after userLoaded event fired"); 
@@ -212,14 +213,15 @@ function callTheNumber(){
     console.log('callTheNumber');
     let phoneNumber = document.getElementById('phone-number').value;
     console.log('phoneNumber'+phoneNumber);
-    console.log('getUser'+JSON.stringify(mgr.getUser()));
-    let accessToken = mgr.getUser().access_token;
+    let accessToken = localStorage.setItem('accessToken');
     console.log('accessToken'+accessToken);
     makeCall(accessToken, phoneNumber);
 }
 
 function makeCall(accessToken, phoneNumber){
     console.log('makeCall');
+    console.log('phoneNumber'+phoneNumber);
+    console.log('accessToken'+accessToken);
 }
 
 if (location.search.includes("code=", 1)) {

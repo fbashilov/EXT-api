@@ -20,6 +20,7 @@ document.getElementById('iframeSignin').addEventListener("click", iframeSignin, 
 //document.getElementById('endSignoutMainWindow').addEventListener("click", endSignoutMainWindow, false);
 
 //document.getElementById('popupSignout').addEventListener("click", popupSignout, false);
+document.getElementById('callTheNumber').addEventListener("click", callTheNumber, false);
 
 ///////////////////////////////
 // config
@@ -203,6 +204,23 @@ function endSignoutMainWindow(){
         log(err);
     });
 };
+
+///////////////////////////////
+// functions for calls
+///////////////////////////////
+function callTheNumber(){
+    console.log('callTheNumber');
+    let phoneNumber = document.getElementById('phone-number').value;
+    console.log('phoneNumber'+phoneNumber);
+    console.log('getUser'+JSON.stringify(mgr.getUser()));
+    let accessToken = mgr.getUser().access_token;
+    console.log('accessToken'+accessToken);
+    makeCall(accessToken, phoneNumber);
+}
+
+function makeCall(accessToken, phoneNumber){
+    console.log('makeCall');
+}
 
 if (location.search.includes("code=", 1)) {
     log("Response code was found in query!");

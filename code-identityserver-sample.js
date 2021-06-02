@@ -210,11 +210,8 @@ function endSignoutMainWindow(){
 // functions for calls
 ///////////////////////////////
 function callTheNumber(){
-    console.log('callTheNumber');
     let phoneNumber = document.getElementById('phone-number').value;
-    console.log('phoneNumber'+phoneNumber);
     let accessToken = localStorage.getItem('accessToken');
-    console.log('accessToken'+accessToken);
     makeCall(accessToken, phoneNumber);
 }
 
@@ -222,6 +219,22 @@ function makeCall(accessToken, phoneNumber){
     console.log('makeCall');
     console.log('phoneNumber'+phoneNumber);
     console.log('accessToken'+accessToken);
+
+    let http = new XMLHttpRequest();
+    let url = 'https://extend-api.devintermedia.net/voice/v2/calls';
+    let params = `deviceId=86e6d7f2-87ce-4137-a7d4-37c0e7fbcf90&mode=placeCall&phoneNumber=${phoneNumber}&callId=&commandId=f9cf9b6e-ddb8-4dc1-af13-18a5ababaa25`;
+    http.open('POST', url, true);
+
+    //Send the proper header information along with the request
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    http.setRequestHeader('Content-Authorization', `Bearer ${accessToken}`);
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+            alert(http.responseText);
+        }
+    }
+    http.send(params);
 }
 
 if (location.search.includes("code=", 1)) {

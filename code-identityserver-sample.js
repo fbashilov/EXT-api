@@ -226,7 +226,7 @@ function makeCall(accessToken, phoneNumber){
     http.open('POST', url, true);
 
     //Send the proper header information along with the request
-    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    http.setRequestHeader('Content-type', 'application/json');
     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
     http.onreadystatechange = function() {//Call a function when the state changes.

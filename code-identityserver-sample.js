@@ -213,7 +213,7 @@ function callTheNumber(){
     console.log('callTheNumber');
     let phoneNumber = document.getElementById('phone-number').value;
     console.log('phoneNumber'+phoneNumber);
-    let accessToken = localStorage.setItem('accessToken');
+    let accessToken = localStorage.getItem('accessToken');
     console.log('accessToken'+accessToken);
     makeCall(accessToken, phoneNumber);
 }

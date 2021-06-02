@@ -222,12 +222,18 @@ function makeCall(accessToken, phoneNumber){
 
     let http = new XMLHttpRequest();
     let url = 'https://api.intermedia.net/voice/v2/calls';
-    let params = `deviceId=86e6d7f2-87ce-4137-a7d4-37c0e7fbcf90&mode=placeCall&phoneNumber=${phoneNumber}&callId=&commandId=f9cf9b6e-ddb8-4dc1-af13-18a5ababaa25`;
+    let params = `{
+        "deviceId": "86e6d7f2-87ce-4137-a7d4-37c0e7fbcf90",
+        "mode": "placeCall",
+        "phoneNumber": "${phoneNumber}",
+        "commandId": "f9cf9b6e-ddb8-4dc1-af13-18a5ababaa25"
+    }`;
+
     http.open('POST', url, true);
 
     //Send the proper header information along with the request
-    
-    // http.setRequestHeader('Content-type', 'application/json');
+
+    http.setRequestHeader('Content-type', 'application/json');
     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
     http.onreadystatechange = function() {//Call a function when the state changes.

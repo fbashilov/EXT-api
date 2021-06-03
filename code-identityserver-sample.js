@@ -219,7 +219,7 @@ function makeCall(accessToken, phoneNumber){
     let http = new XMLHttpRequest();
     let url = 'https://api.intermedia.net/voice/v2/calls';
     let dataRaw = `{
-        "deviceId": 26644,
+        "deviceId": 50882534,
         "mode": "placeCall",
         "phoneNumber": "${phoneNumber}"
     }`;

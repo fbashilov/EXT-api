@@ -211,15 +211,16 @@ function endSignoutMainWindow(){
 ///////////////////////////////
 function callTheNumber(){
     let phoneNumber = document.getElementById('phone-number').value;
+    let deviceId = document.getElementById('device-id').value;
     let accessToken = localStorage.getItem('accessToken');
-    makeCall(accessToken, phoneNumber);
+    makeCall(accessToken, phoneNumber, deviceId);
 }
 
-function makeCall(accessToken, phoneNumber){
+function makeCall(accessToken, phoneNumber, deviceId){
     let http = new XMLHttpRequest();
     let url = 'https://api.intermedia.net/voice/v2/calls';
     let dataRaw = `{
-        "deviceId": 50882534,
+        "deviceId": ${deviceId},
         "mode": "placeCall",
         "phoneNumber": "${phoneNumber}"
     }`;

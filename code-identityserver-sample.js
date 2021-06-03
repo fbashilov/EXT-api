@@ -216,32 +216,26 @@ function callTheNumber(){
 }
 
 function makeCall(accessToken, phoneNumber){
-    console.log('makeCall');
-    console.log('phoneNumber'+phoneNumber);
-    console.log('accessToken'+accessToken);
-
     let http = new XMLHttpRequest();
     let url = 'https://api.intermedia.net/voice/v2/calls';
-    let params = `{
+    let dataRaw = `{
         "deviceId": "86e6d7f2-87ce-4137-a7d4-37c0e7fbcf90",
         "mode": "placeCall",
-        "phoneNumber": "${phoneNumber}",
-        "commandId": "f9cf9b6e-ddb8-4dc1-af13-18a5ababaa25"
+        "phoneNumber": "${phoneNumber}"
     }`;
 
     http.open('POST', url, true);
 
-    //Send the proper header information along with the request
-
+    //Headers
     http.setRequestHeader('Content-type', 'application/json');
     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
     http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-            alert(http.responseText);
+        if(http.readyState == 4) {
+            document.getElementById("make-call-response").innerHTML = http.responseText;
         }
     }
-    http.send(params);
+    http.send(dataRaw);
 }
 
 if (location.search.includes("code=", 1)) {

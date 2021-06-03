@@ -3,6 +3,7 @@
     <head>
         <title>PKCE Flow auth test</title>
         <link rel='stylesheet' href='app.css'>
+        <link rel='stylesheet' href='code-identityserver-sample.css'>
     </head>
     <body>
         <a href="index.html"> Back to configuration </a> <br>
@@ -13,9 +14,11 @@
             <button id='removeUser'>Reset authorization state</button>
             <button id='iframeSignin'>Refresh token</button>
         </div>
-        <div>
-            <input id='phone-number' type="tel">
+        <div id="call-form">
+            <h3>Make call</h3>
+            <input id='phone-number' type="tel" size="20px">
             <button id='callTheNumber'>Call</button>
+            <div id="make-call-response"></div>
         </div>
         <!-- <div>
             <button id='startSigninMainWindow'>start signin main window</button>

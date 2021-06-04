@@ -213,9 +213,9 @@ function callTheNumber(){
     let phoneNumber = document.getElementById('phone-number').value;
     let deviceId = document.getElementById('device-id').value;
     let accessToken = localStorage.getItem('accessToken');
-    
-    makeCall(accessToken, phoneNumber, deviceId);
+
     console.log(getDevices(accessToken));
+    makeCall(accessToken, phoneNumber, deviceId);
 }
 
 function getDevices(accessToken){
@@ -248,11 +248,11 @@ function makeCall(accessToken, phoneNumber, deviceId){
 
     http.open('POST', url, true);
 
-    http.send(dataRaw);
-
     //Headers
     http.setRequestHeader('Content-type', 'application/json');
     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+
+    http.send(dataRaw);
 
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4) {

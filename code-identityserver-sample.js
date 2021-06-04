@@ -213,7 +213,28 @@ function callTheNumber(){
     let phoneNumber = document.getElementById('phone-number').value;
     let deviceId = document.getElementById('device-id').value;
     let accessToken = localStorage.getItem('accessToken');
+    console.log(getDevices(accessToken));
     makeCall(accessToken, phoneNumber, deviceId);
+}
+
+function getDevices(accessToken){
+    let http = new XMLHttpRequest();
+    let url = 'https://api.intermedia.net/call-control/v1/devices';
+
+    http.open('GET', url, true);
+
+    //Headers
+    http.setRequestHeader('Content-type', 'application/json');
+    http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+
+    http.send();
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        console.log(http.responseText);
+        if(http.readyState == 4 && http.status == 200) {
+            return http.responseText;
+        }
+    } 
 }
 
 function makeCall(accessToken, phoneNumber, deviceId){
@@ -227,6 +248,8 @@ function makeCall(accessToken, phoneNumber, deviceId){
 
     http.open('POST', url, true);
 
+    http.send(dataRaw);
+
     //Headers
     http.setRequestHeader('Content-type', 'application/json');
     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
@@ -236,7 +259,6 @@ function makeCall(accessToken, phoneNumber, deviceId){
             document.getElementById("make-call-response").innerHTML = http.responseText;
         }
     }
-    http.send(dataRaw);
 }
 
 if (location.search.includes("code=", 1)) {

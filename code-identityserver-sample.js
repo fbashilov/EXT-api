@@ -220,7 +220,7 @@ function callTheNumber(){
 
 function getDevices(accessToken){
     let http = new XMLHttpRequest();
-    let url = 'https://api.intermedia.net/v2/devices';
+    let url = 'https://api.intermedia.net/call-control/v2/devices';
 
     http.open('GET', url, true);
 

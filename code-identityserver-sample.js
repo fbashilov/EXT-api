@@ -213,8 +213,9 @@ function callTheNumber(){
     let phoneNumber = document.getElementById('phone-number').value;
     let deviceId = document.getElementById('device-id').value;
     let accessToken = localStorage.getItem('accessToken');
-    console.log(getDevices(accessToken));
+    
     makeCall(accessToken, phoneNumber, deviceId);
+    console.log(getDevices(accessToken));
 }
 
 function getDevices(accessToken){
@@ -224,7 +225,6 @@ function getDevices(accessToken){
     http.open('GET', url, true);
 
     //Headers
-    http.setRequestHeader('Content-type', 'application/json');
     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
     http.send();

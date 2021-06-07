@@ -84,7 +84,7 @@ mgr.events.addSilentRenewError(function (e) {
 });
 
 mgr.events.addUserLoaded(function (user) {
-    setToken(user.access_token);
+    localStorage.setItem('accessToken', user.access_token);
     console.log("user loaded", user);
     mgr.getUser().then(function(){
        console.log("getUser loaded user after userLoaded event fired"); 
@@ -206,28 +206,18 @@ function endSignoutMainWindow(){
     });
 };
 
-if (location.search.includes("code=", 1)) {
-    log("Response code was found in query!");
-    endSigninMainWindow();
-} else {
-    log("Going to sign in using following configuration", settings);
-    startSigninMainWindow();
+///////////////////////////////
+// functions for calls
+///////////////////////////////
+function callTheNumber(){
+    let phoneNumber = document.getElementById('phone-number').value;
+    let deviceId = document.getElementById('device-id').value;
+    let accessToken = localStorage.getItem('accessToken');
+
+    console.log(getDevices(accessToken));
+    makeCall(accessToken, phoneNumber, deviceId);
 }
 
-///////////////////////////////
-// Local Storage token
-///////////////////////////////
-function getToken(){
-    return localStorage.getItem('accessToken');
-}
-
-function setToken(){
-    localStorage.setItem('accessToken', user.access_token);
-}
-
-///////////////////////////////
-// User devices
-///////////////////////////////
 function getDevices(accessToken){
     let http = new XMLHttpRequest();
     let url = 'https://api.intermedia.net/voice/v2/devices';
@@ -239,25 +229,12 @@ function getDevices(accessToken){
 
     http.send();
 
-    //Call a function when the state changes.
-    http.onreadystatechange = function() {
+    http.onreadystatechange = function() {//Call a function when the state changes.
         console.log(http.responseText);
         if(http.readyState == 4 && http.status == 200) {
-            return JSON.parse(http.responseText);
+            return http.responseText;
         }
     } 
-}
-
-///////////////////////////////
-// Calls
-///////////////////////////////
-function callTheNumber(){
-    let phoneNumber = document.getElementById('phone-number').value;
-    //let deviceId = document.getElementById('device-id').value;
-    let accessToken = getToken();
-    let devises = getDevices(accessToken);
-    console.log(devises);
-    makeCall(accessToken, phoneNumber, devises[0].id);
 }
 
 function makeCall(accessToken, phoneNumber, deviceId){
@@ -277,12 +254,17 @@ function makeCall(accessToken, phoneNumber, deviceId){
 
     http.send(dataRaw);
 
-    //Call a function when the state changes.
-    http.onreadystatechange = function() {
+    http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4) {
             document.getElementById("make-call-response").innerHTML = http.responseText;
         }
     }
 }
 
-///////////////////////////////
+if (location.search.includes("code=", 1)) {
+    log("Response code was found in query!");
+    endSigninMainWindow();
+} else {
+    log("Going to sign in using following configuration", settings);
+    startSigninMainWindow();
+}

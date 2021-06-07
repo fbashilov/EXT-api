@@ -84,7 +84,8 @@ mgr.events.addSilentRenewError(function (e) {
 });
 
 mgr.events.addUserLoaded(function (user) {
-    localStorage.setItem('accessToken', user.access_token);
+    setToken(user.access_token);
+
     console.log("user loaded", user);
     mgr.getUser().then(function(){
        console.log("getUser loaded user after userLoaded event fired"); 
@@ -205,15 +206,23 @@ function endSignoutMainWindow(){
         log(err);
     });
 };
+///////////////////////////////
+// tokens
+///////////////////////////////
+function getToken(){
+    return localStorage.getItem('accessToken');
+}
 
+function setToken(accessToken){
+    localStorage.setItem('accessToken', access_token);
+}
 ///////////////////////////////
 // functions for calls
 ///////////////////////////////
 function callTheNumber(){
     let phoneNumber = document.getElementById('phone-number').value;
     let deviceId = document.getElementById('device-id').value;
-    let accessToken = localStorage.getItem('accessToken');
-
+    let accessToken = getToken();
 
     getDevices(accessToken).then(function(response) {
         let devices = JSON.parse(response);
@@ -247,23 +256,14 @@ function getDevices(accessToken) {
 
 function getCurrentDeviceId(devices){
     for(let i=0; i<devices.length; i++){
-      if(devices[i]["name"].indexOf(getComputerName()) !== -1){
+        //need getComputerName function
+      if(devices[i]["name"].indexOf("Bashilov") !== -1){
           return devices[i]["id"];
       }
     }
     return new Error("Error! Device not found");
 }
 
-//TEST VERSION 
-function getComputerName() {
-    try {
-        var network = new ActiveXObject('WScript.Network');
-        // Show a pop up if it works
-        console.log(network.computerName);
-        return network.computerName;
-    }
-    catch (e) { }
-}
 
 // function getDevices(accessToken){
 //     let http = new XMLHttpRequest();

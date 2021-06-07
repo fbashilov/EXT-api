@@ -215,7 +215,7 @@ function callTheNumber(){
     let accessToken = localStorage.getItem('accessToken');
 
     (async () => {
-        let devices = await getDevices(accessToken)
+        let devices = await getDevices(accessToken);
         console.log(getDevices(accessToken));
         makeCall(accessToken, phoneNumber, devices[1]);
     })();

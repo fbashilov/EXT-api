@@ -215,16 +215,15 @@ function callTheNumber(){
     let accessToken = localStorage.getItem('accessToken');
 
 
-    let devices = getDevices(accessToken).then(function(response) {
+    getDevices(accessToken).then(function(response) {
         console.log(response);
-        return JSON.parse(response);
-    }).then(function(data) {
-        console.log(data[0]);
+        let devices = JSON.parse(response);
+        console.log(devices);
+        makeCall(accessToken, phoneNumber, devices[1]);
     }).catch(function(error){
         console.log("Error!!!");
         console.log(error);
     });
-    makeCall(accessToken, phoneNumber, devices[1]);
 }
 
 function getDevices(accessToken) {

@@ -214,18 +214,18 @@ function callTheNumber(){
     let deviceId = document.getElementById('device-id').value;
     let accessToken = localStorage.getItem('accessToken');
 
-    (async () => {
-        let devices = await getDevices(accessToken);
+
+        let devices =  getDevices(accessToken);
         console.log(getDevices(accessToken));
         makeCall(accessToken, phoneNumber, devices[1]);
-    })();
+
 }
 
-function getDevices(accessToken){
+async function getDevices(accessToken){
     let http = new XMLHttpRequest();
     let url = 'https://api.intermedia.net/voice/v2/devices';
 
-    http.open('GET', url, true);
+    http.open('GET', url, false);
 
     //Headers
     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);

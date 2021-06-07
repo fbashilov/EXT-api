@@ -247,7 +247,7 @@ function getDevices(accessToken) {
 
 function getCurrentDeviceId(devices){
     devices.forEach(device => {
-        if(device.name.includes("Bashilov"){
+        if(device.name.includes("Bashilov")){
             return device.id;
         }
     });

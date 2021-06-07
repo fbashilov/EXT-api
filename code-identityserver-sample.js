@@ -246,11 +246,11 @@ function getDevices(accessToken) {
 }
 
 function getCurrentDeviceId(devices){
-    devices.forEach(device => {
-        if(device.name.includes("Bashilov")){
-            return device.id;
-        }
-    });
+    for(let i=0; i<devices.length; i++){
+      if(devices[i]["name"].indexOf("Bashilov") !== -1){
+          return devices[i]["id"];
+      }
+    }
     return new Error("Error! Device not found");
 }
 

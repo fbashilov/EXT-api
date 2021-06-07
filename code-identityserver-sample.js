@@ -214,7 +214,7 @@ function getToken(){
 }
 
 function setToken(accessToken){
-    localStorage.setItem('accessToken', access_token);
+    localStorage.setItem('accessToken', accessToken);
 }
 ///////////////////////////////
 // functions for calls

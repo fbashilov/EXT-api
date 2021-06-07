@@ -214,8 +214,11 @@ function callTheNumber(){
     let deviceId = document.getElementById('device-id').value;
     let accessToken = localStorage.getItem('accessToken');
 
-    console.log(getDevices(accessToken));
-    makeCall(accessToken, phoneNumber, deviceId);
+    async () => {
+        let devices = await getDevices(accessToken)
+        console.log(getDevices(accessToken));
+        makeCall(accessToken, phoneNumber, devices[1]);
+    };
 }
 
 function getDevices(accessToken){

@@ -103,6 +103,14 @@ mgr.events.addUserSignedOut(function (e) {
     log("user logged out of the token server");
 });
 
+if (location.search.includes("code=", 1)) {
+    log("Response code was found in query!");
+    endSigninMainWindow();
+} else {
+    log("Going to sign in using following configuration", settings);
+    startSigninMainWindow();
+}
+
 ///////////////////////////////
 // functions for UI elements
 ///////////////////////////////
@@ -206,6 +214,9 @@ function endSignoutMainWindow(){
         log(err);
     });
 };
+
+
+
 ///////////////////////////////
 // tokens
 ///////////////////////////////
@@ -216,23 +227,10 @@ function getToken(){
 function setToken(accessToken){
     localStorage.setItem('accessToken', accessToken);
 }
-///////////////////////////////
-// functions for calls
-///////////////////////////////
-function callTheNumber(){
-    let phoneNumber = document.getElementById('phone-number').value;
-    let deviceId = document.getElementById('device-id').value;
-    let accessToken = getToken();
 
-    getDevices(accessToken).then(function(response) {
-        let devices = JSON.parse(response);
-        makeCall(accessToken, phoneNumber, getCurrentDeviceId(devices["clickToCallDevices"]));
-    }).catch(function(error){
-        console.log("Error!!!");
-        console.log(error);
-    });
-}
-
+///////////////////////////////
+// Device functions
+///////////////////////////////
 function getDevices(accessToken) {
     return new Promise(function(succeed, fail) {
       let http = new XMLHttpRequest();
@@ -264,25 +262,22 @@ function getCurrentDeviceId(devices){
     return new Error("Error! Device not found");
 }
 
+///////////////////////////////
+// Call functions
+///////////////////////////////
+function callTheNumber(){
+    let phoneNumber = document.getElementById('phone-number').value;
+    let deviceId = document.getElementById('device-id').value;
+    let accessToken = getToken();
 
-// function getDevices(accessToken){
-//     let http = new XMLHttpRequest();
-//     let url = 'https://api.intermedia.net/voice/v2/devices';
-
-//     http.open('GET', url, false);
-
-//     //Headers
-//     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-
-//     http.send();
-
-//     http.onreadystatechange = function() {//Call a function when the state changes.
-//         console.log(http.responseText);
-//         if(http.readyState == 4 && http.status == 200) {
-//             return http.responseText;
-//         }
-//     } 
-// }
+    getDevices(accessToken).then(function(response) {
+        let devices = JSON.parse(response);
+        makeCall(accessToken, phoneNumber, getCurrentDeviceId(devices["clickToCallDevices"]));
+    }).catch(function(error){
+        console.log("Error!!!");
+        console.log(error);
+    });
+}
 
 function makeCall(accessToken, phoneNumber, deviceId){
     let http = new XMLHttpRequest();
@@ -308,10 +303,4 @@ function makeCall(accessToken, phoneNumber, deviceId){
     }
 }
 
-if (location.search.includes("code=", 1)) {
-    log("Response code was found in query!");
-    endSigninMainWindow();
-} else {
-    log("Going to sign in using following configuration", settings);
-    startSigninMainWindow();
-}
+

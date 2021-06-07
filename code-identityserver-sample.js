@@ -267,7 +267,6 @@ function getCurrentDeviceId(devices){
 ///////////////////////////////
 function callTheNumber(){
     let phoneNumber = document.getElementById('phone-number').value;
-    let deviceId = document.getElementById('device-id').value;
     let accessToken = getToken();
 
     getDevices(accessToken).then(function(response) {

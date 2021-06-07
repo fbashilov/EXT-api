@@ -215,30 +215,57 @@ function callTheNumber(){
     let accessToken = localStorage.getItem('accessToken');
 
 
-        let devices =  getDevices(accessToken);
-        console.log(getDevices(accessToken));
-        makeCall(accessToken, phoneNumber, devices[1]);
-
+    let devices = getDevices(accessToken).then(function(response) {
+        console.log(response);
+        return JSON.parse(response);
+    }).then(function(data) {
+        console.log(data[0]);
+    }).catch(function(error){
+        console.log("Error!!!");
+        console.log(error);
+    });
+    makeCall(accessToken, phoneNumber, devices[1]);
 }
 
-async function getDevices(accessToken){
-    let http = new XMLHttpRequest();
-    let url = 'https://api.intermedia.net/voice/v2/devices';
+function getDevices(accessToken) {
+    return new Promise(function(succeed, fail) {
+      let http = new XMLHttpRequest();
+      let url = 'https://api.intermedia.net/voice/v2/devices';
+      http.open("GET", url, true);
 
-    http.open('GET', url, false);
+      http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
-    //Headers
-    http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+      http.addEventListener("load", function() {
+        if (http.status < 400)
+          succeed(http.response);
+        else
+          fail(new Error("Request failed: " + http.statusText));
+      });
+      http.addEventListener("error", function() {
+        fail(new Error("Network error"));
+      });
+      http.send();
+    });
+  }
 
-    http.send();
+// function getDevices(accessToken){
+//     let http = new XMLHttpRequest();
+//     let url = 'https://api.intermedia.net/voice/v2/devices';
 
-    http.onreadystatechange = function() {//Call a function when the state changes.
-        console.log(http.responseText);
-        if(http.readyState == 4 && http.status == 200) {
-            return http.responseText;
-        }
-    } 
-}
+//     http.open('GET', url, false);
+
+//     //Headers
+//     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+
+//     http.send();
+
+//     http.onreadystatechange = function() {//Call a function when the state changes.
+//         console.log(http.responseText);
+//         if(http.readyState == 4 && http.status == 200) {
+//             return http.responseText;
+//         }
+//     } 
+// }
 
 function makeCall(accessToken, phoneNumber, deviceId){
     let http = new XMLHttpRequest();

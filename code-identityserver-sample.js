@@ -219,7 +219,7 @@ function callTheNumber(){
         console.log(response);
         let devices = JSON.parse(response);
         console.log(devices);
-        makeCall(accessToken, phoneNumber, devices[1]);
+        makeCall(accessToken, phoneNumber, devices["clickToCallDevices"][2]);
     }).catch(function(error){
         console.log("Error!!!");
         console.log(error);

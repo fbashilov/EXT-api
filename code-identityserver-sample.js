@@ -216,10 +216,8 @@ function callTheNumber(){
 
 
     getDevices(accessToken).then(function(response) {
-        console.log(response);
         let devices = JSON.parse(response);
-        console.log(devices);
-        makeCall(accessToken, phoneNumber, devices["clickToCallDevices"][2]["id"]);
+        makeCall(accessToken, phoneNumber, getCurrentDeviceId(devices["clickToCallDevices"]));
     }).catch(function(error){
         console.log("Error!!!");
         console.log(error);
@@ -245,7 +243,16 @@ function getDevices(accessToken) {
       });
       http.send();
     });
-  }
+}
+
+function getCurrentDeviceId(devices){
+    devices.forEach(device => {
+        if(device.name.includes("Bashilov"){
+            return device.id;
+        }
+    });
+    return new Error("Error! Device not found");
+}
 
 // function getDevices(accessToken){
 //     let http = new XMLHttpRequest();

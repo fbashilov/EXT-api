@@ -247,11 +247,22 @@ function getDevices(accessToken) {
 
 function getCurrentDeviceId(devices){
     for(let i=0; i<devices.length; i++){
-      if(devices[i]["name"].indexOf("Bashilov") !== -1){
+      if(devices[i]["name"].indexOf(getComputerName()) !== -1){
           return devices[i]["id"];
       }
     }
     return new Error("Error! Device not found");
+}
+
+//TEST VERSION 
+function getComputerName() {
+    try {
+        var network = new ActiveXObject('WScript.Network');
+        // Show a pop up if it works
+        console.log(network.computerName);
+        return network.computerName;
+    }
+    catch (e) { }
 }
 
 // function getDevices(accessToken){

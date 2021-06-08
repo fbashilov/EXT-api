@@ -240,7 +240,7 @@ function renderCallForm(){
     getDevices(accessToken).then(function(response) {
         let devices = JSON.parse(response)["clickToCallDevices"];
         createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
-        document.getElementById("call-form").style.display = 'block';   //show call form
+        document.getElementById("call-window").style.display = 'block';   //show call form
     }).catch(function(error){
         console.log("Error!!!");
         console.log(error);
@@ -304,6 +304,7 @@ function setCurrentCall(currentCall){
     
     document.getElementById("make-call-response").innerHTML = currentCall;    //render
     document.getElementById("stop-calling").style.display = "block";
+    document.getElementById("call-form").style.display = "none";
 }
 
 function clearCurrentCall(){
@@ -311,6 +312,7 @@ function clearCurrentCall(){
 
     document.getElementById("make-call-response").innerHTML = "No call";    //render 
     document.getElementById("stop-calling").style.display = "none";
+    document.getElementById("call-form").style.display = "block";
 }
 
 

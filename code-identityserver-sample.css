@@ -1,13 +1,13 @@
-#call-form{
+#call-window{
     margin: 40px 0;
     display: none;
 }
 
-#call-form input{
+#call-window input{
     width:auto;
     margin: 10px 0;
 }
 
-#call-form #stop-calling{
+#call-window #stop-calling{
     display: none;
 }

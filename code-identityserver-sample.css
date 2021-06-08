@@ -4,9 +4,13 @@
 }
 
 #call-window input{
-    width:auto;
+    width: auto;
+}
+
+#call-window{
     margin: 10px 0;
 }
+
 
 #call-window #stop-calling{
     display: none;

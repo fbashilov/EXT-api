@@ -302,7 +302,7 @@ function setCurrentCall(currentCall){
     
     localStorage.setItem('currentCall', currentCall);    //save
     
-    document.getElementById("make-call-response").innerHTML = currentCall;    //render
+    document.getElementById("make-call-response").innerHTML = "Calling /n" + currentCall;    //render
     document.getElementById("stop-calling").style.display = "block";
     document.getElementById("call-form").style.display = "none";
 }

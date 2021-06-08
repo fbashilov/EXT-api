@@ -302,7 +302,7 @@ function setCurrentCall(currentCall){
 }
 
 function clearCurrentCall(){
-    localStorage.removeItem('currentCall');]
+    localStorage.removeItem('currentCall');
 
     document.getElementById("make-call-response").innerHTML = "No call";    //render 
     document.getElementById("stop-calling").style.display = "none";

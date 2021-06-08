@@ -256,8 +256,8 @@ function createSelectElem(parentNode, elemId, dataList, valueParam, textParam){
     //Create and append the options
     for (let i = 0; i < dataList.length; i++) {
         let option = document.createElement("option");
-        option.value = array[valueParam];
-        option.text = array[textParam];
+        option.value = dataList[valueParam];
+        option.text = dataList[textParam];
         selectList.appendChild(option);
     }
 }

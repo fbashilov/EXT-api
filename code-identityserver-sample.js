@@ -343,10 +343,11 @@ function makeCall(accessToken, phoneNumber, deviceId){
 
 function stopCalling(){
     let curCall = getCurrentCall();
-    terminateCall(curCall["callId"], curCall["commandId"]);
+    let accessToken = getToken();
+    terminateCall(curCall["callId"], curCall["commandId"], accessToken);
 }
 
-function terminateCall(callId, commandId){
+function terminateCall(callId, commandId, accessToken){
     let http = new XMLHttpRequest();
     let url = `https://api.intermedia.net/voice/v2/calls/${callId}?commandId=${commandId}`;
 

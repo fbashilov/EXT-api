@@ -20,7 +20,7 @@ document.getElementById('iframeSignin').addEventListener("click", iframeSignin, 
 //document.getElementById('endSignoutMainWindow').addEventListener("click", endSignoutMainWindow, false);
 
 //document.getElementById('popupSignout').addEventListener("click", popupSignout, false);
-document.getElementById('callTheNumber').addEventListener("click", callTheNumber, false);
+document.getElementById('call-the-number').addEventListener("click", callTheNumber, false);
 
 ///////////////////////////////
 // config
@@ -85,6 +85,7 @@ mgr.events.addSilentRenewError(function (e) {
 
 mgr.events.addUserLoaded(function (user) {
     setToken(user.access_token);
+    renderCallForm();
 
     console.log("user loaded", user);
     mgr.getUser().then(function(){
@@ -228,6 +229,39 @@ function setToken(accessToken){
     localStorage.setItem('accessToken', accessToken);
 }
 
+
+///////////////////////////////
+// Rendering functions
+///////////////////////////////
+function renderCallForm(){
+    document.getElementById("call-form").style.display = 'block';
+
+    let accessToken = getToken();
+
+    getDevices(accessToken).then(function(response) {
+        let devices = JSON.parse(response)["clickToCallDevices"];
+        createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
+    }).catch(function(error){
+        console.log("Error!!!");
+        console.log(error);
+    });
+}
+
+function createSelectElem(parentNode, elemId, dataList, valueParam, textParam){
+    //Create and append select list
+    let selectList = document.createElement("select");
+    selectList.id = elemId;
+    parentNode.appendChild(selectList);
+
+    //Create and append the options
+    for (let i = 0; i < dataList.length; i++) {
+        let option = document.createElement("option");
+        option.value = array[valueParam];
+        option.text = array[textParam];
+        selectList.appendChild(option);
+    }
+}
+
 ///////////////////////////////
 // Device functions
 ///////////////////////////////
@@ -252,30 +286,15 @@ function getDevices(accessToken) {
     });
 }
 
-function getCurrentDeviceId(devices){
-    for(let i=0; i<devices.length; i++){
-        //need getComputerName function
-      if(devices[i]["name"].indexOf("Bashilov") !== -1){
-          return devices[i]["id"];
-      }
-    }
-    return new Error("Error! Device not found");
-}
-
 ///////////////////////////////
 // Call functions
 ///////////////////////////////
 function callTheNumber(){
-    let phoneNumber = document.getElementById('phone-number').value;
     let accessToken = getToken();
+    let phoneNumber = document.getElementById('phone-number').value;
+    let deviceId = document.getElementById('devices-select').value;
 
-    getDevices(accessToken).then(function(response) {
-        let devices = JSON.parse(response);
-        makeCall(accessToken, phoneNumber, getCurrentDeviceId(devices["clickToCallDevices"]));
-    }).catch(function(error){
-        console.log("Error!!!");
-        console.log(error);
-    });
+    makeCall(accessToken, phoneNumber, deviceId);
 }
 
 function makeCall(accessToken, phoneNumber, deviceId){

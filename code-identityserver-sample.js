@@ -21,6 +21,7 @@ document.getElementById('iframeSignin').addEventListener("click", iframeSignin, 
 
 //document.getElementById('popupSignout').addEventListener("click", popupSignout, false);
 document.getElementById('call-the-number').addEventListener("click", callTheNumber, false);
+document.getElementById('stop-calling').addEventListener("click", stopCalling, false);
 
 ///////////////////////////////
 // config
@@ -234,13 +235,12 @@ function setToken(accessToken){
 // Rendering functions
 ///////////////////////////////
 function renderCallForm(){
-    document.getElementById("call-form").style.display = 'block';
-
     let accessToken = getToken();
 
     getDevices(accessToken).then(function(response) {
         let devices = JSON.parse(response)["clickToCallDevices"];
         createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
+        document.getElementById("call-form").style.display = 'block';   //show call form
     }).catch(function(error){
         console.log("Error!!!");
         console.log(error);
@@ -289,6 +289,26 @@ function getDevices(accessToken) {
 ///////////////////////////////
 // Call functions
 ///////////////////////////////
+function getCurrentCall(){
+    return JSON.parse(localStorage.getItem('currentCall'));
+}
+
+function setCurrentCall(currentCall){
+    clearCurrentCall();
+    localStorage.setItem('currentCall', JSON.stringify(currentCall));    //save
+    
+    document.getElementById("make-call-response").innerHTML = currentCall;    //render
+    document.getElementById("stop-calling").style.display = "block";
+}
+
+function clearCurrentCall(){
+    localStorage.removeItem('currentCall');]
+
+    document.getElementById("make-call-response").innerHTML = "No call";    //render 
+    document.getElementById("stop-calling").style.display = "none";
+}
+
+
 function callTheNumber(){
     let accessToken = getToken();
     let phoneNumber = document.getElementById('phone-number').value;
@@ -316,9 +336,34 @@ function makeCall(accessToken, phoneNumber, deviceId){
 
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4) {
-            document.getElementById("make-call-response").innerHTML = http.responseText;
+            setCurrentCall(http.responseText);
         }
     }
 }
+
+function stopCalling(){
+    let curCall = getCurrentCall();
+    terminateCall(curCall["callId"], curCall["commandId"]);
+}
+
+function terminateCall(callId, commandId){
+    let http = new XMLHttpRequest();
+    let url = `https://api.intermedia.net/voice/v2/calls/${callId}?commandId=${commandId}`;
+
+    http.open('DELETE', url, true);
+
+    //Headers
+    http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+
+    http.send();
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4) {
+            console.log(http.responseText);
+            clearCurrentCall();
+        }
+    }
+}
+
 
 

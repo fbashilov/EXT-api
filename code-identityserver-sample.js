@@ -295,7 +295,12 @@ function getCurrentCall(){
 
 function setCurrentCall(currentCall){
     clearCurrentCall();
-    localStorage.setItem('currentCall', JSON.stringify(currentCall));    //save
+
+    if(typeof currentCall != "string"){
+        currentCall = JSON.stringify(currentCall);
+    }
+    
+    localStorage.setItem('currentCall', currentCall);    //save
     
     document.getElementById("make-call-response").innerHTML = currentCall;    //render
     document.getElementById("stop-calling").style.display = "block";

@@ -22,6 +22,7 @@ document.getElementById('iframeSignin').addEventListener("click", iframeSignin, 
 //document.getElementById('popupSignout').addEventListener("click", popupSignout, false);
 document.getElementById('call-the-number').addEventListener("click", callTheNumber, false);
 document.getElementById('stop-calling').addEventListener("click", stopCalling, false);
+document.getElementById('reject-calling').addEventListener("click", rejectCalling, false);
 
 ///////////////////////////////
 // config
@@ -349,8 +350,8 @@ function makeCall(accessToken, phoneNumber, deviceId){
 }
 
 function stopCalling(){
-    let curCall = getCurrentCall();
     let accessToken = getToken();
+    let curCall = getCurrentCall();
     terminateCall(curCall["callId"], curCall["commandId"], accessToken);
 }
 
@@ -369,6 +370,37 @@ function terminateCall(callId, commandId, accessToken){
         if(http.readyState == 4) {
             console.log(http.responseText);
             clearCurrentCall();
+        }
+    }
+}
+
+function rejectCalling(){
+    let accessToken = getToken();
+    //need cur INCOMING call
+    let curCall = getCurrentCall();
+    cancelCall(curCall["callId"], curCall["commandId"], accessToken);
+}
+
+function cancelCall(callId, commandId, accessToken){
+    let http = new XMLHttpRequest();
+    let url = `https://api.intermedia.net/voice/v2/calls/${callId}/cancel`;
+    let dataRaw = `{
+        "commandId": "${commandId}",
+        "skipToVoiceMail": "true"
+    }`;
+
+    http.open('POST', url, true);
+
+    //Headers
+    http.setRequestHeader('Content-type', 'application/json');
+    http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+
+    http.send(dataRaw);
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4) {
+            console.log(http.responseText);
+            //clearCurrentCall();
         }
     }
 }

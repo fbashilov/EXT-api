@@ -305,7 +305,7 @@ function setCurrentCall(currentCall){
     localStorage.setItem('currentCall', currentCall);    //save
     
     document.getElementById("make-call-response").innerHTML = "Calling... \n" + currentCall;    //render
-    document.getElementsByClassName("show-during-call").forEach(element => {
+    Array.prototype.forEach.call(document.getElementsByClassName("show-during-call"), function(element) {
         element.style.display = "block";
     });
     document.getElementById("call-form").style.display = "none";
@@ -315,7 +315,7 @@ function clearCurrentCall(){
     localStorage.removeItem('currentCall');
 
     document.getElementById("make-call-response").innerHTML = "No call";    //render 
-    document.getElementsByClassName("show-during-call").forEach(element => {
+    Array.prototype.forEach.call(document.getElementsByClassName("show-during-call"), function(element) {
         element.style.display = "none";
     });
     document.getElementById("call-form").style.display = "block";

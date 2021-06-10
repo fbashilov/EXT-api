@@ -12,6 +12,6 @@
 }
 
 
-#call-window #stop-calling{
+#call-window #show-during-call{
     display: none;
 }

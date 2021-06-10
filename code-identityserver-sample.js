@@ -412,7 +412,7 @@ function cancelCall(callId, commandId, accessToken){
 
 function redirectCalling(){
     let accessToken = getToken();
-    let phoneNumber = document.getElementById('transfer-phone-number').value;
+    let phoneNumber = document.getElementById('redirect-phone-number').value;
     let curCall = getCurrentCall();
     transferCall(curCall["callId"], curCall["commandId"], phoneNumber, accessToken);
 }

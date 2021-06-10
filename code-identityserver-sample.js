@@ -23,6 +23,7 @@ document.getElementById('iframeSignin').addEventListener("click", iframeSignin, 
 document.getElementById('call-the-number').addEventListener("click", callTheNumber, false);
 document.getElementById('stop-calling').addEventListener("click", stopCalling, false);
 document.getElementById('reject-calling').addEventListener("click", rejectCalling, false);
+document.getElementById('redirect-calling').addEventListener("click", redirectCalling, false);
 
 ///////////////////////////////
 // config
@@ -303,8 +304,10 @@ function setCurrentCall(currentCall){
     
     localStorage.setItem('currentCall', currentCall);    //save
     
-    document.getElementById("make-call-response").innerHTML = "Calling /n" + currentCall;    //render
-    document.getElementById("stop-calling").style.display = "block";
+    document.getElementById("make-call-response").innerHTML = "Calling... \n" + currentCall;    //render
+    document.getElementsByClassName("show-during-call").forEach(element => {
+        element.style.display = "block";
+    });
     document.getElementById("call-form").style.display = "none";
 }
 
@@ -312,7 +315,9 @@ function clearCurrentCall(){
     localStorage.removeItem('currentCall');
 
     document.getElementById("make-call-response").innerHTML = "No call";    //render 
-    document.getElementById("stop-calling").style.display = "none";
+    document.getElementsByClassName("show-during-call").forEach(element => {
+        element.style.display = "none";
+    });
     document.getElementById("call-form").style.display = "block";
 }
 
@@ -387,6 +392,37 @@ function cancelCall(callId, commandId, accessToken){
     let dataRaw = `{
         "commandId": "${commandId}",
         "skipToVoiceMail": "true"
+    }`;
+
+    http.open('POST', url, true);
+
+    //Headers
+    http.setRequestHeader('Content-type', 'application/json');
+    http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+
+    http.send(dataRaw);
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4) {
+            console.log(http.responseText);
+            //clearCurrentCall();
+        }
+    }
+}
+
+function redirectCalling(){
+    let accessToken = getToken();
+    let phoneNumber = document.getElementById('transfer-phone-number').value;
+    let curCall = getCurrentCall();
+    transferCall(curCall["callId"], curCall["commandId"], phoneNumber, accessToken);
+}
+
+function transferCall(callId, commandId, phoneNumber, accessToken){
+    let http = new XMLHttpRequest();
+    let url = `https://api.intermedia.net/voice/v2/calls/${callId}/transfer`;
+    let dataRaw = `{
+        "phoneNumber": "${phoneNumber}",
+        "commandId": "${commandId}"
     }`;
 
     http.open('POST', url, true);

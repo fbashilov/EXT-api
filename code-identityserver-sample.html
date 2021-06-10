@@ -22,9 +22,16 @@
                 <input id='phone-number' type="tel" size="20" placeholder="phone number">
                 <button id='call-the-number'>Call</button>
             </div>
-            <div id="make-call-response"></div>
             
-            <button id='stop-calling'>Stop calling</button>
+            <div id="make-call-response"></div>
+            <button id='stop-calling' class="show-during-call" >Stop calling</button>
+            
+            <div id="redirect-call-form" class="show-during-call">
+                <h5>Redirect call</h5>
+                <input id='redirect-phone-number' type="tel" size="20" placeholder="redirect phone number">
+                <button id='redirect-calling'>Redirect calling</button>
+            </div>
+
             <button id='reject-calling'>Reject calling</button>
         </div>
         <!-- <div>

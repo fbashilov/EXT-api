@@ -304,7 +304,7 @@ function setCurrentCall(currentCall){
     
     localStorage.setItem('currentCall', currentCall);    //save
     
-    document.getElementById("make-call-response").innerHTML = "Calling... \n" + currentCall;    //render
+    document.getElementById("make-call-response").innerHTML = `Calling...\n${currentCall}`;    //render
     Array.prototype.forEach.call(document.getElementsByClassName("show-during-call"), function(element) {
         element.style.display = "block";
     });
@@ -421,8 +421,7 @@ function transferCall(callId, commandId, phoneNumber, accessToken){
     let http = new XMLHttpRequest();
     let url = `https://api.intermedia.net/voice/v2/calls/${callId}/transfer`;
     let dataRaw = `{
-        "phoneNumber": "${phoneNumber}",
-        "commandId": "${commandId}"
+        "phoneNumber": "${phoneNumber}"
     }`;
 
     http.open('POST', url, true);

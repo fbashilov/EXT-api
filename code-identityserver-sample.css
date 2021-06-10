@@ -12,6 +12,6 @@
 }
 
 
-#call-window #show-during-call{
+#call-window .show-during-call{
     display: none;
 }

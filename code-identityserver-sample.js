@@ -362,7 +362,7 @@ function stopCalling(){
 
 function terminateCall(callId, commandId, accessToken){
     let http = new XMLHttpRequest();
-    let url = `https://api.intermedia.net/voice/v2/calls/${callId}?commandId=${commandId}`;
+    let url = `https://api.intermedia.net/voice/v2/calls/${callId}`;
 
     http.open('DELETE', url, true);
 
@@ -390,7 +390,6 @@ function cancelCall(callId, commandId, accessToken){
     let http = new XMLHttpRequest();
     let url = `https://api.intermedia.net/voice/v2/calls/${callId}/cancel`;
     let dataRaw = `{
-        "commandId": "${commandId}",
         "skipToVoiceMail": "true"
     }`;
 

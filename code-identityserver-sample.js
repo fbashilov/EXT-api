@@ -330,24 +330,28 @@ function makeCall(){
     makeCallRequest(deviceId, "placeCall", phoneNumber, accessToken);
 }
 
-function makeCallRequest(deviceId, mode, phoneNumber, accessToken, callId = "", commandId = ""){
+function makeCallRequest(deviceId, mode, phoneNumber, accessToken, callId, commandId){
     let http = new XMLHttpRequest();
     let url = 'https://api.intermedia.net/voice/v2/calls';
-    let dataRaw = `{
-        "deviceId": "${deviceId}",
-        "mode": "placeCall",
-        "phoneNumber": "${phoneNumber}",
-        "callId": "${callId}",
-        "commandId": "${commandId}"
-    }`;
-
+    let dataObj = {
+        "deviceId": deviceId,
+        "mode": mode,
+        "phoneNumber": phoneNumber
+        };
+    if(callId){
+        dataObj.callId = callId;
+    }
+    if(commandId){
+        dataObj.commandId = commandId;
+    }
+    
     http.open('POST', url, true);
 
     //Headers
     http.setRequestHeader('Content-type', 'application/json');
     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
-    http.send(dataRaw);
+    http.send(JSON.stringify(dataObj));
 
     http.onreadystatechange = function() {  //Call a function when the state changes.
         if(http.readyState == 4) {
@@ -359,6 +363,7 @@ function makeCallRequest(deviceId, mode, phoneNumber, accessToken, callId = "", 
         }
     }
 }
+
 
 function stopCalling(){
     let accessToken = getToken();

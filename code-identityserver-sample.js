@@ -424,7 +424,7 @@ function cancelCallRequest(callId, accessToken, skipToVoiceMail = true, commandI
 
 function transferCall(){
     let accessToken = getToken();
-    let phoneNumber = document.getElementById('redirect-phone-number').value;
+    let phoneNumber = document.getElementById('transfer-phone-number').value;
     let curCall = getCurrentCall();
     transferCall(curCall["callId"], curCall["commandId"], phoneNumber, accessToken);
 }

@@ -21,9 +21,9 @@ document.getElementById('iframeSignin').addEventListener("click", iframeSignin, 
 
 //document.getElementById('popupSignout').addEventListener("click", popupSignout, false);
 document.getElementById('make-call').addEventListener("click", makeCall, false);
-document.getElementById('stop-calling').addEventListener("click", stopCalling, false);
-document.getElementById('reject-calling').addEventListener("click", rejectCalling, false);
-document.getElementById('redirect-calling').addEventListener("click", redirectCalling, false);
+document.getElementById('terminate-call').addEventListener("click", terminateCall, false);
+document.getElementById('cancel-call').addEventListener("click", cancelCall, false);
+document.getElementById('transfer-call').addEventListener("click", transferCall, false);
 
 ///////////////////////////////
 // config
@@ -321,30 +321,25 @@ function clearCurrentCall(){
     document.getElementById("call-form").style.display = "block";
 }
 
-
 function makeCall(){
     let accessToken = getToken();
     let phoneNumber = document.getElementById('phone-number').value;
     let deviceId = document.getElementById('devices-select').value;
 
-    makeCallRequest(deviceId, "placeCall", phoneNumber, accessToken);
+    makeCallRequest(deviceId, phoneNumber, accessToken, "placeCall");
 }
 
-function makeCallRequest(deviceId, mode, phoneNumber, accessToken, callId, commandId){
+function makeCallRequest(deviceId, phoneNumber, accessToken, mode = "placeCall", callId, commandId){
     let http = new XMLHttpRequest();
     let url = 'https://api.intermedia.net/voice/v2/calls';
     let dataObj = {
         "deviceId": deviceId,
         "mode": mode,
         "phoneNumber": phoneNumber
-        };
-    if(callId){
-        dataObj.callId = callId;
-    }
-    if(commandId){
-        dataObj.commandId = commandId;
-    }
-    
+    };
+    if(callId) dataObj.callId = callId;
+    if(commandId) dataObj.commandId = commandId;
+
     http.open('POST', url, true);
 
     //Headers
@@ -364,16 +359,16 @@ function makeCallRequest(deviceId, mode, phoneNumber, accessToken, callId, comma
     }
 }
 
-
-function stopCalling(){
+function terminateCall(){
     let accessToken = getToken();
     let curCall = getCurrentCall();
-    terminateCall(curCall["callId"], curCall["commandId"], accessToken);
+    terminateCallRequest(curCall["callId"], accessToken);
 }
 
-function terminateCall(callId, commandId, accessToken){
+function terminateCallRequest(callId, accessToken, commandId){
     let http = new XMLHttpRequest();
-    let url = `https://api.intermedia.net/voice/v2/calls/${callId}`;
+    let url = `https://api.intermedia.net/voice/v2/calls/${callId}` +
+        (commandId ? `/commandId=${commandId}`: ``);
 
     http.open('DELETE', url, true);
 
@@ -384,25 +379,29 @@ function terminateCall(callId, commandId, accessToken){
 
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4) {
-            console.log(http.responseText);
-            clearCurrentCall();
+            if(http.status < 400){
+                clearCurrentCall();
+            } else{
+                document.getElementById("make-call-response").innerHTML = `Terminate call failed! ` + http.responseText;    //render message
+            }
         }
     }
 }
 
-function rejectCalling(){
+function cancelCall(){
     let accessToken = getToken();
     //need cur INCOMING call
     let curCall = getCurrentCall();
-    cancelCall(curCall["callId"], curCall["commandId"], accessToken);
+    cancelCallRequest(curCall["callId"], accessToken, true);
 }
 
-function cancelCall(callId, commandId, accessToken){
+function cancelCallRequest(callId, accessToken, skipToVoiceMail = true, commandId){
     let http = new XMLHttpRequest();
     let url = `https://api.intermedia.net/voice/v2/calls/${callId}/cancel`;
-    let dataRaw = `{
-        "skipToVoiceMail": "true"
-    }`;
+    let dataObj = {
+        "skipToVoiceMail": skipToVoiceMail
+    };
+    if(commandId) dataObj.commandId = commandId;
 
     http.open('POST', url, true);
 
@@ -410,29 +409,33 @@ function cancelCall(callId, commandId, accessToken){
     http.setRequestHeader('Content-type', 'application/json');
     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
-    http.send(dataRaw);
+    http.send(JSON.stringify(dataObj));
 
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4) {
-            console.log(http.responseText);
-            //clearCurrentCall();
+            if(http.status < 400){
+                clearCurrentCall();
+            } else{
+                document.getElementById("make-call-response").innerHTML = `Terminate call failed! ` + http.responseText;    //render message
+            }
         }
     }
 }
 
-function redirectCalling(){
+function transferCall(){
     let accessToken = getToken();
     let phoneNumber = document.getElementById('redirect-phone-number').value;
     let curCall = getCurrentCall();
     transferCall(curCall["callId"], curCall["commandId"], phoneNumber, accessToken);
 }
 
-function transferCall(callId, commandId, phoneNumber, accessToken){
+function transferCallRequest(callId, phoneNumber, accessToken, commandId){
     let http = new XMLHttpRequest();
     let url = `https://api.intermedia.net/voice/v2/calls/${callId}/transfer`;
-    let dataRaw = `{
-        "phoneNumber": "${phoneNumber}"
-    }`;
+    let dataObj = {
+        "phoneNumber": phoneNumber
+    };
+    if(commandId) dataObj.commandId = commandId;
 
     http.open('POST', url, true);
 
@@ -444,8 +447,11 @@ function transferCall(callId, commandId, phoneNumber, accessToken){
 
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4) {
-            console.log(http.responseText);
-            //clearCurrentCall();
+            if(http.status < 400){
+                setCurrentCall(http.responseText);
+            } else{
+                document.getElementById("make-call-response").innerHTML = `Calling failed! ` + http.responseText;    //render message
+            }
         }
     }
 }

@@ -426,7 +426,7 @@ function transferCall(){
     let accessToken = getToken();
     let phoneNumber = document.getElementById('transfer-phone-number').value;
     let curCall = getCurrentCall();
-    transferCall(curCall["callId"], curCall["commandId"], phoneNumber, accessToken);
+    transferCall(curCall["callId"], phoneNumber, accessToken);
 }
 
 function transferCallRequest(callId, phoneNumber, accessToken, commandId){

@@ -20,7 +20,7 @@ document.getElementById('iframeSignin').addEventListener("click", iframeSignin, 
 //document.getElementById('endSignoutMainWindow').addEventListener("click", endSignoutMainWindow, false);
 
 //document.getElementById('popupSignout').addEventListener("click", popupSignout, false);
-document.getElementById('call-the-number').addEventListener("click", callTheNumber, false);
+document.getElementById('make-call').addEventListener("click", makeCall, false);
 document.getElementById('stop-calling').addEventListener("click", stopCalling, false);
 document.getElementById('reject-calling').addEventListener("click", rejectCalling, false);
 document.getElementById('redirect-calling').addEventListener("click", redirectCalling, false);
@@ -322,21 +322,23 @@ function clearCurrentCall(){
 }
 
 
-function callTheNumber(){
+function makeCall(){
     let accessToken = getToken();
     let phoneNumber = document.getElementById('phone-number').value;
     let deviceId = document.getElementById('devices-select').value;
 
-    makeCall(accessToken, phoneNumber, deviceId);
+    makeCallRequest(deviceId, "placeCall", phoneNumber, accessToken);
 }
 
-function makeCall(accessToken, phoneNumber, deviceId){
+function makeCallRequest(deviceId, mode, phoneNumber, accessToken, callId = "", commandId = ""){
     let http = new XMLHttpRequest();
     let url = 'https://api.intermedia.net/voice/v2/calls';
     let dataRaw = `{
         "deviceId": "${deviceId}",
         "mode": "placeCall",
-        "phoneNumber": "${phoneNumber}"
+        "phoneNumber": "${phoneNumber}",
+        "callId": "${callId}",
+        "commandId": "${commandId}"
     }`;
 
     http.open('POST', url, true);
@@ -347,9 +349,13 @@ function makeCall(accessToken, phoneNumber, deviceId){
 
     http.send(dataRaw);
 
-    http.onreadystatechange = function() {//Call a function when the state changes.
+    http.onreadystatechange = function() {  //Call a function when the state changes.
         if(http.readyState == 4) {
-            setCurrentCall(http.responseText);
+            if(http.status < 400){
+                setCurrentCall(http.responseText);
+            } else{
+                document.getElementById("make-call-response").innerHTML = `Calling failed! ` + http.responseText;    //render message
+            }
         }
     }
 }

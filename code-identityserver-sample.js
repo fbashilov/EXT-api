@@ -24,7 +24,7 @@ document.getElementById('make-call').addEventListener("click", makeCall, false);
 document.getElementById('terminate-call').addEventListener("click", terminateCall, false);
 document.getElementById('cancel-call').addEventListener("click", cancelCall, false);
 document.getElementById('transfer-call').addEventListener("click", transferCall, false);
-document.getElementById('subscripe-hub').addEventListener("click", subscripeNotificationHub(), false);
+document.getElementById('subscripe-hub').addEventListener("click", subscripeNotificationHub, false);
 
 ///////////////////////////////
 // config
@@ -461,12 +461,16 @@ function transferCallRequest(callId, phoneNumber, accessToken, commandId){
 // Notifications Hub
 ///////////////////////////////
 function subscripeNotificationHub(){
+    console.log("subscripeNotificationHub");
+
     let accessToken = getToken();
 
     createSubscriptionRequest(accessToken);
 }
 
 function createSubscriptionRequest(accessToken, events = ["*"], ttl = "00:30:00"){
+        console.log("createSubscriptionRequest");
+
         let http = new XMLHttpRequest();
         let url = 'https://api.intermedia.net/voice/v2/subscriptions';
         let dataObj = {

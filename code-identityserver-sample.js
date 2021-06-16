@@ -465,6 +465,7 @@ function subscripeNotificationHub(){
 
     createSubscriptionRequest(accessToken).then(function(response) {
         console.log(JSON.parse(response));
+        buildHubConnection(response.deliveryMethod.uri, accessToken);
     }).catch(function(error){
         console.log("Error!!! Subscripe failed");
         console.log(error);
@@ -499,3 +500,23 @@ function createSubscriptionRequest(accessToken, events = ["*"], ttl = "00:30:00"
         }
       });
 }
+
+function buildHubConnection(deliveryMethodUri, accessToken){
+    let connection = new signalR.HubConnectionBuilder()
+        .configureLogging(signalR.LogLevel.Trace)
+        .withUrl(deliveryMethodUri, {
+            accessTokenFactory: () => accessToken
+        })
+        .build();
+
+    connection.on("OnEvent", data => {
+        console.log(data);
+    });
+    connection.on("OnCommandResult", data => {
+        console.log(data);
+    });
+
+    connection.start();
+}
+
+

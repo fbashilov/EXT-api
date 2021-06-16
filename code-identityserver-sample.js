@@ -491,7 +491,7 @@ function createSubscriptionRequest(accessToken, events = ["*"], ttl = "00:30:00"
         http.onreadystatechange = function() {//Call a function when the state changes.
             if(http.readyState == 4) {
                 if (http.status < 400){
-                    succeed(http.response);
+                    succeed(http.responseText);
                 } else{
                     fail(new Error("Request failed: " + http.statusText));
                 }

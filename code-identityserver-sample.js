@@ -24,6 +24,7 @@ document.getElementById('make-call').addEventListener("click", makeCall, false);
 document.getElementById('terminate-call').addEventListener("click", terminateCall, false);
 document.getElementById('cancel-call').addEventListener("click", cancelCall, false);
 document.getElementById('transfer-call').addEventListener("click", transferCall, false);
+document.getElementById('subscripe-hub').addEventListener("click", subscripeNotificationHub(), false);
 
 ///////////////////////////////
 // config
@@ -443,7 +444,7 @@ function transferCallRequest(callId, phoneNumber, accessToken, commandId){
     http.setRequestHeader('Content-type', 'application/json');
     http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
-    http.send(dataRaw);
+    http.send(JSON.stringify(dataObj));
 
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4) {
@@ -456,5 +457,48 @@ function transferCallRequest(callId, phoneNumber, accessToken, commandId){
     }
 }
 
+///////////////////////////////
+// Notifications Hub
+///////////////////////////////
+function subscripeNotificationHub(){
+    let accessToken = getToken();
 
+    createSubscriptionRequest(accessToken).then(function(response) {
+        console.log(JSON.parse(response));
+        // let devices = JSON.parse(response)["clickToCallDevices"];
+        // createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
+        // document.getElementById("call-window").style.display = 'block';   //show call form
+    }).catch(function(error){
+        console.log("Error!!! Subscripe failed");
+        console.log(error);
+    });
+}
 
+function createSubscriptionRequest(accessToken, events = ["*"], ttl = "00:30:00"){
+    return new Promise(function(succeed, fail) {
+        let http = new XMLHttpRequest();
+        let url = 'https://api.intermedia.net/voice/v2/subscriptions';
+        let dataObj = {
+            "events": events,
+            "ttl": ttl
+        };
+
+        http.open("POST", url, true);
+  
+        //Headers
+        http.setRequestHeader('Content-type', 'application/json');
+        http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+  
+        http.addEventListener("load", function() {
+          if (http.status < 400)
+            succeed(http.response);
+          else
+            fail(new Error("Request failed: " + http.statusText));
+        });
+        http.addEventListener("error", function() {
+          fail(new Error("Network error"));
+        });
+
+        http.send(JSON.stringify(dataObj));
+      });
+}

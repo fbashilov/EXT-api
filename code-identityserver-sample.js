@@ -489,16 +489,16 @@ function createSubscriptionRequest(accessToken, events = ["*"], ttl = "00:30:00"
         http.setRequestHeader('Content-type', 'application/json');
         http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
   
-        http.addEventListener("load", function() {
-          if (http.status < 400)
-            succeed(http.response);
-          else
-            fail(new Error("Request failed: " + http.statusText));
-        });
-        http.addEventListener("error", function() {
-          fail(new Error("Network error"));
-        });
-
         http.send(JSON.stringify(dataObj));
+
+        http.onreadystatechange = function() {//Call a function when the state changes.
+            if(http.readyState == 4) {
+                if (http.status < 400){
+                    succeed(http.response);
+                } else{
+                    fail(new Error("Request failed: " + http.statusText));
+                }
+            }
+        }
       });
 }

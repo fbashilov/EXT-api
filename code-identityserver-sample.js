@@ -509,6 +509,16 @@ function buildHubConnection(deliveryMethodUri, accessToken){
         })
         .build();
 
+    async function start() {
+        try {
+            await connection.start();
+            console.log("connected");
+        } catch (err) {
+            console.log(err);
+            setTimeout(() => start(), 5000);
+        }
+    };
+
     connection.on("OnEvent", data => {
         console.log(data);
     });
@@ -516,7 +526,12 @@ function buildHubConnection(deliveryMethodUri, accessToken){
         console.log(data);
     });
 
-    connection.start();
+    connection.onclose(async () => {
+        await start();
+    });
+    
+    // Start the connection.
+    start();
 }
 
 

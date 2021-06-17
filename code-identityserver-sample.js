@@ -24,7 +24,6 @@ document.getElementById('make-call').addEventListener("click", makeCall, false);
 document.getElementById('terminate-call').addEventListener("click", terminateCall, false);
 document.getElementById('cancel-call').addEventListener("click", cancelCall, false);
 document.getElementById('transfer-call').addEventListener("click", transferCall, false);
-document.getElementById('subscripe-hub').addEventListener("click", subscripeNotificationHub, false);
 
 ///////////////////////////////
 // config
@@ -240,10 +239,11 @@ function setToken(accessToken){
 function renderCallForm(){
     let accessToken = getToken();
 
+    subscripeNotificationHub(accessToken);
+
     getDevices(accessToken).then(function(response) {
         let devices = JSON.parse(response)["clickToCallDevices"];
         createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
-        // document.getElementById("call-window").style.display = 'block';   //show call form
     }).catch(function(error){
         console.log("Error!!!");
         console.log(error);
@@ -313,36 +313,6 @@ function getDevices(accessToken) {
 ///////////////////////////////
 // Call functions
 ///////////////////////////////
-function getCurrentCall(){
-    return JSON.parse(localStorage.getItem('currentCall'));
-}
-
-function setCurrentCall(currentCall){
-    clearCurrentCall();
-
-    if(typeof currentCall != "string"){
-        currentCall = JSON.stringify(currentCall);
-    }
-    
-    localStorage.setItem('currentCall', currentCall);    //save
-    
-    document.getElementById("make-call-response").innerHTML = `Calling...\n${currentCall}`;    //render
-    // Array.prototype.forEach.call(document.getElementsByClassName("show-during-call"), function(element) {
-    //     element.style.display = "block";
-    // });
-    // document.getElementById("call-form").style.display = "none";
-}
-
-function clearCurrentCall(){
-    localStorage.removeItem('currentCall');
-
-    document.getElementById("make-call-response").innerHTML = "No call";    //render 
-    Array.prototype.forEach.call(document.getElementsByClassName("show-during-call"), function(element) {
-        element.style.display = "none";
-    });
-    document.getElementById("call-form").style.display = "block";
-}
-
 function makeCall(){
     let accessToken = getToken();
     let phoneNumber = document.getElementById('phone-number').value;
@@ -385,8 +355,8 @@ function makeCallRequest(deviceId, phoneNumber, accessToken, mode = "placeCall",
 
 function terminateCall(){
     let accessToken = getToken();
-    let curCall = getCurrentCall();
-    terminateCallRequest(curCall["callId"], accessToken);
+    let callId = document.getElementById("terminate-call-id").value;
+    terminateCallRequest(callId, accessToken);
 }
 
 function terminateCallRequest(callId, accessToken, commandId){
@@ -415,8 +385,8 @@ function terminateCallRequest(callId, accessToken, commandId){
 function cancelCall(){
     let accessToken = getToken();
     //need cur INCOMING call
-    let curCall = getCurrentCall();
-    cancelCallRequest(curCall["callId"], accessToken, true);
+    let callId = document.getElementById("cancel-call-id").value;
+    cancelCallRequest(callId, accessToken, true);
 }
 
 function cancelCallRequest(callId, accessToken, skipToVoiceMail = true, commandId){
@@ -449,8 +419,8 @@ function cancelCallRequest(callId, accessToken, skipToVoiceMail = true, commandI
 function transferCall(){
     let accessToken = getToken();
     let phoneNumber = document.getElementById('transfer-phone-number').value;
-    let curCall = getCurrentCall();
-    transferCall(curCall["callId"], phoneNumber, accessToken);
+    let curCallId = document.getElementById("cur-call-id").value;
+    transferCall(curCallId, phoneNumber, accessToken);
 }
 
 function transferCallRequest(callId, phoneNumber, accessToken, commandId){
@@ -483,11 +453,9 @@ function transferCallRequest(callId, phoneNumber, accessToken, commandId){
 ///////////////////////////////
 // Notifications Hub
 ///////////////////////////////
-function subscripeNotificationHub(){
-    let accessToken = getToken();
+function subscripeNotificationHub(accessToken){
 
     createSubscriptionRequest(accessToken).then(function(response) {
-        console.log(JSON.parse(response));
         buildHubConnection(JSON.parse(response).deliveryMethod.uri, accessToken);
     }).catch(function(error){
         console.log("Error!!! Subscripe failed");
@@ -538,7 +506,7 @@ function buildHubConnection(deliveryMethodUri, accessToken){
             console.log("connected");
         } catch (err) {
             console.log(err);
-            setTimeout(() => start(), 5000);
+            setTimeout(() => start(), 3000);
         }
     };
 

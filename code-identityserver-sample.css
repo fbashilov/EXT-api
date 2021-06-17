@@ -1,19 +1,10 @@
-#call-window{
-    margin: 40px 0;
-}
-
-#call-window input{
-    width: auto;
-}
-
-
-#call-window #call-form{
+.flex-row{
     margin: 20px 0;
     display: flex;
     flex-direction: row;   
 }
 
-#call-window #call-form *{
+.flex-row *{
     margin-right: 15px;
 }
 

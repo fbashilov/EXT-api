@@ -17,8 +17,9 @@
 
         <div id="call-window">
             <div id="outgoing-calls-window">
-                <h3>Make call</h3>
-                <div id="call-form">
+                <h3>Outgoing calls</h3>
+
+                <div class="flex-row">
                     <div id='devices-wrapper'></div>
                     <input id='phone-number' type="tel" size="20" placeholder="phone number">
                     <button id='make-call'>Call</button>
@@ -30,23 +31,35 @@
                         <div>Call ID</div>
                     </div>
                 </div>
+
+                <div class="flex-row">
+                    <input id='terminate-call-id' type="tel" size="20" placeholder="call Id">
+                    <button id='terminate-call' class="show-during-call" >Terminate call</button>
+                </div>
     
-                <div id="make-call-response"></div>
-                <button id='terminate-call' class="show-during-call" >Terminate call</button>
-    
-                <div id="transfer-call-form" class="show-during-call">
-                    <h5>Transfer call</h5>
+                <div class="flex-row">
                     <input id='transfer-phone-number' type="tel" size="20" placeholder="transfer phone number">
+                    <input id='cur-call-id' type="tel" size="20" placeholder="current call Id">
                     <button id='transfer-call'>Transfer call</button>
                 </div>
             </div>
-            <div>
-                <button id='subscripe-hub'>Subscripe hub</button>
+
+            <div id="incoming-calls-window">
+                <h3>Incoming calls</h3>
+
+                <div id="incoming-calls-table" class="calls-table">
+                    <div class="calls-table-header">
+                        <div>Status</div>
+                        <div>Call ID</div>
+                    </div>
+                </div>
+
+                <div class="flex-row">
+                    <input id='cancel-call-id' type="tel" size="20" placeholder="call Id">
+                    <button id='cancel-call'>Cancel call</button>
+                </div>
             </div>
 
-
-
-            <button id='cancel-call'>Cancel call</button>
         </div>
         <!-- <div>
             <button id='startSigninMainWindow'>start signin main window</button>

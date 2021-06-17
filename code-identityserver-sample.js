@@ -343,10 +343,8 @@ function makeCallRequest(deviceId, phoneNumber, accessToken, mode = "placeCall",
     http.onreadystatechange = function() {  //Call a function when the state changes.
         if(http.readyState == 4) {
             if(http.status < 400){
-                //setCurrentCall(http.responseText);
                 console.log(http.responseText);
             } else{
-                //document.getElementById("make-call-response").innerHTML = `Calling failed! ` + http.responseText;    //render message
                 console.log(`Calling failed! ` + http.responseText);
             }
         }
@@ -374,9 +372,9 @@ function terminateCallRequest(callId, accessToken, commandId){
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4) {
             if(http.status < 400){
-                clearCurrentCall();
+                console.log(http.responseText);
             } else{
-                document.getElementById("make-call-response").innerHTML = `Terminate call failed! ` + http.responseText;    //render message
+                console.log(`Terminate failed! ` + http.responseText);    //render message
             }
         }
     }
@@ -408,9 +406,9 @@ function cancelCallRequest(callId, accessToken, skipToVoiceMail = true, commandI
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4) {
             if(http.status < 400){
-                clearCurrentCall();
+                console.log(http.responseText);
             } else{
-                document.getElementById("make-call-response").innerHTML = `Terminate call failed! ` + http.responseText;    //render message
+                console.log(`Cancel failed! ` + http.responseText);    //render message
             }
         }
     }
@@ -442,9 +440,9 @@ function transferCallRequest(callId, phoneNumber, accessToken, commandId){
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4) {
             if(http.status < 400){
-                setCurrentCall(http.responseText);
+                console.log(http.responseText);
             } else{
-                document.getElementById("make-call-response").innerHTML = `Calling failed! ` + http.responseText;    //render message
+                console.log(`Transfer failed! ` + http.responseText);    //render message
             }
         }
     }

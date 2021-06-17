@@ -1,3 +1,7 @@
+#call-window *{
+    width: auto;
+}
+
 .flex-row{
     margin: 20px 0;
     display: flex;
@@ -10,4 +14,10 @@
 
 .calls-table{
     display: grid;
+}
+
+.calls-table-header, .calls-table-row{
+    margin: 5px 0;
+    display: flex;
+    flex-direction: row;
 }

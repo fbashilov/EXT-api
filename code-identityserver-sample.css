@@ -20,4 +20,10 @@
     margin: 5px 0;
     display: flex;
     flex-direction: row;
+    border-top: 1px solid black;
+}
+
+.calls-table-header{
+    font-weight: bold;
+    border: 1px solid black;
 }

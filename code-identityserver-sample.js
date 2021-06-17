@@ -275,7 +275,7 @@ function renderCallTableRow(eventType, callDirection, callId){
         }
     }
 
-    let newCallElem = createElement("div");
+    let newCallElem = document.createElement("div");
     newCallElem.className = `calls-table-row ${callId}`;
     newCallElem.innerHTML = `<div>${eventType}</div><div>${callId}</div>`;
 

@@ -7,11 +7,17 @@
     width: auto;
 }
 
-#call-window{
-    margin: 10px 0;
+
+#call-window #call-form{
+    margin: 20px 0;
+    display: flex;
+    flex-direction: row;   
 }
 
+#call-window #call-form *{
+    margin-right: 15px;
+}
 
-#call-window .show-during-call{
-    display: none;
+.calls-table{
+    display: grid;
 }

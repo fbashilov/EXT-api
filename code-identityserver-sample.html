@@ -16,25 +16,35 @@
         </div>
 
         <div id="call-window">
+            <div id="outgoing-calls-window">
+                <h3>Make call</h3>
+                <div id="call-form">
+                    <div id='devices-wrapper'></div>
+                    <input id='phone-number' type="tel" size="20" placeholder="phone number">
+                    <button id='make-call'>Call</button>
+                </div>
+
+                <div id="outgoing-calls-table" class="calls-table">
+                    <div class="calls-table-header">
+                        <div>Status</div>
+                        <div>Call ID</div>
+                    </div>
+                </div>
+    
+                <div id="make-call-response"></div>
+                <button id='terminate-call' class="show-during-call" >Terminate call</button>
+    
+                <div id="transfer-call-form" class="show-during-call">
+                    <h5>Transfer call</h5>
+                    <input id='transfer-phone-number' type="tel" size="20" placeholder="transfer phone number">
+                    <button id='transfer-call'>Transfer call</button>
+                </div>
+            </div>
             <div>
                 <button id='subscripe-hub'>Subscripe hub</button>
             </div>
 
-            <h3>Make call</h3>
-            <div id='devices-wrapper'></div>
-            <div id="call-form">
-                <input id='phone-number' type="tel" size="20" placeholder="phone number">
-                <button id='make-call'>Call</button>
-            </div>
 
-            <div id="make-call-response"></div>
-            <button id='terminate-call' class="show-during-call" >Terminate call</button>
-
-            <div id="transfer-call-form" class="show-during-call">
-                <h5>Transfer call</h5>
-                <input id='transfer-phone-number' type="tel" size="20" placeholder="transfer phone number">
-                <button id='transfer-call'>Transfer call</button>
-            </div>
 
             <button id='cancel-call'>Cancel call</button>
         </div>

@@ -243,7 +243,7 @@ function renderCallForm(){
     getDevices(accessToken).then(function(response) {
         let devices = JSON.parse(response)["clickToCallDevices"];
         createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
-        document.getElementById("call-window").style.display = 'block';   //show call form
+        // document.getElementById("call-window").style.display = 'block';   //show call form
     }).catch(function(error){
         console.log("Error!!!");
         console.log(error);
@@ -262,6 +262,27 @@ function createSelectElem(parentNode, elemId, dataList, valueParam, textParam){
         option.value = dataList[i][valueParam];
         option.text = dataList[i][textParam];
         selectList.appendChild(option);
+    }
+}
+
+function renderCallTableRow(eventType, callDirection, callId){
+    let allCallElems = document.getElementsByClassName("calls-table-row");
+
+    for(let i=0; i<allCallElems.length; i++){
+        if(allCallElems[i].classList.contains(callId)){
+            allCallElems[i].innerHTML = `<div>${eventType}</div><div>${callId}</div>`;
+            return;
+        }
+    }
+
+    let newCallElem = createElement("div");
+    newCallElem.className = `calls-table-row ${callId}`;
+    newCallElem.innerHTML = `<div>${eventType}</div><div>${callId}</div>`;
+
+    if(callDirection == "outgoing"){
+        document.getElementById("outgoing-calls-table").appendChild(newCallElem);
+    } else {
+        document.getElementById("incoming-calls-table").appendChild(newCallElem);
     }
 }
 
@@ -306,10 +327,10 @@ function setCurrentCall(currentCall){
     localStorage.setItem('currentCall', currentCall);    //save
     
     document.getElementById("make-call-response").innerHTML = `Calling...\n${currentCall}`;    //render
-    Array.prototype.forEach.call(document.getElementsByClassName("show-during-call"), function(element) {
-        element.style.display = "block";
-    });
-    document.getElementById("call-form").style.display = "none";
+    // Array.prototype.forEach.call(document.getElementsByClassName("show-during-call"), function(element) {
+    //     element.style.display = "block";
+    // });
+    // document.getElementById("call-form").style.display = "none";
 }
 
 function clearCurrentCall(){
@@ -352,9 +373,11 @@ function makeCallRequest(deviceId, phoneNumber, accessToken, mode = "placeCall",
     http.onreadystatechange = function() {  //Call a function when the state changes.
         if(http.readyState == 4) {
             if(http.status < 400){
-                setCurrentCall(http.responseText);
+                //setCurrentCall(http.responseText);
+                console.log(http.responseText);
             } else{
-                document.getElementById("make-call-response").innerHTML = `Calling failed! ` + http.responseText;    //render message
+                //document.getElementById("make-call-response").innerHTML = `Calling failed! ` + http.responseText;    //render message
+                console.log(`Calling failed! ` + http.responseText);
             }
         }
     }
@@ -521,6 +544,7 @@ function buildHubConnection(deliveryMethodUri, accessToken){
 
     connection.on("OnEvent", data => {
         console.log(data);
+        renderCallTableRow(data.eventType, data.callDirection, data.callId);
     });
     connection.on("OnCommandResult", data => {
         console.log(data);

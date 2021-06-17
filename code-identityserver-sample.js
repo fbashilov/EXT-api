@@ -418,7 +418,7 @@ function transferCall(){
     let accessToken = getToken();
     let phoneNumber = document.getElementById('transfer-phone-number').value;
     let curCallId = document.getElementById("cur-call-id").value;
-    transferCall(curCallId, phoneNumber, accessToken);
+    transferCallRequest(curCallId, phoneNumber, accessToken);
 }
 
 function transferCallRequest(callId, phoneNumber, accessToken, commandId){

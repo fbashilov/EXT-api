@@ -382,7 +382,6 @@ function terminateCallRequest(callId, accessToken, commandId){
 
 function cancelCall(){
     let accessToken = getToken();
-    //need cur INCOMING call
     let callId = document.getElementById("cancel-call-id").value;
     cancelCallRequest(callId, accessToken, true);
 }

@@ -9,11 +9,11 @@
 }
 
 .flex-row *{
-    margin-right: 15px;
+    margin-right: 5px;
 }
 
 .calls-table{
-    display: grid;
+    text-align: center;
 }
 
 .calls-table th, .calls-table td{

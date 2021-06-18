@@ -16,16 +16,8 @@
     display: grid;
 }
 
-.calls-table-header, .calls-table-row{
-    padding: 5px;
-}
-
-.calls-table-header{
-    font-weight: bold;
-    border: 1px solid black;
-}
-
-.calls-table td{
+.calls-table th, .calls-table td{
     border: 1px solid black;
     min-width: 300px;
+    padding: 2px 4px;
 }

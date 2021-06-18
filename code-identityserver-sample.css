@@ -24,3 +24,8 @@
     font-weight: bold;
     border: 1px solid black;
 }
+
+.calls-table td{
+    border: 1px solid black;
+    min-width: 300px;
+}

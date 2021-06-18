@@ -17,10 +17,7 @@
 }
 
 .calls-table-header, .calls-table-row{
-    margin: 5px 0;
-    display: flex;
-    flex-direction: row;
-    border-top: 1px solid black;
+    padding: 5px;
 }
 
 .calls-table-header{

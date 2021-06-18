@@ -270,14 +270,14 @@ function renderCallTableRow(eventType, callDirection, callId){
 
     for(let i=0; i<allCallElems.length; i++){
         if(allCallElems[i].classList.contains(callId)){
-            allCallElems[i].innerHTML = `<div>${eventType}</div><div>${callId}</div>`;
+            allCallElems[i].innerHTML = `<td>${eventType}</td><td>${callId}</td>`;
             return;
         }
     }
 
-    let newCallElem = document.createElement("div");
+    let newCallElem = document.createElement("tr");
     newCallElem.className = `calls-table-row ${callId}`;
-    newCallElem.innerHTML = `<div>${eventType}</div><div>${callId}</div>`;
+    newCallElem.innerHTML = `<td>${eventType}</td><td>${callId}</td>`;
 
     if(callDirection == "outgoing"){
         document.getElementById("outgoing-calls-table").appendChild(newCallElem);

@@ -49,6 +49,8 @@ document.getElementById('transfer-call').addEventListener("click", transferCall,
 // tokens
 ///////////////////////////////
 function getAccessToken(settings){
+    let mgr = new Oidc.UserManager(settings);
+
     //check for token in URL
     if (location.search.includes("code=", 1)) {
         log("Response code was found in query!");
@@ -61,8 +63,6 @@ function getAccessToken(settings){
         });
     } else {    //go authorization
         log("Going to sign in using following configuration");
-
-        let mgr = new Oidc.UserManager(settings);
 
         mgr.signinRedirect({useReplaceToNavigate:true}).then(function() {
             log("Redirecting to AdSTS...");

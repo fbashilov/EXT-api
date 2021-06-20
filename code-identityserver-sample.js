@@ -31,19 +31,25 @@
         login_hint: localStorage.getItem('cfg-login'),
         extraTokenParams: { acr_values: localStorage.getItem('cfg-acr') }
     };
-    
-    let accessToken = getAccessToken(settings);
-    setSessionToken(accessToken);
+
+    setSessionToken(getAccessToken(settings));
+    console.log(getSessionToken());
+
     renderCallForm();
 })();
 
 ///////////////////////////////
 // UI event handlers
 ///////////////////////////////
+document.getElementById('subscribe-hub').addEventListener("click", subscribeNotificationHub, false);
+
+document.getElementById('get-devices').addEventListener("click", getDevices, false);
+
 document.getElementById('make-call').addEventListener("click", makeCall, false);
 document.getElementById('terminate-call').addEventListener("click", terminateCall, false);
 document.getElementById('cancel-call').addEventListener("click", cancelCall, false);
 document.getElementById('transfer-call').addEventListener("click", transferCall, false);
+
 
 ///////////////////////////////
 // tokens
@@ -84,21 +90,6 @@ function setSessionToken(accessToken){
 ///////////////////////////////
 // Rendering functions
 ///////////////////////////////
-function renderCallForm(){
-    let accessToken = getSessionToken();
-
-    subscripeNotificationHub(accessToken);
-
-    getDevices(accessToken).then(function(response) {
-        let devices = JSON.parse(response)["clickToCallDevices"];
-        createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
-        document.getElementById("call-window").style.display = "block";
-    }).catch(function(error){
-        console.log("Error!!!");
-        console.log(error);
-    });
-}
-
 function createSelectElem(parentNode, elemId, dataList, valueParam, textParam){
     //Create and append select list
     let selectList = document.createElement("select");
@@ -138,7 +129,19 @@ function renderCallTableRow(eventType, callDirection, callId){
 ///////////////////////////////
 // Device functions
 ///////////////////////////////
-function getDevices(accessToken) {
+function getDevices(){
+    let accessToken = getSessionToken();
+
+    getDevicesRequest(accessToken).then(function(response) {
+        let devices = JSON.parse(response)["clickToCallDevices"];
+        createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
+    }).catch(function(error){
+        console.log("Error!!!");
+        console.log(error);
+    });
+}
+
+function getDevicesRequest(accessToken) {
     return new Promise(function(succeed, fail) {
       let http = new XMLHttpRequest();
       let url = 'https://api.intermedia.net/voice/v2/devices';
@@ -299,7 +302,8 @@ function transferCallRequest(callId, phoneNumber, accessToken, commandId){
 ///////////////////////////////
 // Notifications Hub
 ///////////////////////////////
-function subscripeNotificationHub(accessToken){
+function subscribeNotificationHub(){
+    let accessToken = getSessionToken();
 
     createSubscriptionRequest(accessToken).then(function(response) {
         buildHubConnection(JSON.parse(response).deliveryMethod.uri, accessToken);

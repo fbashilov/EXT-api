@@ -33,6 +33,7 @@
     };
 
     getAccessToken(settings).then(function(response) {
+        console.log("promise response:"+response);
         setSessionToken(response);
         console.log(getSessionToken());
     }).catch(function(error){
@@ -69,6 +70,7 @@ function getAccessToken(settings){
             log("Trying to exchange code for token...");
 
             mgr.signinCallback(settings).then(function(user) {
+                console.log("signinCallback return token");
                 return user.access_token;
             }).catch(function(err) {
                 log(err);

@@ -71,9 +71,10 @@ function getAccessToken(settings){
 
             mgr.signinCallback(settings).then(function(user) {
                 console.log("signinCallback return token");
-                return user.access_token;
+                succeed(user.access_token);
             }).catch(function(err) {
                 log(err);
+                fail(new Error("Exchange code for token failed!:" + err));
             });
         } else {    //go authorization
             log("Going to sign in using following configuration");

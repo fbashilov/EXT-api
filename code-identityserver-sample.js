@@ -32,10 +32,15 @@
         extraTokenParams: { acr_values: localStorage.getItem('cfg-acr') }
     };
 
-    setSessionToken(getAccessToken(settings));
-    console.log(getSessionToken());
+    getAccessToken(settings).then(function(response) {
+        setSessionToken(response);
+        console.log(getSessionToken());
+    }).catch(function(error){
+        console.log("Error!!!");
+        console.log(error);
+    });
 
-    renderCallForm();
+    console.log(getSessionToken());
 })();
 
 ///////////////////////////////
@@ -55,27 +60,29 @@ document.getElementById('transfer-call').addEventListener("click", transferCall,
 // tokens
 ///////////////////////////////
 function getAccessToken(settings){
-    let mgr = new Oidc.UserManager(settings);
+    return new Promise(function(succeed, fail) {
+        let mgr = new Oidc.UserManager(settings);
 
-    //check for token in URL
-    if (location.search.includes("code=", 1)) {
-        log("Response code was found in query!");
-        log("Trying to exchange code for token...");
+        //check for token in URL
+        if (location.search.includes("code=", 1)) {
+            log("Response code was found in query!");
+            log("Trying to exchange code for token...");
 
-        mgr.signinCallback(settings).then(function(user) {
-            return user.access_token;
-        }).catch(function(err) {
-            log(err);
-        });
-    } else {    //go authorization
-        log("Going to sign in using following configuration");
+            mgr.signinCallback(settings).then(function(user) {
+                return user.access_token;
+            }).catch(function(err) {
+                log(err);
+            });
+        } else {    //go authorization
+            log("Going to sign in using following configuration");
 
-        mgr.signinRedirect({useReplaceToNavigate:true}).then(function() {
-            log("Redirecting to AdSTS...");
-        }).catch(function(err) {
-            log(err);
-        });
-    }
+            mgr.signinRedirect({useReplaceToNavigate:true}).then(function() {
+                log("Redirecting to AdSTS...");
+            }).catch(function(err) {
+                log(err);
+            });
+        }
+    });
 }
 
 function getSessionToken(){

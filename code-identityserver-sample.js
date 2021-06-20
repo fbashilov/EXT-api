@@ -1,9 +1,10 @@
 // Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.\
+
 ///////////////////////////////
-// On load (get access token)
+// IIFE on load (get access token)
 ///////////////////////////////
-document.onload(()=>{
+(()=>{
     Oidc.Log.logger = console;
     Oidc.Log.level = Oidc.Log.DEBUG;
     console.log("Using oidc-client version: ", Oidc.Version);
@@ -34,7 +35,7 @@ document.onload(()=>{
     let accessToken = getAccessToken(settings);
     setSessionToken(accessToken);
     renderCallForm();
-});
+})();
 
 ///////////////////////////////
 // UI event handlers
@@ -91,6 +92,7 @@ function renderCallForm(){
     getDevices(accessToken).then(function(response) {
         let devices = JSON.parse(response)["clickToCallDevices"];
         createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
+        document.getElementById("call-window").style.display = "block";
     }).catch(function(error){
         console.log("Error!!!");
         console.log(error);
@@ -301,6 +303,7 @@ function subscripeNotificationHub(accessToken){
 
     createSubscriptionRequest(accessToken).then(function(response) {
         buildHubConnection(JSON.parse(response).deliveryMethod.uri, accessToken);
+        console.log("GOOOOOD");
     }).catch(function(error){
         console.log("Error!!! Subscripe failed");
         console.log(error);

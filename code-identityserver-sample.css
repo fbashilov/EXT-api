@@ -1,5 +1,6 @@
 #call-window *{
     width: auto;
+    display: none;
 }
 
 .flex-row{

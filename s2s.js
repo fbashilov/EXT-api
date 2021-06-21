@@ -21,20 +21,18 @@ function getS2SAccessTokenRequest(clientId, clientSecret, scope, grantType = "cl
     return new Promise(function(succeed, fail) {
         let http = new XMLHttpRequest();
         let url = 'https://login.intermedia.net/user/connect/token';
-        let dataObj = {
-            "grant_type": grantType,
-            "client_id": clientId,
-            "client_secret": clientSecret
-        };
-
-        if(scope) dataObj.scope = scope;
+        let dataObj = 
+            'grant_type=' + grantType + 
+            '&client_id=' + clientId + 
+            '&client_secret=' + clientSecret;
+        if(scope) dataObj += '&scrope' + scope;
 
         http.open('POST', url, true);
 
         //Headers
-        http.setRequestHeader('Content-type', 'application/json');
+        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-        http.send(JSON.stringify(dataObj));
+        http.send(dataObj);
 
         http.onreadystatechange = function() {  //Call a function when the state changes.
             if(http.readyState == 4) {

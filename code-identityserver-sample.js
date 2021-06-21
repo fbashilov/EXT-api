@@ -55,7 +55,7 @@ document.getElementById('make-call').addEventListener("click", makeCall, false);
 document.getElementById('terminate-call').addEventListener("click", terminateCall, false);
 document.getElementById('cancel-call').addEventListener("click", cancelCall, false);
 document.getElementById('transfer-call').addEventListener("click", transferCall, false);
-
+document.getElementById('merge-call').addEventListener("click", mergeCall, false);
 
 ///////////////////////////////
 // tokens
@@ -66,11 +66,8 @@ function getAccessToken(settings){
 
         //check for token in URL
         if (location.search.includes("code=", 1)) {
-            log("Response code was found in query!");
-            log("Trying to exchange code for token...");
-
+            //Response code was found in query. Trying to exchange code for token...
             mgr.signinCallback(settings).then(function(user) {
-                console.log("signinCallback return token");
                 succeed(user.access_token);
             }).catch(function(err) {
                 log(err);
@@ -308,6 +305,41 @@ function transferCallRequest(callId, phoneNumber, accessToken, commandId){
         }
     }
 }
+
+function mergeCall(){
+    let accessToken = getSessionToken();
+    let callId1 = document.getElementById("merge-call-id-1").value;
+    let callId2 = document.getElementById("merge-call-id-2").value;
+    mergeCallRequest(callId1, callId2, accessToken);
+}
+
+function mergeCallRequest(callId1, callId2, accessToken, commandId){
+    let http = new XMLHttpRequest();
+    let url = `https://api.intermedia.net/voice/v2/calls/${callId1}/merge`;
+    let dataObj = {
+        "mergeCallId": callId2
+    };
+    if(commandId) dataObj.commandId = commandId;
+
+    http.open('POST', url, true);
+
+    //Headers
+    http.setRequestHeader('Content-type', 'application/json');
+    http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+
+    http.send(JSON.stringify(dataObj));
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4) {
+            if(http.status < 400){
+                console.log(http.responseText);
+            } else{
+                console.log(`Transfer failed! ` + http.responseText);    //render message
+            }
+        }
+    }
+}
+
 
 ///////////////////////////////
 // Notifications Hub

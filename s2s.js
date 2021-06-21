@@ -45,6 +45,7 @@ function getS2SAccessTokenRequest(clientId, clientSecret, scope, grantType = "cl
                 }
             }
         }
+    });
 }
 
 function getSessionToken(){

@@ -334,7 +334,7 @@ function mergeCallRequest(callId1, callId2, accessToken, commandId){
             if(http.status < 400){
                 console.log(http.responseText);
             } else{
-                console.log(`Transfer failed! ` + http.responseText);    //render message
+                console.log(`Merge failed! ` + http.responseText);    //render message
             }
         }
     }

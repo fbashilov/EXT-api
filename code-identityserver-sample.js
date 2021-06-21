@@ -35,8 +35,7 @@
     getAccessToken(settings).then(function(response) {
         setSessionToken(response);
     }).catch(function(error){
-        console.log("Error!!!");
-        console.log(error);
+        console.log("Error!!! " + error);
     });
 })();
 
@@ -139,8 +138,7 @@ function getDevices(){
         let devices = JSON.parse(response)["clickToCallDevices"];
         createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
     }).catch(function(error){
-        console.log("Error!!!");
-        console.log(error);
+        console.log("Error!!! " + error);
     });
 }
 
@@ -345,7 +343,6 @@ function subscribeNotificationHub(){
 
     createSubscriptionRequest(accessToken).then(function(response) {
         buildHubConnection(JSON.parse(response).deliveryMethod.uri, accessToken);
-        console.log("GOOOOOD");
     }).catch(function(error){
         console.log("Error!!! Subscripe failed");
         console.log(error);

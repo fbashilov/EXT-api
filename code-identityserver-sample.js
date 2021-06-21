@@ -33,15 +33,11 @@
     };
 
     getAccessToken(settings).then(function(response) {
-        console.log("promise response:"+response);
         setSessionToken(response);
-        console.log(getSessionToken());
     }).catch(function(error){
         console.log("Error!!!");
         console.log(error);
     });
-
-    console.log(getSessionToken());
 })();
 
 ///////////////////////////////

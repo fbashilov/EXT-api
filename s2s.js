@@ -15,6 +15,7 @@ function authorizationS2S(){
     let clientSecret = document.getElementById("client-secret").value;
     getS2SAccessTokenRequest(clientId, clientSecret).then(function(response) {
         setSessionToken(response.access_token);
+        console.log(jwt_decode(response.access_token));
         document.getElementById("access-token-out").innerText = response;
     }).catch(function(error){
         console.log("Error!!! " + error);

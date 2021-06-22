@@ -4,15 +4,26 @@
         <title>AuthCode Flow + PKCE using OIDC-Client Test</title>
     </head>
     <body>
-        <hr>
-        <ul>
+        <section id="auth-section">
+            <ul>
+    
+                <li><label>client_id: </label><input type="text" id="client-id" value="vE9OLm97fUmdyy2j8rMg"/></li>
+                <li><label>client_secret: </label><input type="text" id="client-secret" value="" /></li>
+            </ul>
+            <button id="authorization"> Authorization </button>
+            <pre id='access-token-out'></pre>
+        </section>
+        <section id="call-recs-section">
+            <ul>
+                <li><label>organizationId: </label><input type="text" id="organization-id" value=""/></li>
+                <li><label>unifiedUserId: </label><input type="text" id="unified-user-id" value="" /></li>
+            </ul>
+            <button id="get-call-recs"> Get call recordings </button><br>
+            <button id="get-call-recs-archive"> Get call recordings (archive) </button><br>
+            <button id="get-call-recs-content"> Get call recordings (content) </button><br>
+        </section>
 
-            <li><label>client_id: </label><input type="text" id="client-id" value="vE9OLm97fUmdyy2j8rMg"/></li>
-            <li><label>client_secret: </label><input type="text" id="client-secret" value="" /></li>
-        </ul>
-        <hr>
-        <button id="authorization"> Authorization </button>
-        <pre id='access-token-out'></pre>
+
     </body>
     <script src='s2s.js'></script>
 </html>

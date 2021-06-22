@@ -14,8 +14,7 @@ function authorizationS2S(){
     let clientId = document.getElementById("client-id").value;
     let clientSecret = document.getElementById("client-secret").value;
     getS2SAccessTokenRequest(clientId, clientSecret).then(function(response) {
-        setSessionToken(response.access_token);
-        console.log(jwt_decode(response.access_token));
+        setSessionToken(JSON.parse(response)["access_token"]);
         document.getElementById("access-token-out").innerText = response;
     }).catch(function(error){
         console.log("Error!!! " + error);
@@ -71,8 +70,7 @@ function getCallRecs(){
 
 function getCallRecsRequest(organizationId, unifiedUserId, accessToken, offset = 0, count = 100){
     let http = new XMLHttpRequest();
-    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/
-        users/${unifiedUserId}/call-recordings?offset=${offset}&count=${count}`;
+    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings?offset=${offset}&count=${count}`;
     http.open('GET', url, true);
 
     //Headers
@@ -100,8 +98,7 @@ function getCallRecsArchive(){
 
 function getCallRecsArchiveRequest(organizationId, unifiedUserId, ids, accessToken, format = "zip"){
     let http = new XMLHttpRequest();
-    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/
-        users/${unifiedUserId}/call-recordings/_selected/_content?format=${format}`;
+    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/_selected/_content?format=${format}`;
     let dataObj = {
         "ids": ids,
     };
@@ -135,8 +132,7 @@ function getCallRecsContent(){
 
 function getCallRecsContentRequest(organizationId, unifiedUserId, callRecId, accessToken){
     let http = new XMLHttpRequest();
-    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/
-        users/${unifiedUserId}/call-recordings/${callRecId}/_content`;
+    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/${callRecId}/_content`;
     http.open('GET', url, true);
 
     //Headers

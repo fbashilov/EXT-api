@@ -92,7 +92,7 @@ function getCallRecsArchive(){
     let accessToken = getSessionToken();
     let organizationId = document.getElementById("organization-id").value;
     let unifiedUserId = document.getElementById("unified-user-id").value;
-    let ids = [0, 1];
+    let ids = JSON.parse(document.getElementById("call-rec-id-array").value);
     getCallRecsArchiveRequest(organizationId, unifiedUserId, ids, accessToken);
 }
 
@@ -126,7 +126,7 @@ function getCallRecsContent(){
     let accessToken = getSessionToken();
     let organizationId = document.getElementById("organization-id").value;
     let unifiedUserId = document.getElementById("unified-user-id").value;
-    let callRecId = 0;
+    let callRecId = document.getElementById("call-rec-id").value;
     getCallRecsContentRequest(organizationId, unifiedUserId, callRecId, accessToken);
 }
 

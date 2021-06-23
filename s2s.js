@@ -134,6 +134,8 @@ function getCallRecsArchiveRequest(organizationId, unifiedUserId, ids, accessTok
         http.setRequestHeader('Content-type', 'application/json');
         http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
+        http.responseType = "arraybuffer";
+
         http.send(JSON.stringify(dataObj));    
 
         http.onreadystatechange = function() {//Call a function when the state changes.
@@ -170,6 +172,8 @@ function getCallRecsContentRequest(organizationId, unifiedUserId, callRecId, acc
         //Headers
         http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
+        http.responseType = "arraybuffer";
+        
         http.send();
 
         http.onreadystatechange = function() {//Call a function when the state changes.

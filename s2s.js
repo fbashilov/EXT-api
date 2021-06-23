@@ -96,7 +96,7 @@ function renderCallRecsTablePage(callRecs, count){
         trElem.className = `recs-table-row`;
         trElem.innerHTML = `
             <td>${callRecs[i]["id"]}</td>
-            <td>${callId[i]["caller"]["phoneNumber"]}</td>
+            <td>${callRecs[i]["caller"]["phoneNumber"]}</td>
             <td>${callRecs[i]["duration"]}</td>
             <td>${callRecs[i]["whenCreated"]}</td>`;
     
@@ -125,7 +125,7 @@ function getCallRecs(){
     let offset = (callRecsPage - 1) * (count - 1);
 
     getCallRecsRequest(organizationId, unifiedUserId, accessToken, offset, count).then(function(response) {
-        renderCallRecsTablePage(JSON.parse(response), count);
+        renderCallRecsTablePage(JSON.parse(response)["records"], count);
     }).catch(function(error){
         console.log("Error!!! " + error);
     });

@@ -61,15 +61,15 @@ function setSessionToken(accessToken){
 ///////////////////////////////
 // Rendering functions
 ///////////////////////////////
-function createZIPDownloadButton(binaryZip){
-    let blob = new Blob(binaryZip, {type : "application/zip"});
-    let button = document.getElementById("")
-    let url = window.URL.createObjectURL(blob);
-    let a = document.createElement('a');
-    a.href = url;
-    a.download = id + "." + format;
-    a.click();
+function createFileDownloadLinkElem(binaryCode, mimeType, extension, fileName, parentNodeId){
+    let blob = new Blob(binaryCode, {type : mimeType});
+    let linkElem = document.createElement("a");
+    linkElem.href = URL.createObjectURL(blob);
+    linkElem.download = `${fileName}.${extension}`;
+    linkElem.textContent = `Download ${fileName}`;
+    document.getElementById(parentNodeId).appendChild(linkElem);
 }
+
 ///////////////////////////////
 // Call recordings functions
 ///////////////////////////////
@@ -114,7 +114,7 @@ function getCallRecsArchive(){
     let ids = JSON.parse(document.getElementById("call-rec-id-array").value);
 
     getCallRecsArchiveRequest(organizationId, unifiedUserId, ids, accessToken).then(function(response) {
-        document.getElementById("call-recs-zip-response").innerText = response;
+        createFileDownloadLinkElem(response, "application/zip", "zip", "call_recs_archive", "get-call-recs-archive-block");
     }).catch(function(error){
         console.log("Error!!! " + error);
     });
@@ -155,7 +155,7 @@ function getCallRecsContent(){
     let callRecId = document.getElementById("call-rec-id").value;
 
     getCallRecsContentRequest(organizationId, unifiedUserId, callRecId, accessToken).then(function(response) {
-        document.getElementById("call-rec-content-response").innerText = response;
+        createFileDownloadLinkElem(response, "audio/mpeg", "mp3", `call_rec_${callRecId}_content`, "get-call-recs-content-block");
     }).catch(function(error){
         console.log("Error!!! " + error);
     });

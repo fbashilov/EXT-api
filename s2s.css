@@ -14,3 +14,13 @@ section{
 .input-field{
     margin: 3px 0;
 }
+
+.recs-table{
+    text-align: center;
+}
+
+.recs-table th, .recs-table td{
+    border: 1px solid black;
+    min-width: 300px;
+    padding: 2px 4px;
+}

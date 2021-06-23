@@ -1,4 +1,9 @@
 ///////////////////////////////
+// Set global variable for paging 
+///////////////////////////////
+let callRecsPage = 1;
+
+///////////////////////////////
 // UI event handlers
 ///////////////////////////////
 document.getElementById('authorization').addEventListener("click", authorizationS2S, false);
@@ -6,6 +11,10 @@ document.getElementById('authorization').addEventListener("click", authorization
 document.getElementById('get-call-recs').addEventListener("click", getCallRecs, false);
 document.getElementById('get-call-recs-archive').addEventListener("click", getCallRecsArchive, false);
 document.getElementById('get-call-recs-content').addEventListener("click", getCallRecsContent, false);
+
+document.getElementById('prev-page-button').addEventListener("click", prevCallRecsTablePage, false);
+document.getElementById('next-page-button').addEventListener("click", nextCallRecsTablePage, false);
+
 
 ///////////////////////////////
 // Auth and tokens
@@ -70,6 +79,40 @@ function createFileDownloadLinkElem(binaryCode, mimeType, extension, fileName, p
     document.getElementById(parentNodeId).appendChild(linkElem);
 }
 
+function prevCallRecsTablePage(){
+    callRecsPage--;
+    getCallRecs();
+}
+
+function nextCallRecsTablePage(){
+    callRecsPage++;
+    getCallRecs();
+}
+
+function renderCallRecsTablePage(callRecs, count){
+    let trElem;
+    for(let i = 0; i < callRecs.length - 1; i++){
+        trElem = document.createElement("tr");
+        trElem.className = `recs-table-row`;
+        trElem.innerHTML = `
+            <td>${callRecs[i]["id"]}</td>
+            <td>${callId[i]["caller"]["phoneNumber"]}</td>
+            <td>${callRecs[i]["duration"]}</td>
+            <td>${callRecs[i]["whenCreated"]}</td>`;
+    
+        document.getElementById("recs-table").appendChild(trElem);
+    }
+
+    let prevPageButton = document.getElementById("prev-page-button");
+    let currentPage = document.getElementById("current-page");
+    let nextPageButton = document.getElementById("next-page-button");
+
+    prevPageButton.innerHTML = (callRecsPage > 1) ? callRecsPage - 1 : "";
+    currentPage.innerHTML = callRecsPage;
+    //'count' is one more to check if next page exist
+    nextPageButton.innerHTML = (callRecs.length == count) ? callRecsPage + 1 : "";
+}
+
 ///////////////////////////////
 // Call recordings functions
 ///////////////////////////////
@@ -77,9 +120,12 @@ function getCallRecs(){
     let accessToken = getSessionToken();
     let organizationId = document.getElementById("organization-id").value;
     let unifiedUserId = document.getElementById("unified-user-id").value;
+    
+    let count = 11; //take one more to check if next page exist
+    let offset = (callRecsPage - 1) * (count - 1);
 
-    getCallRecsRequest(organizationId, unifiedUserId, accessToken).then(function(response) {
-        //document.getElementById("access-token-out").innerText = response;
+    getCallRecsRequest(organizationId, unifiedUserId, accessToken, offset, count).then(function(response) {
+        renderCallRecsTablePage(JSON.parse(response), count);
     }).catch(function(error){
         console.log("Error!!! " + error);
     });
@@ -107,6 +153,7 @@ function getCallRecsRequest(organizationId, unifiedUserId, accessToken, offset =
         }
     });
 }
+
 function getCallRecsArchive(){
     let accessToken = getSessionToken();
     let organizationId = document.getElementById("organization-id").value;

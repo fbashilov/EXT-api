@@ -30,6 +30,20 @@
                     <label>unifiedUserId: </label><input type="text" id="unified-user-id" value="fa8a15a6-6efb-4da0-893d-fb8515fc730e" />  
                 </div>
                 <button id="get-call-recs"> Get call recordings </button>
+                <table id="recs-table" class="recs-table">
+                    <tr class="recs-table-header">
+                        <th>ID</th>
+                        <th>Caller number</th>
+                        <th>Duration</th>
+                        <th>When created</th>
+                    </tr>
+                </table>
+                <div id="call-recs-navbar">
+                    <button id="prev-page-button"></button>
+                    <span id="current-page">1</span>
+                    <button id="next-page-button"></button>
+                </div>
+
             </div>
 
             <div id="get-call-recs-archive-block" class="call-recs-block">

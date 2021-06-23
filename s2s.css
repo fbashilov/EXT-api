@@ -1,0 +1,12 @@
+section{
+    margin: 15px 0;
+}
+
+.call-recs-block{
+    margin: 10px 0;
+}
+
+.call-recs-block a{
+    display: block;
+    margin: 3px 0;
+}

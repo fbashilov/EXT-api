@@ -114,7 +114,7 @@ function getCallRecsArchive(){
     let ids = JSON.parse(document.getElementById("call-rec-id-array").value);
 
     getCallRecsArchiveRequest(organizationId, unifiedUserId, ids, accessToken).then(function(response) {
-        createFileDownloadLinkElem(response, "application/zip", "zip", "call_recs_archive", "get-call-recs-archive-block");
+        createFileDownloadLinkElem(response, "application/zip", "zip", `callRecs${ids}`, "get-call-recs-archive-block");
     }).catch(function(error){
         console.log("Error!!! " + error);
     });
@@ -157,7 +157,7 @@ function getCallRecsContent(){
     let callRecId = document.getElementById("call-rec-id").value;
 
     getCallRecsContentRequest(organizationId, unifiedUserId, callRecId, accessToken).then(function(response) {
-        createFileDownloadLinkElem(response, "audio/mpeg", "mp3", `call_rec_${callRecId}_content`, "get-call-recs-content-block");
+        createFileDownloadLinkElem(response, "audio/mpeg", "mp3", `callRecord${callRecId}`, "get-call-recs-content-block");
     }).catch(function(error){
         console.log("Error!!! " + error);
     });
@@ -173,7 +173,7 @@ function getCallRecsContentRequest(organizationId, unifiedUserId, callRecId, acc
         http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
 
         http.responseType = "arraybuffer";
-        
+
         http.send();
 
         http.onreadystatechange = function() {//Call a function when the state changes.

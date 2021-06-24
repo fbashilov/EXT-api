@@ -97,7 +97,7 @@ function renderCallRecsTablePage(callRecs, count){
     }
     //create new table rows
     let trElem;
-    for(let i = 0; i < callRecs.length - 1; i++){
+    for(let i = 0; i < callRecs.length && i < count - 1; i++){
         trElem = document.createElement("tr");
         trElem.className = `recs-table-row`;
         trElem.innerHTML = `

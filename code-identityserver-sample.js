@@ -383,7 +383,9 @@ function buildHubConnection(deliveryMethodUri, accessToken){
         .configureLogging(signalR.LogLevel.Trace)
         .withUrl(deliveryMethodUri, {
             accessTokenFactory: () => accessToken,
-            skipNegotiation: true
+            skipNegotiation: true,
+            transport: signalR.HttpTransportType.WebSockets
+
         })
         .build();
 

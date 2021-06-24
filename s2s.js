@@ -92,8 +92,8 @@ function nextCallRecsTablePage(){
 function renderCallRecsTablePage(callRecs, count){
     //delete old table rows
     let oldTableRows = document.getElementsByClassName('recs-table-row');
-    while(paroldTableRowsas[0]) {
-        paroldTableRowsas[0].parentNode.removeChild(oldTableRows[0]);
+    while(oldTableRows[0]){
+        oldTableRows[0].parentNode.removeChild(oldTableRows[0]);
     }​
     //create new table rows
     let trElem;

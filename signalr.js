@@ -2503,6 +2503,7 @@ var HubConnection = /** @class */ (function () {
      * @returns {Promise<void>} A Promise that resolves when the connection has been successfully established, or rejects with an error.
      */
     HubConnection.prototype.start = function () {
+        console.log("start!!!!!!!!!!!!!!");
         this.startPromise = this.startWithStateTransitions();
         return this.startPromise;
     };

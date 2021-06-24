@@ -90,6 +90,12 @@ function nextCallRecsTablePage(){
 }
 
 function renderCallRecsTablePage(callRecs, count){
+    //delete old table rows
+    let oldTableRows = document.getElementsByClassName('recs-table-row');
+    while(paroldTableRowsas[0]) {
+        paroldTableRowsas[0].parentNode.removeChild(oldTableRows[0]);
+    }​
+    //create new table rows
     let trElem;
     for(let i = 0; i < callRecs.length - 1; i++){
         trElem = document.createElement("tr");
@@ -102,7 +108,7 @@ function renderCallRecsTablePage(callRecs, count){
     
         document.getElementById("recs-table").appendChild(trElem);
     }
-
+    //reset navbar
     let prevPageButton = document.getElementById("prev-page-button");
     let currentPage = document.getElementById("current-page");
     let nextPageButton = document.getElementById("next-page-button");

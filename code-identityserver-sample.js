@@ -410,6 +410,13 @@ function buildHubConnection(deliveryMethodUri, accessToken){
     
     // Start the connection.
     start();
+
+    /* this is here to show an alternative to start, with a then*/
+    connection.start().then(() => console.log("connected"));
+
+    /* this is here to show another alternative to start, with a catch*/
+    connection.start().catch(err => console.error(err));
+
 }
 
 

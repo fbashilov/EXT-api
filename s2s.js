@@ -97,7 +97,7 @@ function renderCallRecsTablePage(callRecs, count){
     }
     //create new table rows
     let trElem;
-    for(let i = 0; i < callRecs.length && i < count - 1; i++){
+    for(let i = 0; i < callRecs.length; i++){
         trElem = document.createElement("tr");
         trElem.className = `recs-table-row`;
         trElem.innerHTML = `
@@ -115,8 +115,7 @@ function renderCallRecsTablePage(callRecs, count){
 
     prevPageButton.innerHTML = (callRecsPage > 1) ? callRecsPage - 1 : "";
     currentPage.innerHTML = callRecsPage;
-    //'count' is one more to check if next page exist
-    nextPageButton.innerHTML = (callRecs.length == count) ? callRecsPage + 1 : "";
+    nextPageButton.innerHTML = callRecsPage + 1;
 }
 
 ///////////////////////////////
@@ -127,8 +126,8 @@ function getCallRecs(){
     let organizationId = document.getElementById("organization-id").value;
     let unifiedUserId = document.getElementById("unified-user-id").value;
     
-    let count = 11; //take one more to check if next page exist
-    let offset = (callRecsPage - 1) * (count - 1);
+    let count = 10; 
+    let offset = (callRecsPage - 1) * count;
 
     getCallRecsRequest(organizationId, unifiedUserId, accessToken, offset, count).then(function(response) {
         renderCallRecsTablePage(JSON.parse(response)["records"], count);

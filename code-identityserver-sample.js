@@ -344,8 +344,7 @@ function subscribeNotificationHub(){
     createSubscriptionRequest(accessToken).then(function(response) {
         buildHubConnection(JSON.parse(response).deliveryMethod.uri, accessToken);
     }).catch(function(error){
-        console.log("Error!!! Subscripe failed");
-        console.log(error);
+        console.log("Error!!! Subscribe failed" + error);
     });
 }
 

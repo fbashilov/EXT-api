@@ -38,7 +38,7 @@ function getS2SAccessTokenRequest(clientId, clientSecret, scope, grantType = "cl
             'grant_type=' + grantType + 
             '&client_id=' + clientId + 
             '&client_secret=' + clientSecret;
-        if(scope) dataObj += '&scrope' + scope;
+        if(scope) dataObj += '&scope=' + scope;
 
         http.open('POST', url, true);
 

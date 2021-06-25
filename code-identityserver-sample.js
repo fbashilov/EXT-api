@@ -385,16 +385,6 @@ function buildHubConnection(deliveryMethodUri, accessToken){
         })
         .build();
 
-//     async function start() {
-//         try {
-//             await connection.start();
-//             console.log("connected");
-//         } catch (err) {
-//             console.log(err);
-//             setTimeout(() => start(), 3000);
-//         }
-//     };
-
     connection.on("OnEvent", data => {
         console.log(data);
         renderCallTableRow(data.eventType, data.callDirection, data.callId);
@@ -405,6 +395,16 @@ function buildHubConnection(deliveryMethodUri, accessToken){
     
     // Start the connection.
      connection.start().then(() => console.log("connected")).catch(err => console.log(err));
+
+     //     async function start() {
+    //         try {
+    //             await connection.start();
+    //             console.log("connected");
+    //         } catch (err) {
+    //             console.log(err);
+    //             setTimeout(() => start(), 3000);
+    //         }
+    //     };
 }
 
 

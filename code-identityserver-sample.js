@@ -396,15 +396,6 @@ function buildHubConnection(deliveryMethodUri, accessToken){
     // Start the connection.
      connection.start().then(() => console.log("connected")).catch(err => console.log(err));
 
-     //     async function start() {
-    //         try {
-    //             await connection.start();
-    //             console.log("connected");
-    //         } catch (err) {
-    //             console.log(err);
-    //             setTimeout(() => start(), 3000);
-    //         }
-    //     };
 }
 
 

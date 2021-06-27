@@ -162,6 +162,19 @@ function getDevicesRequest(accessToken) {
       http.send();
     });
 }
+///////////////////////////////
+// Make request factory
+///////////////////////////////
+function makeRequest(method, url, body){
+    return fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify(body)
+    });
+}
 
 ///////////////////////////////
 // Call functions
@@ -171,13 +184,12 @@ function makeCall(){
     let phoneNumber = document.getElementById('phone-number').value;
     let deviceId = document.getElementById('devices-select').value;
 
-    makeCallRequest(deviceId, phoneNumber, accessToken, "placeCall");
+    makeCallRequest(deviceId, phoneNumber, "placeCall");
 }
 
-function makeCallRequest(deviceId, phoneNumber, accessToken, mode = "placeCall", callId, commandId){
-    let http = new XMLHttpRequest();
+function makeCallRequest(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
     let url = 'https://api.intermedia.net/voice/v2/calls';
-    let dataObj = {
+    let body = {
         "deviceId": deviceId,
         "mode": mode,
         "phoneNumber": phoneNumber
@@ -185,23 +197,9 @@ function makeCallRequest(deviceId, phoneNumber, accessToken, mode = "placeCall",
     if(callId) dataObj.callId = callId;
     if(commandId) dataObj.commandId = commandId;
 
-    http.open('POST', url, true);
-
-    //Headers
-    http.setRequestHeader('Content-type', 'application/json');
-    http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-
-    http.send(JSON.stringify(dataObj));
-
-    http.onreadystatechange = function() {  //Call a function when the state changes.
-        if(http.readyState == 4) {
-            if(http.status < 400){
-                console.log(http.responseText);
-            } else{
-                console.log(`Calling failed! ` + http.responseText);
-            }
-        }
-    }
+    makeRequest('POST', url, body).catch(function(error){
+        console.log("Make call failed! " + error);
+    });
 }
 
 function terminateCall(){

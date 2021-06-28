@@ -299,6 +299,3 @@ function buildHubConnection(deliveryMethodUri){
     connection.start().then(() => console.log("connected")).catch(err => console.log(err));
 
 }
-
-
-

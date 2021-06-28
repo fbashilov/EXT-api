@@ -144,25 +144,25 @@ function makeRequest(method, url, body){
         options["body"] = JSON.stringify(body);
     }
 
-    return fetch(url, options);
+    return fetch(url, options).then((response) => response.json());
 }
 
 ///////////////////////////////
 // Device functions
 ///////////////////////////////
 function onGetDevices(){
-    getDevices();
+    getDevices().then((response) => {
+        let devices = response["clickToCallDevices"];
+        createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
+    }).catch((error) => {
+        console.log("Get devices failed! " + error);
+    });
 }
 
 function getDevices(){
     let url = 'https://api.intermedia.net/voice/v2/devices';
 
-    makeRequest("GET", url).then((response) => {
-        let devices = JSON.parse(response)["clickToCallDevices"];
-        createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
-    }).catch((error) => {
-        console.log("Get devices failed! " + error);
-    });
+    return makeRequest("GET", url);
 }
 
 ///////////////////////////////
@@ -172,7 +172,9 @@ function onMakeCall(){
     let phoneNumber = document.getElementById('phone-number').value;
     let deviceId = document.getElementById('devices-select').value;
 
-    makeCall(deviceId, phoneNumber, "placeCall");
+    makeCall(deviceId, phoneNumber, "placeCall").catch((error) => {
+        console.log("Make call failed! " + error);
+    });
 }
 
 function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
@@ -185,28 +187,28 @@ function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
     if(callId) body.callId = callId;
     if(commandId) body.commandId = commandId;
 
-    makeRequest('POST', url, body).catch((error) => {
-        console.log("Make call failed! " + error);
-    });
+    return makeRequest('POST', url, body);
 }
 
 function onTerminateCall(){
     let callId = document.getElementById("terminate-call-id").value;
-    terminateCall(callId);
+    terminateCall(callId).catch((error) => {
+        console.log("Terminate failed! " + error);
+    });
 }
 
 function terminateCall(callId, commandId){
     let url = `https://api.intermedia.net/voice/v2/calls/${callId}` +
         (commandId ? `/commandId=${commandId}`: ``);
 
-    makeRequest('DELETE', url).catch((error) => {
-        console.log("Terminate failed! " + error);
-    });
+    return makeRequest('DELETE', url);
 }
 
 function onCancelCall(){
     let callId = document.getElementById("cancel-call-id").value;
-    cancelCall(callId, true);
+    cancelCall(callId, true).catch((error) => {
+        console.log("Cancel failed! " + error);
+    });
 }
 
 function cancelCall(callId, skipToVoiceMail = true, commandId){
@@ -216,15 +218,15 @@ function cancelCall(callId, skipToVoiceMail = true, commandId){
     };
     if(commandId) body.commandId = commandId;
 
-    makeRequest('POST', url, body).catch((error) => {
-        console.log("Cancel failed! " + error);
-    });
+    return makeRequest('POST', url, body);
 }
 
 function onTransferCall(){
     let phoneNumber = document.getElementById('transfer-phone-number').value;
     let curCallId = document.getElementById("cur-call-id").value;
-    transferCall(curCallId, phoneNumber);
+    transferCall(curCallId, phoneNumber).catch((error) => {
+        console.log("Transfer failed! " + error);
+    });
 }
 
 function transferCall(callId, phoneNumber, commandId){
@@ -234,15 +236,15 @@ function transferCall(callId, phoneNumber, commandId){
     };
     if(commandId) body.commandId = commandId;
 
-    makeRequest('POST', url, body).catch((error) => {
-        console.log("Transfer failed! " + error);
-    });
+    return makeRequest('POST', url, body);
 }
 
 function onMergeCall(){
     let callId1 = document.getElementById("merge-call-id-1").value;
     let callId2 = document.getElementById("merge-call-id-2").value;
-    mergeCall(callId1, callId2);
+    mergeCall(callId1, callId2).catch((error) => {
+        console.log("Merge failed! " + error);
+    });
 }
 
 function mergeCall(callId1, callId2, commandId){
@@ -252,9 +254,7 @@ function mergeCall(callId1, callId2, commandId){
     };
     if(commandId) body.commandId = commandId;
 
-    makeRequest('POST', url, body).catch((error) => {
-        console.log("Merge failed! " + error);
-    });
+    return makeRequest('POST', url, body);
 }
 
 
@@ -262,7 +262,11 @@ function mergeCall(callId1, callId2, commandId){
 // Notifications Hub
 ///////////////////////////////
 function onSubscribeNotificationHub(){
-    createHubSubscription();
+    createHubSubscription().then((response) => {
+        buildHubConnection(response.deliveryMethod.uri);
+    }).catch((error) => {
+        console.log("Subscribe failed!" + error);
+    });
 }
 
 function createHubSubscription(events = ["*"], ttl = "00:30:00"){
@@ -272,11 +276,7 @@ function createHubSubscription(events = ["*"], ttl = "00:30:00"){
         "ttl": ttl
     };
 
-    makeRequest('POST', url, body).then((response) => {
-        buildHubConnection(JSON.parse(response).deliveryMethod.uri);
-    }).catch((error) => {
-        console.log("Subscribe failed!" + error);
-    });
+    return makeRequest('POST', url, body);
 }
 
 function buildHubConnection(deliveryMethodUri){

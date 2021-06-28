@@ -32,9 +32,9 @@
         extraTokenParams: { acr_values: localStorage.getItem('cfg-acr') }
     };
 
-    getAccessToken(settings).then(function(response) {
+    getAccessToken(settings).then((response) => {
         setSessionToken(response);
-    }).catch(function(error){
+    }).catch((error) => {
         console.log("Error!!! " + error);
     });
 })();
@@ -42,38 +42,38 @@
 ///////////////////////////////
 // UI event handlers
 ///////////////////////////////
-document.getElementById('subscribe-hub').addEventListener("click", subscribeNotificationHub, false);
+document.getElementById('subscribe-hub').addEventListener("click", onSubscribeNotificationHub, false);
 
-document.getElementById('get-devices').addEventListener("click", getDevices, false);
+document.getElementById('get-devices').addEventListener("click", onGetDevices, false);
 
-document.getElementById('make-call').addEventListener("click", makeCall, false);
-document.getElementById('terminate-call').addEventListener("click", terminateCall, false);
-document.getElementById('cancel-call').addEventListener("click", cancelCall, false);
-document.getElementById('transfer-call').addEventListener("click", transferCall, false);
-document.getElementById('merge-call').addEventListener("click", mergeCall, false);
+document.getElementById('make-call').addEventListener("click", onMakeCall, false);
+document.getElementById('terminate-call').addEventListener("click", onTerminateCall, false);
+document.getElementById('cancel-call').addEventListener("click", onCancelCall, false);
+document.getElementById('transfer-call').addEventListener("click", onTransferCall, false);
+document.getElementById('merge-call').addEventListener("click", onMergeCall, false);
 
 ///////////////////////////////
 // tokens
 ///////////////////////////////
 function getAccessToken(settings){
-    return new Promise(function(succeed, fail) {
+    return new Promise((succeed, fail) => {
         let mgr = new Oidc.UserManager(settings);
 
         //check for token in URL
         if (location.search.includes("code=", 1)) {
             //Response code was found in query. Trying to exchange code for token...
-            mgr.signinCallback(settings).then(function(user) {
+            mgr.signinCallback(settings).then((user) => {
                 succeed(user.access_token);
-            }).catch(function(err) {
+            }).catch((err) => {
                 log(err);
                 fail(new Error("Exchange code for token failed!:" + err));
             });
         } else {    //go authorization
             log("Going to sign in using following configuration");
 
-            mgr.signinRedirect({useReplaceToNavigate:true}).then(function() {
+            mgr.signinRedirect({useReplaceToNavigate:true}).then(() => {
                 log("Redirecting to AdSTS...");
-            }).catch(function(err) {
+            }).catch((err) => {
                 log(err);
             });
         }
@@ -129,257 +129,161 @@ function renderCallTableRow(eventType, callDirection, callId){
 }
 
 ///////////////////////////////
-// Device functions
-///////////////////////////////
-function getDevices(){
-    let accessToken = getSessionToken();
-
-    getDevicesRequest(accessToken).then(function(response) {
-        let devices = JSON.parse(response)["clickToCallDevices"];
-        createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
-    }).catch(function(error){
-        console.log("Error!!! " + error);
-    });
-}
-
-function getDevicesRequest(accessToken) {
-    return new Promise(function(succeed, fail) {
-      let http = new XMLHttpRequest();
-      let url = 'https://api.intermedia.net/voice/v2/devices';
-      http.open("GET", url, true);
-
-      http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-
-      http.addEventListener("load", function() {
-        if (http.status < 400)
-          succeed(http.response);
-        else
-          fail(new Error("Request failed: " + http.statusText));
-      });
-      http.addEventListener("error", function() {
-        fail(new Error("Network error"));
-      });
-      http.send();
-    });
-}
-///////////////////////////////
 // Make request factory
 ///////////////////////////////
 function makeRequest(method, url, body){
-    return fetch(url, {
+    let options = {
         method: method,
         headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-          'Authorization': `Bearer ${getAccessToken()}`
-        },
-        body: JSON.stringify(body)
+            'Authorization': `Bearer ${getSessionToken()}`
+        }
+    };
+
+    if(body){
+        options["headers"]["Content-Type"] = 'application/json';
+        options["body"] = JSON.stringify(body);
+    }
+
+    return fetch(url, options);
+}
+
+///////////////////////////////
+// Device functions
+///////////////////////////////
+function onGetDevices(){
+    getDevices();
+}
+
+function getDevices(){
+    let url = 'https://api.intermedia.net/voice/v2/devices';
+
+    makeRequest("GET", url).then((response) => {
+        let devices = JSON.parse(response)["clickToCallDevices"];
+        createSelectElem(document.getElementById("devices-wrapper"), "devices-select", devices, "id", "name");
+    }).catch((error) => {
+        console.log("Get devices failed! " + error);
     });
 }
 
 ///////////////////////////////
 // Call functions
 ///////////////////////////////
-function makeCall(){
-    let accessToken = getSessionToken();
+function onMakeCall(){
     let phoneNumber = document.getElementById('phone-number').value;
     let deviceId = document.getElementById('devices-select').value;
 
-    makeCallRequest(deviceId, phoneNumber, "placeCall");
+    makeCall(deviceId, phoneNumber, "placeCall");
 }
 
-function makeCallRequest(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
+function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
     let url = 'https://api.intermedia.net/voice/v2/calls';
     let body = {
         "deviceId": deviceId,
         "mode": mode,
         "phoneNumber": phoneNumber
     };
-    if(callId) dataObj.callId = callId;
-    if(commandId) dataObj.commandId = commandId;
+    if(callId) body.callId = callId;
+    if(commandId) body.commandId = commandId;
 
-    makeRequest('POST', url, body).catch(function(error){
+    makeRequest('POST', url, body).catch((error) => {
         console.log("Make call failed! " + error);
     });
 }
 
-function terminateCall(){
-    let accessToken = getSessionToken();
+function onTerminateCall(){
     let callId = document.getElementById("terminate-call-id").value;
-    terminateCallRequest(callId, accessToken);
+    terminateCall(callId);
 }
 
-function terminateCallRequest(callId, accessToken, commandId){
-    let http = new XMLHttpRequest();
+function terminateCall(callId, commandId){
     let url = `https://api.intermedia.net/voice/v2/calls/${callId}` +
         (commandId ? `/commandId=${commandId}`: ``);
 
-    http.open('DELETE', url, true);
-
-    //Headers
-    http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-
-    http.send();
-
-    http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4) {
-            if(http.status < 400){
-                console.log(http.responseText);
-            } else{
-                console.log(`Terminate failed! ` + http.responseText);    //render message
-            }
-        }
-    }
+    makeRequest('DELETE', url).catch((error) => {
+        console.log("Terminate failed! " + error);
+    });
 }
 
-function cancelCall(){
-    let accessToken = getSessionToken();
+function onCancelCall(){
     let callId = document.getElementById("cancel-call-id").value;
-    cancelCallRequest(callId, accessToken, true);
+    cancelCall(callId, true);
 }
 
-function cancelCallRequest(callId, accessToken, skipToVoiceMail = true, commandId){
-    let http = new XMLHttpRequest();
+function cancelCall(callId, skipToVoiceMail = true, commandId){
     let url = `https://api.intermedia.net/voice/v2/calls/${callId}/cancel`;
-    let dataObj = {
+    let body = {
         "skipToVoiceMail": skipToVoiceMail
     };
-    if(commandId) dataObj.commandId = commandId;
+    if(commandId) body.commandId = commandId;
 
-    http.open('POST', url, true);
-
-    //Headers
-    http.setRequestHeader('Content-type', 'application/json');
-    http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-
-    http.send(JSON.stringify(dataObj));
-
-    http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4) {
-            if(http.status < 400){
-                console.log(http.responseText);
-            } else{
-                console.log(`Cancel failed! ` + http.responseText);    //render message
-            }
-        }
-    }
+    makeRequest('POST', url, body).catch((error) => {
+        console.log("Cancel failed! " + error);
+    });
 }
 
-function transferCall(){
-    let accessToken = getSessionToken();
+function onTransferCall(){
     let phoneNumber = document.getElementById('transfer-phone-number').value;
     let curCallId = document.getElementById("cur-call-id").value;
-    transferCallRequest(curCallId, phoneNumber, accessToken);
+    transferCall(curCallId, phoneNumber);
 }
 
-function transferCallRequest(callId, phoneNumber, accessToken, commandId){
-    let http = new XMLHttpRequest();
+function transferCall(callId, phoneNumber, commandId){
     let url = `https://api.intermedia.net/voice/v2/calls/${callId}/transfer`;
-    let dataObj = {
+    let body = {
         "phoneNumber": phoneNumber
     };
-    if(commandId) dataObj.commandId = commandId;
+    if(commandId) body.commandId = commandId;
 
-    http.open('POST', url, true);
-
-    //Headers
-    http.setRequestHeader('Content-type', 'application/json');
-    http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-
-    http.send(JSON.stringify(dataObj));
-
-    http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4) {
-            if(http.status < 400){
-                console.log(http.responseText);
-            } else{
-                console.log(`Transfer failed! ` + http.responseText);    //render message
-            }
-        }
-    }
+    makeRequest('POST', url, body).catch((error) => {
+        console.log("Transfer failed! " + error);
+    });
 }
 
-function mergeCall(){
-    let accessToken = getSessionToken();
+function onMergeCall(){
     let callId1 = document.getElementById("merge-call-id-1").value;
     let callId2 = document.getElementById("merge-call-id-2").value;
-    mergeCallRequest(callId1, callId2, accessToken);
+    mergeCall(callId1, callId2);
 }
 
-function mergeCallRequest(callId1, callId2, accessToken, commandId){
-    let http = new XMLHttpRequest();
+function mergeCall(callId1, callId2, commandId){
     let url = `https://api.intermedia.net/voice/v2/calls/${callId1}/merge`;
-    let dataObj = {
+    let body = {
         "mergeCallId": callId2
     };
-    if(commandId) dataObj.commandId = commandId;
+    if(commandId) body.commandId = commandId;
 
-    http.open('POST', url, true);
-
-    //Headers
-    http.setRequestHeader('Content-type', 'application/json');
-    http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-
-    http.send(JSON.stringify(dataObj));
-
-    http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4) {
-            if(http.status < 400){
-                console.log(http.responseText);
-            } else{
-                console.log(`Merge failed! ` + http.responseText);    //render message
-            }
-        }
-    }
+    makeRequest('POST', url, body).catch((error) => {
+        console.log("Merge failed! " + error);
+    });
 }
 
 
 ///////////////////////////////
 // Notifications Hub
 ///////////////////////////////
-function subscribeNotificationHub(){
-    let accessToken = getSessionToken();
+function onSubscribeNotificationHub(){
+    createHubSubscription();
+}
 
-    createSubscriptionRequest(accessToken).then(function(response) {
-        buildHubConnection(JSON.parse(response).deliveryMethod.uri, accessToken);
-    }).catch(function(error){
-        console.log("Error!!! Subscribe failed" + error);
+function createHubSubscription(events = ["*"], ttl = "00:30:00"){
+    let url = 'https://api.intermedia.net/voice/v2/subscriptions';
+    let body = {
+        "events": events,
+        "ttl": ttl
+    };
+
+    makeRequest('POST', url, body).then((response) => {
+        buildHubConnection(JSON.parse(response).deliveryMethod.uri);
+    }).catch((error) => {
+        console.log("Subscribe failed!" + error);
     });
 }
 
-function createSubscriptionRequest(accessToken, events = ["*"], ttl = "00:30:00"){
-    return new Promise(function(succeed, fail) {
-        let http = new XMLHttpRequest();
-        let url = 'https://api.intermedia.net/voice/v2/subscriptions';
-        let dataObj = {
-            "events": events,
-            "ttl": ttl
-        };
-
-        http.open("POST", url, true);
-  
-        //Headers
-        http.setRequestHeader('Content-type', 'application/json');
-        http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-  
-        http.send(JSON.stringify(dataObj));
-
-        http.onreadystatechange = function() {//Call a function when the state changes.
-            if(http.readyState == 4) {
-                if (http.status < 400){
-                    succeed(http.responseText);
-                } else{
-                    fail(new Error("Request failed: " + http.statusText));
-                }
-            }
-        }
-      });
-}
-
-function buildHubConnection(deliveryMethodUri, accessToken){
+function buildHubConnection(deliveryMethodUri){
     let connection = new signalR.HubConnectionBuilder()
         .configureLogging(signalR.LogLevel.Trace)
         .withUrl(deliveryMethodUri, {
-            accessTokenFactory: () => accessToken
+            accessTokenFactory: () => getSessionToken()
         })
         .build();
 
@@ -392,7 +296,7 @@ function buildHubConnection(deliveryMethodUri, accessToken){
     });
     
     // Start the connection.
-     connection.start().then(() => console.log("connected")).catch(err => console.log(err));
+    connection.start().then(() => console.log("connected")).catch(err => console.log(err));
 
 }
 

@@ -93,7 +93,13 @@ function renderCallRecsTablePage(callRecs, count){
     let currentPage = document.getElementById("current-page");
     let nextPageButton = document.getElementById("next-page-button");
 
-    prevPageButton.innerHTML = (curCallRecsPage > 1) ? curCallRecsPage - 1 : "";
+    if(curCallRecsPage > 1){
+        prevPageButton.innerHTML = curCallRecsPage - 1;
+        prevPageButton.hidden = false;
+    } else{
+        prevPageButton.hidden = true;
+    }
+
     currentPage.innerHTML = curCallRecsPage;
     nextPageButton.innerHTML = curCallRecsPage + 1;
 }
@@ -130,8 +136,10 @@ function onGetCallRecs(pageNumber){
     let offset = (pageNumber - 1) * count;
 
     getCallRecs(organizationId, unifiedUserId, offset, count).then((response) => {
-        curCallRecsPage = pageNumber;
-        renderCallRecsTablePage(response["records"], count);
+        if(response["records"]){
+            curCallRecsPage = pageNumber;
+            renderCallRecsTablePage(response["records"], count);
+        }
     }).catch((error) => {
         console.log("Get call recordings failed! " + error);
     });

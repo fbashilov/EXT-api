@@ -23,13 +23,15 @@
             <h3>Call recordings methods</h3>
 
             <div id="get-call-recs-block" class="call-recs-block">
-                <div class="input-field">
-                    <label>organizationId: </label><input type="text" id="organization-id" value=""/>
+                <div id="get-call-form">
+                    <div class="input-field">
+                        <label>organizationId: </label><input type="text" id="organization-id" value=""/>
+                    </div>
+                    <div class="input-field">
+                        <label>unifiedUserId: </label><input type="text" id="unified-user-id" value="" />  
+                    </div>
+                    <button id="get-call-recs"> Get call recordings </button>
                 </div>
-                <div class="input-field">
-                    <label>unifiedUserId: </label><input type="text" id="unified-user-id" value="" />  
-                </div>
-                <button id="get-call-recs"> Get call recordings </button>
                 <table id="recs-table" class="recs-table">
                     <tr class="recs-table-header">
                         <th>ID</th>

@@ -2,6 +2,9 @@ section{
     margin: 15px 0;
 }
 
+#get-call-form{
+    margin: 10px 0;
+}
 .call-recs-block{
     margin: 10px 0;
 }
@@ -25,5 +28,8 @@ section{
 }
 
 #call-recs-navbar button{
-    padding: 0;
+    cursor: pointer;
+    padding: 1px 5px;
+    font-size: 0.7em;
 }
+

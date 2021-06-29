@@ -8,7 +8,7 @@ let curCallRecsPage = 1;
 ///////////////////////////////
 document.getElementById('authorization').addEventListener("click", onAuthorizationS2S, false);
 
-document.getElementById('get-call-recs').addEventListener("click", onGetCallRecs, false);
+document.getElementById('get-call-recs').addEventListener("click", () => onGetCallRecs(1), false);
 document.getElementById('get-call-recs-archive').addEventListener("click", onGetCallRecsArchive, false);
 document.getElementById('get-call-recs-content').addEventListener("click", onGetCallRecsContent, false);
 

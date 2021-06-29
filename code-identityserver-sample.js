@@ -131,7 +131,7 @@ function renderCallTableRow(eventType, callDirection, callId){
 ///////////////////////////////
 // Make request factory
 ///////////////////////////////
-function makeRequest(method, url, body){
+function makeRequest(method, url, body, reqContentType = "application/json"){
     let options = {
         method: method,
         headers: {
@@ -140,7 +140,7 @@ function makeRequest(method, url, body){
     };
 
     if(body){
-        options["headers"]["Content-Type"] = 'application/json';
+        options["headers"]["Content-Type"] = reqContentType;
         options["body"] = JSON.stringify(body);
     }
 

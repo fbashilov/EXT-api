@@ -38,7 +38,7 @@ function getS2SAccessToken(clientId, clientSecret, scope, grantType = "client_cr
         '&client_secret=' + clientSecret;
     if(scope) body += '&scope=' + scope;
 
-    return makeRequest("POST", url, body).then((response) => response.json());
+    return makeRequest("POST", url, body, "application/x-www-form-urlencoded").then((response) => response.json());
 }
 
 function getSessionToken(){
@@ -103,7 +103,7 @@ function renderCallRecsTablePage(callRecs, count){
 ///////////////////////////////
 // Make request factory
 ///////////////////////////////
-function makeRequest(method, url, body){
+function makeRequest(method, url, body, reqContentType = "application/json"){
     let options = {
         method: method,
         headers: {
@@ -112,7 +112,7 @@ function makeRequest(method, url, body){
     };
 
     if(body){
-        // options["headers"]["Content-Type"] = 'application/json';
+        options["headers"]["Content-Type"] = reqContentType;
         options["body"] = JSON.stringify(body);
     }
 

@@ -18,7 +18,6 @@
 
 .calls-table th, .calls-table td{
     border: 1px solid black;
-    min-width: 300px;
     padding: 2px 4px;
 }
 

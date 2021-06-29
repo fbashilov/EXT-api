@@ -24,7 +24,7 @@ function onAuthorizationS2S(){
     let clientSecret = document.getElementById("client-secret").value;
     getS2SAccessToken(clientId, clientSecret).then(function(response) {
         setSessionToken(response["access_token"]);
-        document.getElementById("access-token-out").innerText = response;
+        document.getElementById("access-token-out").innerText = JSON.stringify(response);
     }).catch(function(error){
         console.log("Error!!! " + error);
     });
@@ -62,13 +62,25 @@ function createFileDownloadLinkElem(binaryCode, mimeType, extension, fileName, p
 }
 
 function prevCallRecsTablePage(){
-    callRecsPage--;
-    getCallRecs();
+    try{
+        callRecsPage--;
+        onGetCallRecs();
+    }
+    catch(error){
+        callRecsPage++;
+        console.log("Get prev page failed! " + error);
+    }
 }
 
 function nextCallRecsTablePage(){
-    callRecsPage++;
-    getCallRecs();
+    try{
+        callRecsPage++;
+        onGetCallRecs();
+    }
+    catch(error){
+        callRecsPage--;
+        console.log("Get next page failed! " + error);
+    }
 }
 
 function renderCallRecsTablePage(callRecs, count){
@@ -178,5 +190,5 @@ function onGetCallRecsContent(){
 
 function getCallRecsContent(organizationId, unifiedUserId, callRecId){
     let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/${callRecId}/_content`;
-    return makeRequest("GET", url, body).then((response) => response.arrayBuffer());
+    return makeRequest("GET", url).then((response) => response.arrayBuffer());
 }

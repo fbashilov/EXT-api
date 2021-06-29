@@ -23,7 +23,7 @@ function onAuthorizationS2S(){
     let clientId = document.getElementById("client-id").value;
     let clientSecret = document.getElementById("client-secret").value;
     getS2SAccessToken(clientId, clientSecret).then(function(response) {
-        setSessionToken(JSON.parse(response)["access_token"]);
+        setSessionToken(response["access_token"]);
         document.getElementById("access-token-out").innerText = response;
     }).catch(function(error){
         console.log("Error!!! " + error);

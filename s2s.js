@@ -1,7 +1,7 @@
 ///////////////////////////////
 // Set global variable for paging 
 ///////////////////////////////
-let callRecsPage = 1;
+let curCallRecsPage = 1;
 
 ///////////////////////////////
 // UI event handlers
@@ -22,10 +22,10 @@ document.getElementById('next-page-button').addEventListener("click", nextCallRe
 function onAuthorizationS2S(){
     let clientId = document.getElementById("client-id").value;
     let clientSecret = document.getElementById("client-secret").value;
-    getS2SAccessToken(clientId, clientSecret).then(function(response) {
+    getS2SAccessToken(clientId, clientSecret).then((response) => {
         setSessionToken(response["access_token"]);
         document.getElementById("access-token-out").innerText = JSON.stringify(response);
-    }).catch(function(error){
+    }).catch((error) => {
         console.log("Error!!! " + error);
     });
 }
@@ -62,25 +62,11 @@ function createFileDownloadLinkElem(binaryCode, mimeType, extension, fileName, p
 }
 
 function prevCallRecsTablePage(){
-    try{
-        callRecsPage--;
-        onGetCallRecs();
-    }
-    catch(error){
-        callRecsPage++;
-        console.log("Get prev page failed! " + error);
-    }
+    onGetCallRecs(curCallRecsPage - 1);
 }
 
 function nextCallRecsTablePage(){
-    try{
-        callRecsPage++;
-        onGetCallRecs();
-    }
-    catch(error){
-        callRecsPage--;
-        console.log("Get next page failed! " + error);
-    }
+    onGetCallRecs(curCallRecsPage + 1);
 }
 
 function renderCallRecsTablePage(callRecs, count){
@@ -107,9 +93,9 @@ function renderCallRecsTablePage(callRecs, count){
     let currentPage = document.getElementById("current-page");
     let nextPageButton = document.getElementById("next-page-button");
 
-    prevPageButton.innerHTML = (callRecsPage > 1) ? callRecsPage - 1 : "";
-    currentPage.innerHTML = callRecsPage;
-    nextPageButton.innerHTML = callRecsPage + 1;
+    prevPageButton.innerHTML = (curCallRecsPage > 1) ? curCallRecsPage - 1 : "";
+    currentPage.innerHTML = curCallRecsPage;
+    nextPageButton.innerHTML = curCallRecsPage + 1;
 }
 
 ///////////////////////////////
@@ -136,14 +122,15 @@ function makeRequest(method, url, body, reqContentType = "application/json"){
 ///////////////////////////////
 // Call recordings functions
 ///////////////////////////////
-function onGetCallRecs(){
+function onGetCallRecs(pageNumber){
     let organizationId = document.getElementById("organization-id").value;
     let unifiedUserId = document.getElementById("unified-user-id").value;
     
     let count = 10; 
-    let offset = (callRecsPage - 1) * count;
+    let offset = (pageNumber - 1) * count;
 
     getCallRecs(organizationId, unifiedUserId, offset, count).then((response) => {
+        curCallRecsPage = pageNumber;
         renderCallRecsTablePage(response["records"], count);
     }).catch((error) => {
         console.log("Get call recordings failed! " + error);

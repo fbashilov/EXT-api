@@ -6,11 +6,11 @@ let callRecsPage = 1;
 ///////////////////////////////
 // UI event handlers
 ///////////////////////////////
-document.getElementById('authorization').addEventListener("click", authorizationS2S, false);
+document.getElementById('authorization').addEventListener("click", onAuthorizationS2S, false);
 
-document.getElementById('get-call-recs').addEventListener("click", getCallRecs, false);
-document.getElementById('get-call-recs-archive').addEventListener("click", getCallRecsArchive, false);
-document.getElementById('get-call-recs-content').addEventListener("click", getCallRecsContent, false);
+document.getElementById('get-call-recs').addEventListener("click", onGetCallRecs, false);
+document.getElementById('get-call-recs-archive').addEventListener("click", onGetCallRecsArchive, false);
+document.getElementById('get-call-recs-content').addEventListener("click", onGetCallRecsContent, false);
 
 document.getElementById('prev-page-button').addEventListener("click", prevCallRecsTablePage, false);
 document.getElementById('next-page-button').addEventListener("click", nextCallRecsTablePage, false);
@@ -19,10 +19,10 @@ document.getElementById('next-page-button').addEventListener("click", nextCallRe
 ///////////////////////////////
 // Auth and tokens
 ///////////////////////////////
-function authorizationS2S(){
+function onAuthorizationS2S(){
     let clientId = document.getElementById("client-id").value;
     let clientSecret = document.getElementById("client-secret").value;
-    getS2SAccessTokenRequest(clientId, clientSecret).then(function(response) {
+    getS2SAccessToken(clientId, clientSecret).then(function(response) {
         setSessionToken(JSON.parse(response)["access_token"]);
         document.getElementById("access-token-out").innerText = response;
     }).catch(function(error){
@@ -30,33 +30,15 @@ function authorizationS2S(){
     });
 }
 
-function getS2SAccessTokenRequest(clientId, clientSecret, scope, grantType = "client_credentials"){
-    return new Promise(function(succeed, fail) {
-        let http = new XMLHttpRequest();
-        let url = 'https://login.intermedia.net/user/connect/token';
-        let dataObj = 
-            'grant_type=' + grantType + 
-            '&client_id=' + clientId + 
-            '&client_secret=' + clientSecret;
-        if(scope) dataObj += '&scope=' + scope;
+function getS2SAccessToken(clientId, clientSecret, scope, grantType = "client_credentials"){
+    let url = 'https://login.intermedia.net/user/connect/token';
+    let body = 
+        'grant_type=' + grantType + 
+        '&client_id=' + clientId + 
+        '&client_secret=' + clientSecret;
+    if(scope) body += '&scope=' + scope;
 
-        http.open('POST', url, true);
-
-        //Headers
-        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-        http.send(dataObj);
-
-        http.onreadystatechange = function() {  //Call a function when the state changes.
-            if(http.readyState == 4) {
-                if(http.status < 400){
-                    succeed(http.response);
-                } else{
-                    fail(new Error("Request failed: " + http.statusText));
-                }
-            }
-        }
-    });
+    return makeRequest("POST", url, body).then((response) => response.json());
 }
 
 function getSessionToken(){
@@ -130,7 +112,7 @@ function makeRequest(method, url, body){
     };
 
     if(body){
-        options["headers"]["Content-Type"] = 'application/json';
+        // options["headers"]["Content-Type"] = 'application/json';
         options["body"] = JSON.stringify(body);
     }
 

@@ -144,7 +144,7 @@ function makeRequest(method, url, body){
         options["body"] = JSON.stringify(body);
     }
 
-    return fetch(url, options).then((response) => response.json());
+    return fetch(url, options);
 }
 
 ///////////////////////////////
@@ -161,8 +161,7 @@ function onGetDevices(){
 
 function getDevices(){
     let url = 'https://api.intermedia.net/voice/v2/devices';
-
-    return makeRequest("GET", url);
+    return makeRequest("GET", url).then((response) => response.json());
 }
 
 ///////////////////////////////
@@ -187,7 +186,7 @@ function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
     if(callId) body.callId = callId;
     if(commandId) body.commandId = commandId;
 
-    return makeRequest('POST', url, body);
+    return makeRequest('POST', url, body).then((response) => response.json());
 }
 
 function onTerminateCall(){
@@ -201,7 +200,7 @@ function terminateCall(callId, commandId){
     let url = `https://api.intermedia.net/voice/v2/calls/${callId}` +
         (commandId ? `/commandId=${commandId}`: ``);
 
-    return makeRequest('DELETE', url);
+    return makeRequest('DELETE', url).then((response) => response.json());
 }
 
 function onCancelCall(){
@@ -218,7 +217,7 @@ function cancelCall(callId, skipToVoiceMail = true, commandId){
     };
     if(commandId) body.commandId = commandId;
 
-    return makeRequest('POST', url, body);
+    return makeRequest('POST', url, body).then((response) => response.json());
 }
 
 function onTransferCall(){
@@ -236,7 +235,7 @@ function transferCall(callId, phoneNumber, commandId){
     };
     if(commandId) body.commandId = commandId;
 
-    return makeRequest('POST', url, body);
+    return makeRequest('POST', url, body).then((response) => response.json());
 }
 
 function onMergeCall(){
@@ -254,7 +253,7 @@ function mergeCall(callId1, callId2, commandId){
     };
     if(commandId) body.commandId = commandId;
 
-    return makeRequest('POST', url, body);
+    return makeRequest('POST', url, body).then((response) => response.json());
 }
 
 
@@ -276,7 +275,7 @@ function createHubSubscription(events = ["*"], ttl = "00:30:00"){
         "ttl": ttl
     };
 
-    return makeRequest('POST', url, body);
+    return makeRequest('POST', url, body).then((response) => response.json());
 }
 
 function buildHubConnection(deliveryMethodUri){

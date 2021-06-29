@@ -119,123 +119,80 @@ function renderCallRecsTablePage(callRecs, count){
 }
 
 ///////////////////////////////
+// Make request factory
+///////////////////////////////
+function makeRequest(method, url, body){
+    let options = {
+        method: method,
+        headers: {
+            'Authorization': `Bearer ${getSessionToken()}`
+        }
+    };
+
+    if(body){
+        options["headers"]["Content-Type"] = 'application/json';
+        options["body"] = JSON.stringify(body);
+    }
+
+    return fetch(url, options);
+}
+
+///////////////////////////////
 // Call recordings functions
 ///////////////////////////////
-function getCallRecs(){
-    let accessToken = getSessionToken();
+function onGetCallRecs(){
     let organizationId = document.getElementById("organization-id").value;
     let unifiedUserId = document.getElementById("unified-user-id").value;
     
     let count = 10; 
     let offset = (callRecsPage - 1) * count;
 
-    getCallRecsRequest(organizationId, unifiedUserId, accessToken, offset, count).then(function(response) {
-        renderCallRecsTablePage(JSON.parse(response)["records"], count);
-    }).catch(function(error){
-        console.log("Error!!! " + error);
+    getCallRecs(organizationId, unifiedUserId, offset, count).then((response) => {
+        renderCallRecsTablePage(response["records"], count);
+    }).catch((error) => {
+        console.log("Get call recordings failed! " + error);
     });
 }
 
-function getCallRecsRequest(organizationId, unifiedUserId, accessToken, offset = 0, count = 100){
-    return new Promise(function(succeed, fail) {
-        let http = new XMLHttpRequest();
-        let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings?offset=${offset}&count=${count}`;
-        http.open('GET', url, true);
-
-        //Headers
-        http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-
-        http.send();
-
-        http.onreadystatechange = function() {//Call a function when the state changes.
-            if(http.readyState == 4) {
-                if(http.status < 400){
-                    succeed(http.response);
-                } else{
-                    fail(new Error("Request failed: " + http.statusText));
-                }
-            }
-        }
-    });
+function getCallRecs(organizationId, unifiedUserId, offset = 0, count = 100){
+    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings?offset=${offset}&count=${count}`;
+    return makeRequest("GET", url).then((response) => response.json());
 }
 
-function getCallRecsArchive(){
-    let accessToken = getSessionToken();
+function onGetCallRecsArchive(){
     let organizationId = document.getElementById("organization-id").value;
     let unifiedUserId = document.getElementById("unified-user-id").value;
     let ids = JSON.parse(document.getElementById("call-rec-id-array").value);
 
-    getCallRecsArchiveRequest(organizationId, unifiedUserId, ids, accessToken).then(function(response) {
+    getCallRecsArchive(organizationId, unifiedUserId, ids).then((response) => {
         createFileDownloadLinkElem(response, "application/zip", "zip", `callRecs${ids}`, "get-call-recs-archive-block");
-    }).catch(function(error){
-        console.log("Error!!! " + error);
+    }).catch((error) => {
+        console.log("Get call recordings archive failed! " + error);
     });
 }
 
-function getCallRecsArchiveRequest(organizationId, unifiedUserId, ids, accessToken, format = "zip"){
-    return new Promise(function(succeed, fail) {
-        let http = new XMLHttpRequest();
+function getCallRecsArchive(organizationId, unifiedUserId, ids, format = "zip"){
         let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/_selected/_content?format=${format}`;
-        let dataObj = {
+        let body = {
             "ids": ids,
         };
 
-        http.open('POST', url, true);
-
-        //Headers
-        http.setRequestHeader('Content-type', 'application/json');
-        http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-
-        http.responseType = "arraybuffer";
-
-        http.send(JSON.stringify(dataObj));    
-
-        http.onreadystatechange = function() {//Call a function when the state changes.
-            if(http.readyState == 4) {
-                if(http.status < 400){
-                    succeed(http.response);
-                } else{
-                    fail(new Error("Request failed: " + http.statusText));
-                }
-            }
-        }
-    });
+        return makeRequest("POST", url, body).then((response) => response.arrayBuffer());
 }
 
-function getCallRecsContent(){
-    let accessToken = getSessionToken();
+function onGetCallRecsContent(){
     let organizationId = document.getElementById("organization-id").value;
     let unifiedUserId = document.getElementById("unified-user-id").value;
     let callRecId = document.getElementById("call-rec-id").value;
 
-    getCallRecsContentRequest(organizationId, unifiedUserId, callRecId, accessToken).then(function(response) {
+    getCallRecsContent(organizationId, unifiedUserId, callRecId).then((response) => {
         createFileDownloadLinkElem(response, "audio/mpeg", "mp3", `callRecord${callRecId}`, "get-call-recs-content-block");
-    }).catch(function(error){
-        console.log("Error!!! " + error);
+    }).catch((error) => {
+        console.log("Get call recordings content failed!  " + error);
     });
 }
 
-function getCallRecsContentRequest(organizationId, unifiedUserId, callRecId, accessToken){
-    return new Promise(function(succeed, fail) {
-        let http = new XMLHttpRequest();
-        let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/${callRecId}/_content`;
-        http.open('GET', url, true);
-
-        //Headers
-        http.setRequestHeader('Authorization', `Bearer ${accessToken}`);
-
-        http.responseType = "arraybuffer";
-
-        http.send();
-
-        http.onreadystatechange = function() {//Call a function when the state changes.
-            if(http.readyState == 4) {
-                if(http.status < 400){
-                    succeed(http.response);
-                } else{
-                    fail(new Error("Request failed: " + http.statusText));
-                }
-            }
-        }
-    });
+function getCallRecsContent(organizationId, unifiedUserId, callRecId){
+    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/${callRecId}/_content`;
+    return makeRequest("GET", url, body).then((response) => response.arrayBuffer());
 }

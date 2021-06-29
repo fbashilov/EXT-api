@@ -23,5 +23,9 @@
 }
 
 .link-to-source{
-    margin: 10px;
+    margin-left: 10px;
+}
+
+.block{
+    margin: 10px 0;
 }

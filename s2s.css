@@ -2,7 +2,7 @@ section{
     margin: 15px 0;
 }
 
-#get-call-form{
+#get-call-recs-form{
     margin: 10px 0;
 }
 .call-recs-block{
@@ -31,5 +31,9 @@ section{
     cursor: pointer;
     padding: 1px 5px;
     font-size: 0.7em;
+}
+
+.link-to-guide{
+    margin-left: 10px;
 }
 

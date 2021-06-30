@@ -23,7 +23,7 @@
             <h3>Call recordings methods</h3>
 
             <div id="get-call-recs-block" class="call-recs-block">
-                <div id="get-call-form">
+                <div id="get-call-recs-form">
                     <div class="input-field">
                         <label>organizationId: </label><input type="text" id="organization-id" value=""/>
                     </div>
@@ -31,6 +31,7 @@
                         <label>unifiedUserId: </label><input type="text" id="unified-user-id" value="" />  
                     </div>
                     <button id="get-call-recs"> Get call recordings </button>
+                    <a class="link-to-guide" href="https://developer.intermedia.com/api/spec/calling/index.html#get-/voice/v2/organizations/{organizationId}/users/{unifiedUserId}/call-recordings">Get call recordings guide</a>
                 </div>
                 <table id="recs-table" class="recs-table">
                     <tr class="recs-table-header">
@@ -51,11 +52,15 @@
             <div id="get-call-recs-archive-block" class="call-recs-block">
                 <input type="text" id="call-rec-id-array" value="[]" placeholder="[0, 53, 13]"/>
                 <button id="get-call-recs-archive"> Get call recordings (archive) </button>
+                <a class="link-to-guide" href="https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/organizations/{organizationId}/users/{unifiedUserId}/call-recordings/_selected/_content">Get call recordings (archive) guide</a>
+
             </div>
 
             <div id="get-call-recs-content-block" class="call-recs-block">
                 <input type="text" id="call-rec-id" value="" />
                 <button id="get-call-recs-content"> Get call recordings (content) </button>
+                <a class="link-to-guide" href="https://developer.intermedia.com/api/spec/calling/index.html#get-/voice/v2/organizations/{organizationId}/users/{unifiedUserId}/call-recordings/{id}/_content">Get call recordings (content) guide</a>
+
             </div>
         </section>
     </body>

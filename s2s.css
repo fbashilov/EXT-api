@@ -38,3 +38,8 @@ section{
     display: inline !important;
 }
 
+#access-token-out{
+    max-width: 90vw;
+    overflow: auto;
+}
+

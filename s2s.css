@@ -33,7 +33,8 @@ section{
     font-size: 0.7em;
 }
 
-.link-to-guide{
-    margin-left: 10px;
+.link-to-guide {
+    margin-left: 10px !important;
+    display: inline !important;
 }
 

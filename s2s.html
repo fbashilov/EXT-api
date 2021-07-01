@@ -6,8 +6,11 @@
     </head>
     <body>
         <section id="auth-section">
+            <h2>Step 1</h2>
             <h3>Authorization</h3>
-
+            <div class="text-block">
+                First of all, we need to get an access token using authorization:
+            </div>
             <div class="input-field">
                 <label>client_id: </label><input type="text" id="client-id" value=""/>
             </div>
@@ -23,8 +26,11 @@
         </section>
 
         <section id="call-recs-section">
-            <h3>Call recordings methods</h3>
-
+            <h2>Step 2</h2>
+            <h3>Get call recordings information</h3>
+            <div class="text-block">
+                Then, we can get detailed information about the user's call recordings.
+            </div>
             <div id="get-call-recs-block" class="call-recs-block">
                 <div id="get-call-recs-form">
                     <div class="input-field">
@@ -53,17 +59,32 @@
                 </div>
 
             </div>
-
+            <h2>Step 3</h2>
+            <h3>Get call recordings content</h3>
+            <div class="text-block">
+                There are two ways to get call recordings:
+                1. Get call recordings (archive)
+                2. Get call recordings (content)
+            </div>
             <div id="get-call-recs-archive-block" class="call-recs-block">
+                <h4>Get call recordings (archive)</h4>
+                <div class="text-block">
+                    To get several call recordings in the archive, copy the IDs of the required records from step 2 into the field below (for example [435, 233, 1586]). <br> 
+                    Then wait for the download link to appear.
+                </div>
                 <input type="text" id="call-rec-id-array" value="[]" placeholder="[0, 53, 13]"/>
                 <button id="get-call-recs-archive"> Get call recordings (archive) </button>
                 <a class="link-to-guide" 
                     href="https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/organizations/{organizationId}/users/{unifiedUserId}/call-recordings/_selected/_content" 
                     target="_blank">Get call recordings (archive) guide</a>
-
             </div>
 
             <div id="get-call-recs-content-block" class="call-recs-block">
+                <h4>Get call recordings (archive)</h4>
+                <div class="text-block">
+                    To get one call recording, copy its ID from step 2 into the field below.<br>
+                    Then wait for the download link to appear.
+                </div>
                 <input type="text" id="call-rec-id" value="" />
                 <button id="get-call-recs-content"> Get call recordings (content) </button>
                 <a class="link-to-guide" 

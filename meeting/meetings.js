@@ -8,6 +8,8 @@
 document.getElementById('subscribe-hub').addEventListener("click", onSubscribeNotificationHub, false);
 
 document.getElementById('start-meeting').addEventListener("click", onStartMeeting, false);
+document.getElementById('get-user-details').addEventListener("click", onGetUserDetails, false);
+document.getElementById('get-meeting-details').addEventListener("click", onGetMeetingDetails, false);
 
 ///////////////////////////////
 // tokens

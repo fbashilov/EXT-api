@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Voice calls API</title>
+        <link rel='stylesheet' href='app.css'>
+        <link rel='stylesheet' href='code-identityserver-sample.css'>
+    </head>
+    <body>
+        <a href="index.html"> Back to configuration </a> <br>
+        <a href="../code-identityserver-sample.html"> Authorize again </a> <br> <br>
+
+        <div id="call-window">
+            <div class="block">
+                <button id='subscribe-hub'>Subscribe hub</button>
+                <a class="link-to-guide" 
+                    href="https://developer.intermedia.com/api/spec/calling/index.html#dev-guide-notifications-hub-guide" 
+                    target="_blank">Notification Hub guide</a>
+            </div>
+
+            <div class="block">
+                <button id='get-devices'>Get devices</button>
+                <a class="link-to-guide" 
+                    href="https://developer.intermedia.com/api/spec/calling/index.html#get-/devices" 
+                    target="_blank">Get devices guide</a>
+            </div>
+            
+            <div id="outgoing-calls-window">
+                <h3>Outgoing calls</h3>
+
+                <div class="flex-row">
+                    <div id='devices-wrapper'></div>
+                    <input id='phone-number' type="tel" size="20" placeholder="phone number">
+                    <button id='make-call'>Make call</button>
+                    <a class="link-to-guide" 
+                        href="https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/calls" 
+                        target="_blank">Make call guide</a>
+                </div>
+
+                <table id="outgoing-calls-table" class="calls-table">
+                    <tr class="calls-table-header">
+                        <th>Status</th>
+                        <th>Call ID</th>
+                    </tr>
+                </table>
+
+                <div class="flex-row">
+                    <input id='terminate-call-id' size="20" placeholder="call Id">
+                    <button id='terminate-call' class="show-during-call">Terminate call</button>
+                    <a class="link-to-guide" 
+                        href="https://developer.intermedia.com/api/spec/calling/index.html#delete-/voice/v2/calls/{callId}" 
+                        target="_blank">Terminate call guide</a>
+                </div>
+    
+                <div class="flex-row">
+                    <input id='transfer-phone-number' type="tel" size="20" placeholder="transfer phone number">
+                    <input id='cur-call-id' size="20" placeholder="current call Id">
+                    <button id='transfer-call'>Transfer call</button>
+                    <a class="link-to-guide" 
+                        href="https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/calls/{callId}/transfer" 
+                        target="_blank">Transfer call guide</a>
+                </div>
+
+                <div class="flex-row">
+                    <input id='merge-call-id-1' size="20" placeholder="call Id 1">
+                    <input id='merge-call-id-2' size="20" placeholder="call Id 2">
+                    <button id='merge-call'>Merge call</button>
+                    <a class="link-to-guide" 
+                        href="https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/calls/{callId}/merge" 
+                        target="_blank">Merge call guide</a>
+                </div>
+            </div>
+
+            <div id="incoming-calls-window">
+                <h3>Incoming calls</h3>
+
+                <table id="incoming-calls-table" class="calls-table">
+                    <tr class="calls-table-header">
+                        <th>Status</th>
+                        <th>Call ID</th>
+                    </tr>
+                </table>
+
+                <div class="flex-row">
+                    <input id='cancel-call-id' type="tel" size="20" placeholder="call Id">
+                    <button id='cancel-call'>Cancel call</button>
+                    <a class="link-to-guide" 
+                        href="https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/calls/{callId}/cancel" 
+                        target="_blank">Cancel call guide</a>
+                </div>
+            </div>
+
+        </div>
+        <pre id="out"></pre>
+        <script src='../jwt-decode.js'></script>
+        <script src='../log.js'></script>
+        <script src="../microsoftSignalr.js"></script>
+        <script src='calls.js'></script>
+    </body>
+</html>
+

@@ -43,7 +43,7 @@ function makeRequest(method, url, body, reqContentType = "application/json"){
 }
 
 ///////////////////////////////
-// Call functions
+// Meeting functions
 ///////////////////////////////
 function onStartMeeting(){
     startMeeting().then((response) => {
@@ -57,6 +57,36 @@ function startMeeting(){
     let url = 'https://api.intermedia.net/meetings/v1/meeting/start/details';
 
     return makeRequest('POST', url).then((response) => response.json());
+}
+
+function onGetUserDetails(){
+    getUserDetails().then((response) => {
+        console.log(response);
+    }).catch((error) => {
+        console.log("Start meeting failed! " + error);
+    });
+}
+
+function getUserDetails(){
+    let url = 'https://api.intermedia.net/meetings/v1/user';
+
+    return makeRequest('GET', url).then((response) => response.json());
+}
+
+function onGetMeetingDetails(){
+    let meetingCode = document.getElementById("meeting-code").value;
+
+    getMeetingDetails(meetingCode).then((response) => {
+        console.log(response);
+    }).catch((error) => {
+        console.log("Start meeting failed! " + error);
+    });
+}
+
+function getMeetingDetails(meetingCode){
+    let url = `https://api.intermedia.net/meetings/v1/meeting/${meetingCode}`;
+
+    return makeRequest('GET', url).then((response) => response.json());
 }
 
 

@@ -1,4 +1,3 @@
-
 .flex-row{
     margin: 20px 0;
     display: flex;
@@ -17,7 +16,7 @@
     margin: 10px 0;
 }
 
-#get-avatar-output, #get-multiple-avatars-output{
+#get-avatar-output img, #get-multiple-avatars-output img{
     margin: 5px 5px 5px 0;
 }
 

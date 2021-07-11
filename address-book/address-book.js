@@ -24,27 +24,6 @@ function setSessionToken(accessToken){
 ///////////////////////////////
 // Rendering functions
 ///////////////////////////////
-// function renderCallTableRow(eventType, callDirection, callId){
-//     let allCallElems = document.getElementsByClassName("calls-table-row");
-
-//     for(let i=0; i<allCallElems.length; i++){
-//         if(allCallElems[i].classList.contains(callId)){
-//             allCallElems[i].innerHTML = `<td>${eventType}</td><td>${callId}</td>`;
-//             return;
-//         }
-//     }
-
-//     let newCallElem = document.createElement("tr");
-//     newCallElem.className = `calls-table-row ${callId}`;
-//     newCallElem.innerHTML = `<td>${eventType}</td><td>${callId}</td>`;
-
-//     if(callDirection == "outgoing"){
-//         document.getElementById("outgoing-calls-table").appendChild(newCallElem);
-//     } else {
-//         document.getElementById("incoming-calls-table").appendChild(newCallElem);
-//     }
-// }
-
 function renderAvatarImg(byteCode, parentNode){
     let imgElem = document.createElement("img");
     imgElem.src = `data:image/jpg;base64, ${byteCode}`;

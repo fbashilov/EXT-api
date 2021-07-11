@@ -9,20 +9,18 @@
     margin-right: 5px;
 }
 
-/* .calls-table{
-    text-align: center;
-}
-
-.calls-table th, .calls-table td{
-    border: 1px solid black;
-    width: 300px;
-    padding: 2px 4px;
-} */
-
 .link-to-guide{
     margin-left: 10px;
 }
 
 .block{
     margin: 10px 0;
+}
+
+#get-avatar-output, #get-multiple-avatars-output{
+    margin: 5px 5px 5px 0;
+}
+
+input{
+    width: auto;
 }

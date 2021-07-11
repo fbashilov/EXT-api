@@ -45,6 +45,12 @@ function setSessionToken(accessToken){
 //     }
 // }
 
+function renderAvatarImg(byteCode, parentNode){
+    let imgElem = document.createElement("img");
+    imgElem.src = `data:image/jpg;base64, ${byteCode}`;
+    parentNode.appendChild(imgElem);
+}
+
 ///////////////////////////////
 // Make request factory
 ///////////////////////////////
@@ -72,7 +78,9 @@ function makeRequest(method, url, body, reqContentType = "application/json"){
 function onGetAvatar(){
     let avatarId = document.getElementById('avatar-id').value;
 
-    getAvatar(avatarId).catch((error) => {
+    getAvatar(avatarId).then((response) =>{
+        renderAvatarImg(response["avatar"], document.getElementById("get-avatar-output"));
+    }).catch((error) => {
         console.log("Get avatar failed! " + error);
     });
 }
@@ -85,7 +93,11 @@ function getAvatar(avatarId){
 
 function onGetMultipleAvatars(){
     let avatarIds = JSON.parse(document.getElementById("avatar-ids").value);
-    getMultipleAvatars(avatarIds).catch((error) => {
+    getMultipleAvatars(avatarIds).then((response) =>{
+        response["results"].forEach(element => {
+            renderAvatarImg(element["avatar"], document.getElementById("get-multiple-avatars-output"));
+        });
+    }).catch((error) => {
         console.log("Get multiple avatar failed! " + error);
     });
 }

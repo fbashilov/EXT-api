@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Voice calls API</title>
+        <link rel='stylesheet' href='../app.css'>
+        <link rel='stylesheet' href='address-book.css'>
+    <body>
+        <a href="index.html"> Back to configuration </a> <br>
+        <a href="../code-identityserver-sample.html"> Authorize again </a> <br> <br>
+
+        <div class="block">
+            <input id='avatar-id' type="text" placeholder="avatar id">
+            <button id='get-avatar'>Get avatar</button>
+            <a class="link-to-guide" 
+                href="https://developer.intermedia.com/api/spec/address_book/index.html#get-/address-book/v3/avatars/{avatarId}" 
+                target="_blank">Get avatar guide</a>
+        </div>
+
+        <div class="block">
+            <input id='avatar-ids' type="text" placeholder="avatar ids" value="[]">
+            <button id='get-multiple-avatars'>Get multiple avatars</button>
+            <a class="link-to-guide" 
+                href="https://developer.intermedia.com/api/spec/address_book/index.html#post-/address-book/v3/avatars/_search" 
+                target="_blank">Get multiple avatars guide</a>
+        </div>
+
+            <!-- <table id="outgoing-calls-table" class="calls-table">
+                <tr class="calls-table-header">
+                    <th>Status</th>
+                    <th>Call ID</th>
+                </tr>
+            </table> -->
+        <pre id="out"></pre>
+        <script src='../jwt-decode.js'></script>
+        <script src='../log.js'></script>
+        <script src='address-book.js'></script>
+    </body>
+</html>
+

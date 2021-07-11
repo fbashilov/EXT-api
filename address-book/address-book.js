@@ -6,7 +6,7 @@
 ///////////////////////////////
 document.getElementById('get-avatar').addEventListener("click", onGetAvatar, false);
 
-document.getElementById('get-multiple-avatars').addEventListener("click", onGetMultipleAvatar, false);
+document.getElementById('get-multiple-avatars').addEventListener("click", onGetMultipleAvatars, false);
 
 ///////////////////////////////
 // tokens
@@ -83,17 +83,17 @@ function getAvatar(avatarId){
     return makeRequest('GET', url).then((response) => response.json());
 }
 
-function onGetMultipleAvatar(){
+function onGetMultipleAvatars(){
     let avatarIds = JSON.parse(document.getElementById("avatar-ids").value);
-    getMultipleAvatar(avatarIds).catch((error) => {
+    getMultipleAvatars(avatarIds).catch((error) => {
         console.log("Get multiple avatar failed! " + error);
     });
 }
 
-function getMultipleAvatar(avatarIds){
+function getMultipleAvatars(avatarIds){
     let url = `https://api.intermedia.net/address-book/v3/avatars/_search`;
     let body = {
-        "ids": ids,
+        "avatarIds": avatarIds,
     };
     return makeRequest('POST', url, body).then((response) => response.json());
 }

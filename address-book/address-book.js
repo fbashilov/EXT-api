@@ -27,7 +27,6 @@ function setSessionToken(accessToken){
 function renderAvatarImg(byteCode, parentNode){
     let imgElem = document.createElement("img");
     imgElem.src = `data:image/jpg;base64, ${byteCode}`;
-    parentNode.innerHTML = "";
     parentNode.appendChild(imgElem);
 }
 
@@ -59,6 +58,7 @@ function onGetAvatar(){
     let avatarId = document.getElementById('avatar-id').value;
 
     getAvatar(avatarId).then((response) =>{
+        document.getElementById("get-avatar-output").innerHTML = "";
         renderAvatarImg(response["avatar"], document.getElementById("get-avatar-output"));
     }).catch((error) => {
         console.log("Get avatar failed! " + error);
@@ -74,6 +74,7 @@ function getAvatar(avatarId){
 function onGetMultipleAvatars(){
     let avatarIds = document.getElementById("avatar-ids").value.split(/\s*,\s*/);
     getMultipleAvatars(avatarIds).then((response) =>{
+        document.getElementById("get-multiple-avatars-output").innerHTML = "";
         response["results"].forEach(element => {
             renderAvatarImg(element["avatar"], document.getElementById("get-multiple-avatars-output"));
         });

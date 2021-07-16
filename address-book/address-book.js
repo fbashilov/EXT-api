@@ -27,6 +27,7 @@ function setSessionToken(accessToken){
 function renderAvatarImg(byteCode, parentNode){
     let imgElem = document.createElement("img");
     imgElem.src = `data:image/jpg;base64, ${byteCode}`;
+    parentNode.innerHTML = "";
     parentNode.appendChild(imgElem);
 }
 
@@ -71,7 +72,7 @@ function getAvatar(avatarId){
 }
 
 function onGetMultipleAvatars(){
-    let avatarIds = document.getElementById("avatar-ids").split(/\s*,\s*/);
+    let avatarIds = document.getElementById("avatar-ids").value.split(/\s*,\s*/);
     getMultipleAvatars(avatarIds).then((response) =>{
         response["results"].forEach(element => {
             renderAvatarImg(element["avatar"], document.getElementById("get-multiple-avatars-output"));
@@ -84,7 +85,7 @@ function onGetMultipleAvatars(){
 function getMultipleAvatars(avatarIds){
     let url = `https://api.intermedia.net/address-book/v3/avatars/_search`;
     let body = {
-        "avatarIds": JSON.parse(avatarIds),
+        "avatarIds": avatarIds,
     };
     return makeRequest('POST', url, body).then((response) => response.json());
 }

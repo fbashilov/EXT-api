@@ -7,30 +7,35 @@
         <a href="index.html"> Back to configuration </a> <br>
         <a href="../code-identityserver-sample.html"> Authorize again </a> <br> <br>
 
-        <div class="block">
-            <input id='avatar-id' type="text" placeholder="avatar id">
-            <button id='get-avatar'>Get avatar</button>
-            <a class="link-to-guide" 
-                href="https://developer.intermedia.com/api/spec/address_book/index.html#get-/address-book/v3/avatars/{avatarId}" 
-                target="_blank">Get avatar guide</a>
-            <div id="get-avatar-output"></div>
-        </div>
+        <section id="avatars-section">
+            <h2>Avatars</h2>
+            <div class="block">
+                <h3>Get avatar</h3>
+                <div class="text-block">
+                    To get avatar, copy the ID of the required avatar from 'Get contacts' response into the field below.
+                </div>
+                <input id='avatar-id' type="text" placeholder="avatar id">
+                <button id='get-avatar'>Get avatar</button>
+                <a class="link-to-guide" 
+                    href="https://developer.intermedia.com/api/spec/address_book/index.html#get-/address-book/v3/avatars/{avatarId}" 
+                    target="_blank">Get avatar guide</a>
+                <div id="get-avatar-output"></div>
+            </div>
+    
+            <div class="block">
+                <h3>Get multiple avatars</h3>
+                <input id='avatar-ids' type="text" placeholder="avatar ids">
+                <div class="text-block">
+                    To get an array of avatar, copy the IDs of the required avatars from 'Get contacts' response into the field below.
+                </div>
+                <button id='get-multiple-avatars'>Get multiple avatars</button>
+                <a class="link-to-guide" 
+                    href="https://developer.intermedia.com/api/spec/address_book/index.html#post-/address-book/v3/avatars/_search" 
+                    target="_blank">Get multiple avatars guide</a>
+                <div id="get-multiple-avatars-output"></div>
+            </div>
+        </section>
 
-        <div class="block">
-            <input id='avatar-ids' type="text" placeholder="avatar ids" value="[]">
-            <button id='get-multiple-avatars'>Get multiple avatars</button>
-            <a class="link-to-guide" 
-                href="https://developer.intermedia.com/api/spec/address_book/index.html#post-/address-book/v3/avatars/_search" 
-                target="_blank">Get multiple avatars guide</a>
-            <div id="get-multiple-avatars-output"></div>
-        </div>
-
-            <!-- <table id="outgoing-calls-table" class="calls-table">
-                <tr class="calls-table-header">
-                    <th>Status</th>
-                    <th>Call ID</th>
-                </tr>
-            </table> -->
         <pre id="out"></pre>
         <script src='../jwt-decode.js'></script>
         <script src='../log.js'></script>

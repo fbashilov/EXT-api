@@ -23,3 +23,8 @@
 input{
     width: auto;
 }
+
+.text-block{
+    margin: 3px 0;
+    font-style: italic;
+}

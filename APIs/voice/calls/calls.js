@@ -1,6 +1,3 @@
-// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.\
-
 //////////////////////
 // UI event handlers
 ///////////////////////////////
@@ -12,12 +9,11 @@ document.getElementById('make-call').addEventListener("click", onMakeCall, false
 document.getElementById('terminate-call').addEventListener("click", onTerminateCall, false);
 document.getElementById('cancel-call').addEventListener("click", onCancelCall, false);
 document.getElementById('transfer-call').addEventListener("click", onTransferCall, false);
-document.getElementById('merge-call').addEventListener("click", onMergeCall, false);
+document.getElementById('warm-transfer-call').addEventListener("click", onWarmTransferCall, false);
 
 ///////////////////////////////
 // tokens
 ///////////////////////////////
-
 function getSessionToken(){
     return sessionStorage.getItem('accessToken');
 }
@@ -25,7 +21,6 @@ function getSessionToken(){
 function setSessionToken(accessToken){
     sessionStorage.setItem('accessToken', accessToken);
 }
-
 
 ///////////////////////////////
 // Rendering functions
@@ -67,27 +62,6 @@ function renderCallTableRow(eventType, callDirection, callId){
 }
 
 ///////////////////////////////
-// Make request factory
-///////////////////////////////
-function makeRequest(method, url, body, reqContentType = "application/json"){
-    let options = {
-        method: method,
-        headers: {
-            'Authorization': `Bearer ${getSessionToken()}`
-        }
-    };
-
-    if(body){
-        options["headers"]["Content-Type"] = reqContentType;
-        if(typeof body != 'string') 
-            body = JSON.stringify(body);
-        options["body"] = body;
-    }
-
-    return fetch(url, options);
-}
-
-///////////////////////////////
 // Device functions
 ///////////////////////////////
 function onGetDevices(){
@@ -97,11 +71,6 @@ function onGetDevices(){
     }).catch((error) => {
         console.log("Get devices failed! " + error);
     });
-}
-
-function getDevices(){
-    let url = 'https://api.intermedia.net/voice/v2/devices';
-    return makeRequest("GET", url).then((response) => response.json());
 }
 
 ///////////////////////////////
@@ -116,19 +85,6 @@ function onMakeCall(){
     });
 }
 
-function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
-    let url = 'https://api.intermedia.net/voice/v2/calls';
-    let body = {
-        "deviceId": deviceId,
-        "mode": mode,
-        "phoneNumber": phoneNumber
-    };
-    if(callId) body.callId = callId;
-    if(commandId) body.commandId = commandId;
-
-    return makeRequest('POST', url, body).then((response) => response.json());
-}
-
 function onTerminateCall(){
     let callId = document.getElementById("terminate-call-id").value;
     terminateCall(callId).catch((error) => {
@@ -136,28 +92,11 @@ function onTerminateCall(){
     });
 }
 
-function terminateCall(callId, commandId){
-    let url = `https://api.intermedia.net/voice/v2/calls/${callId}` +
-        (commandId ? `/commandId=${commandId}`: ``);
-
-    return makeRequest('DELETE', url).then((response) => response.json());
-}
-
 function onCancelCall(){
     let callId = document.getElementById("cancel-call-id").value;
     cancelCall(callId, true).catch((error) => {
         console.log("Cancel failed! " + error);
     });
-}
-
-function cancelCall(callId, skipToVoiceMail = true, commandId){
-    let url = `https://api.intermedia.net/voice/v2/calls/${callId}/cancel`;
-    let body = {
-        "skipToVoiceMail": skipToVoiceMail
-    };
-    if(commandId) body.commandId = commandId;
-
-    return makeRequest('POST', url, body).then((response) => response.json());
 }
 
 function onTransferCall(){
@@ -168,34 +107,13 @@ function onTransferCall(){
     });
 }
 
-function transferCall(callId, phoneNumber, commandId){
-    let url = `https://api.intermedia.net/voice/v2/calls/${callId}/transfer`;
-    let body = {
-        "phoneNumber": phoneNumber
-    };
-    if(commandId) body.commandId = commandId;
-
-    return makeRequest('POST', url, body).then((response) => response.json());
-}
-
-function onMergeCall(){
-    let callId1 = document.getElementById("merge-call-id-1").value;
-    let callId2 = document.getElementById("merge-call-id-2").value;
-    mergeCall(callId1, callId2).catch((error) => {
-        console.log("Merge failed! " + error);
+function onWarmTransferCall(){
+    let callId1 = document.getElementById("warm-transfer-call-id-1").value;
+    let callId2 = document.getElementById("warm-transfer-call-id-2").value;
+    warmTransferCall(callId1, callId2).catch((error) => {
+        console.log("Warm transfer failed! " + error);
     });
 }
-
-function mergeCall(callId1, callId2, commandId){
-    let url = `https://api.elevate.services/voice/v2/calls/${callId1}/merge`;
-    let body = {
-        "mergeCallId": callId2
-    };
-    if(commandId) body.commandId = commandId;
-
-    return makeRequest('POST', url, body).then((response) => response.json());
-}
-
 
 ///////////////////////////////
 // Notifications Hub
@@ -206,35 +124,4 @@ function onSubscribeNotificationHub(){
     }).catch((error) => {
         console.log("Subscribe failed!" + error);
     });
-}
-
-function createHubSubscription(events = ["*"], ttl = "00:30:00"){
-    let url = 'https://api.intermedia.net/voice/v2/subscriptions';
-    let body = {
-        "events": events,
-        "ttl": ttl
-    };
-
-    return makeRequest('POST', url, body).then((response) => response.json());
-}
-
-function buildHubConnection(deliveryMethodUri){
-    let connection = new signalR.HubConnectionBuilder()
-        .configureLogging(signalR.LogLevel.Trace)
-        .withUrl(deliveryMethodUri, {
-            accessTokenFactory: () => getSessionToken()
-        })
-        .build();
-
-    connection.on("OnEvent", data => {
-        console.log(data);
-        renderCallTableRow(data.eventType, data.callDirection, data.callId);
-    });
-    connection.on("OnCommandResult", data => {
-        console.log(data);
-    });
-    
-    // Start the connection.
-    connection.start().then(() => console.log("connected")).catch(err => console.log(err));
-
 }

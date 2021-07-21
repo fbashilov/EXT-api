@@ -11,7 +11,6 @@ document.getElementById('get-multiple-avatars').addEventListener("click", onGetM
 ///////////////////////////////
 // tokens
 ///////////////////////////////
-
 function getSessionToken(){
     return sessionStorage.getItem('accessToken');
 }
@@ -31,27 +30,6 @@ function renderAvatarImg(byteCode, parentNode){
 }
 
 ///////////////////////////////
-// Make request factory
-///////////////////////////////
-function makeRequest(method, url, body, reqContentType = "application/json"){
-    let options = {
-        method: method,
-        headers: {
-            'Authorization': `Bearer ${getSessionToken()}`
-        }
-    };
-
-    if(body){
-        options["headers"]["Content-Type"] = reqContentType;
-        if(typeof body != 'string') 
-            body = JSON.stringify(body);
-        options["body"] = body;
-    }
-
-    return fetch(url, options);
-}
-
-///////////////////////////////
 // Avatar functions
 ///////////////////////////////
 function onGetAvatar(){
@@ -63,12 +41,6 @@ function onGetAvatar(){
     }).catch((error) => {
         console.log("Get avatar failed! " + error);
     });
-}
-
-function getAvatar(avatarId){
-    let url = `https://api.intermedia.net/address-book/v3/avatars/${avatarId}`;
-
-    return makeRequest('GET', url).then((response) => response.json());
 }
 
 function onGetMultipleAvatars(){
@@ -83,11 +55,3 @@ function onGetMultipleAvatars(){
     });
 }
 
-function getMultipleAvatars(avatarIds){
-    let url = `https://api.intermedia.net/address-book/v3/avatars/_search`;
-    let body = {
-        "avatarIds": avatarIds,
-    };
-    return makeRequest('POST', url, body).then((response) => response.json());
-}
- 

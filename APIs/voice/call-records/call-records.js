@@ -6,8 +6,6 @@ let curCallRecsPage = 1;
 ///////////////////////////////
 // UI event handlers
 ///////////////////////////////
-document.getElementById('authorization').addEventListener("click", onAuthorizationS2S, false);
-
 document.getElementById('get-call-recs').addEventListener("click", () => onGetCallRecs(1), false);
 document.getElementById('get-call-recs-archive').addEventListener("click", onGetCallRecsArchive, false);
 document.getElementById('get-call-recs-content').addEventListener("click", onGetCallRecsContent, false);
@@ -17,30 +15,8 @@ document.getElementById('next-page-button').addEventListener("click", nextCallRe
 
 
 ///////////////////////////////
-// Auth and tokens
+// Tokens
 ///////////////////////////////
-function onAuthorizationS2S(){
-    let clientId = document.getElementById("client-id").value;
-    let clientSecret = document.getElementById("client-secret").value;
-    getS2SAccessToken(clientId, clientSecret).then((response) => {
-        setSessionToken(response["access_token"]);
-        document.getElementById("access-token-out").innerText = JSON.stringify(response);
-    }).catch((error) => {
-        console.log("Error!!! " + error);
-    });
-}
-
-function getS2SAccessToken(clientId, clientSecret, scope, grantType = "client_credentials"){
-    let url = 'https://login.intermedia.net/user/connect/token';
-    let body = 
-        'grant_type=' + grantType + 
-        '&client_id=' + clientId + 
-        '&client_secret=' + clientSecret;
-    if(scope) body += '&scope=' + scope;
-
-    return makeRequest("POST", url, body, "application/x-www-form-urlencoded").then((response) => response.json());
-}
-
 function getSessionToken(){
     return sessionStorage.getItem('accessToken');
 }
@@ -105,27 +81,6 @@ function renderCallRecsTablePage(callRecs, count){
 }
 
 ///////////////////////////////
-// Make request factory
-///////////////////////////////
-function makeRequest(method, url, body, reqContentType = "application/json"){
-    let options = {
-        method: method,
-        headers: {
-            'Authorization': `Bearer ${getSessionToken()}`
-        }
-    };
-
-    if(body){
-        options["headers"]["Content-Type"] = reqContentType;
-        if(typeof body != 'string') 
-            body = JSON.stringify(body);
-        options["body"] = body;
-    }
-
-    return fetch(url, options);
-}
-
-///////////////////////////////
 // Call recordings functions
 ///////////////////////////////
 function onGetCallRecs(pageNumber){
@@ -145,30 +100,16 @@ function onGetCallRecs(pageNumber){
     });
 }
 
-function getCallRecs(organizationId, unifiedUserId, offset = 0, count = 100){
-    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings?offset=${offset}&count=${count}`;
-    return makeRequest("GET", url).then((response) => response.json());
-}
-
 function onGetCallRecsArchive(){
     let organizationId = document.getElementById("organization-id").value;
     let unifiedUserId = document.getElementById("unified-user-id").value;
-    let ids = JSON.parse(document.getElementById("call-rec-id-array").value);
+    let ids = document.getElementById("call-rec-id-array").value.split(/\s*,\s*/);
 
     getCallRecsArchive(organizationId, unifiedUserId, ids).then((response) => {
         createFileDownloadLinkElem(response, "application/zip", "zip", `callRecs${ids}`, "get-call-recs-archive-block");
     }).catch((error) => {
         console.log("Get call recordings archive failed! " + error);
     });
-}
-
-function getCallRecsArchive(organizationId, unifiedUserId, ids, format = "zip"){
-        let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/_selected/_content?format=${format}`;
-        let body = {
-            "ids": ids,
-        };
-
-        return makeRequest("POST", url, body).then((response) => response.arrayBuffer());
 }
 
 function onGetCallRecsContent(){
@@ -181,9 +122,4 @@ function onGetCallRecsContent(){
     }).catch((error) => {
         console.log("Get call recordings content failed!  " + error);
     });
-}
-
-function getCallRecsContent(organizationId, unifiedUserId, callRecId){
-    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/${callRecId}/_content`;
-    return makeRequest("GET", url).then((response) => response.arrayBuffer());
 }

@@ -108,3 +108,7 @@ section{
     overflow: auto;
 }
 
+#after-auth{
+    display: none;
+}
+

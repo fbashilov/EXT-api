@@ -12,6 +12,7 @@ function onAuthorizationS2S(){
     getS2SAccessToken(clientId, clientSecret).then((response) => {
         setSessionToken(response["access_token"]);
         document.getElementById("access-token-out").innerText = JSON.stringify(response);
+        document.getElementById("after-auth").style.display = 'block';
     }).catch((error) => {
         console.log("Error!!! " + error);
     });

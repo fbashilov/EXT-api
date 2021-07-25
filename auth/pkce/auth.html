@@ -21,14 +21,14 @@
         <button id="load"> Load configuration </button>
         <button id="submit"> Apply configuration </button>
         <hr>
-        <a href="../APIs-menu/APIs-menu.html"> Run OIDC-Client to authorize using code-flow with PKCE </a>
+        <a href="api-menu.html"> Run OIDC-Client to authorize using code-flow with PKCE </a>
         <hr>
         <pre id='out'></pre>
     </body>
     <script src='../../assets/log.js'></script>
     <script>
         let url = location.href.split('?')[0];
-        document.getElementById('redirectUrl').value = url.substring(0, url.lastIndexOf('/', url.lastIndexOf('/') - 1)) + '/APIs-menu/APIs-menu.html'; 
+        document.getElementById('redirectUrl').value = url.substring(0, url.lastIndexOf('/')) + '/api-menu.html'; 
         document.getElementById('submit').addEventListener("click", applyConfiguration, false);
         document.getElementById('load').addEventListener("click", loadConfiguration, false);
         function readConfig() {

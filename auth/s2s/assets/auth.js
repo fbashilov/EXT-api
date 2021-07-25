@@ -11,8 +11,7 @@ function onAuthorizationS2S(){
     let clientSecret = document.getElementById("client-secret").value;
     getS2SAccessToken(clientId, clientSecret).then((response) => {
         setSessionToken(response["access_token"]);
-        document.getElementById("access-token-out").innerText = JSON.stringify(response);
-        document.getElementById("after-auth").style.display = 'block';
+        window.location.href = '../api-menu.html';
     }).catch((error) => {
         console.log("Error!!! " + error);
     });

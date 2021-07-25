@@ -1,3 +1,7 @@
+///////////////////////////////
+// Notification hub
+///////////////////////////////
+
 function createHubSubscription(events = ["*"], ttl = "00:30:00"){
     let url = 'https://api.intermedia.net/voice/v2/subscriptions';
     let body = {
@@ -29,10 +33,18 @@ function buildHubConnection(deliveryMethodUri){
 
 }
 
+///////////////////////////////
+// Devices
+///////////////////////////////
+
 function getDevices(){
     let url = 'https://api.intermedia.net/voice/v2/devices';
     return makeRequest("GET", url).then((response) => response.json());
 }
+
+///////////////////////////////
+// Calls
+///////////////////////////////
 
 function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
     let url = 'https://api.intermedia.net/voice/v2/calls';
@@ -103,18 +115,14 @@ function getCallRecsContent(organizationId, unifiedUserId, callRecId){
     return makeRequest("GET", url).then((response) => response.arrayBuffer());
 }
 
-
 ///////////////////////////////
-// functions for VoiceMails
+// Voicemails
 ///////////////////////////////
 
 function getVoiceMails(offset, countOnList){ 
     let url = 'https://api.intermedia.net/voice/v2/voicemails?offset=' + offset + '&count=' + countOnList;
 
-    await makeRequest("GET", url)
-        .then((response) => response.json())
-        .then((response) => { res = response });
-    return res;
+    return makeRequest("GET", url).then((response) => response.json());
 }
 
 async function deleteVoiceMailRecords(status){

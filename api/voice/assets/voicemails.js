@@ -37,6 +37,17 @@ document.getElementById('getVoiceMailRecord').addEventListener("click", async ()
 });
 
 ///////////////////////////////
+// tokens
+///////////////////////////////
+function getSessionToken(){
+    return sessionStorage.getItem('accessToken');
+}
+
+function setSessionToken(accessToken){
+    sessionStorage.setItem('accessToken', accessToken);
+}
+
+///////////////////////////////
 // Rendering functions
 ///////////////////////////////
 

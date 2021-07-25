@@ -4,10 +4,6 @@ let pageNumberOfVoicemails = 0;
 //////////////////////////////
 // UI event handlers
 ///////////////////////////////
-document.getElementById('getVoiceMails').addEventListener("click", () =>{ 
-    onGetVoiceMails(0);
-});
-
 document.getElementById('buttonNext').addEventListener("click", () => {
     onGetVoiceMails(++pageNumberOfVoicemails * countOnList);
 });
@@ -16,25 +12,15 @@ document.getElementById('buttonPrev').addEventListener("click", () => {
     onGetVoiceMails((pageNumberOfVoicemails > 0 ?--pageNumberOfVoicemails:pageNumberOfVoicemails) * countOnList);
 });
 
-document.getElementById('updateVoiceMailRecordsStatus').addEventListener("click", async () =>{ 
-    await updateVoiceMailRecordsStatus(document.getElementById("updateStatus").value);
-    onGetVoiceMails(pageNumberOfVoicemails * countOnList);
-});
+document.getElementById('getVoiceMails').addEventListener("click", () => onGetVoiceMails(0), false);
 
-document.getElementById('deleteVoiceMailRecords').addEventListener("click", async () =>{ 
-    await deleteVoiceMailRecords(document.getElementById("deleteStatus").value); 
-    onGetVoiceMails(pageNumberOfVoicemails * countOnList);
-});
+document.getElementById('deleteVoiceMailRecords').addEventListener("click", onDeleteVoiceMailRecords, false);
 
-document.getElementById('getVoiceMailsTotal').addEventListener("click", async () =>{ 
-    let res = await getVoiceMailsTotal(document.getElementById("totalStatus").value); 
-    log(res);
-});
+document.getElementById('updateVoiceMailRecordsStatus').addEventListener("click",onUpdateVoiceMailRecordsStatus, false); 
 
-document.getElementById('getVoiceMailRecord').addEventListener("click", async () =>{ 
-    let res = await getVoiceMailRecord(document.getElementById("id").value);
-    log(res);
-});
+document.getElementById('getVoiceMailsTotal').addEventListener("click", onGetVoiceMailsTotal, false);
+
+document.getElementById('getVoiceMailRecord').addEventListener("click", onGetVoiceMailRecord, false);
 
 ///////////////////////////////
 // tokens
@@ -50,7 +36,6 @@ function setSessionToken(accessToken){
 ///////////////////////////////
 // Rendering functions
 ///////////////////////////////
-
 function createNewTr(tr){
     let tableRow = document.createElement('tr');
     document.getElementById('table').appendChild(tableRow);
@@ -89,33 +74,33 @@ function createNewTr(tr){
     let button8 = document.createElement('button');
     button8.innerHTML = "Transcription";
     td8.appendChild(button8);
-    button8.addEventListener("click",async () => { let res = await getVoiceMailsTranscription(tr["id"]); log(res); }, false);
+    button8.addEventListener("click", onGetVoiceMailsTranscription, false);
 
     let td9 = document.createElement('td');
     tableRow.appendChild(td9);
     let oggButton = document.createElement('button');
     oggButton.innerHTML = "ogg";
     td9.appendChild(oggButton);
-    oggButton.addEventListener("click", () => {  onGetVoiceMailsContent("ogg", tr["id"]);});
+    oggButton.addEventListener("click", () => onGetVoiceMailsContent("ogg", tr["id"]), false);
 
     let mp3Button = document.createElement('button');
     mp3Button.innerHTML = "mp3";
     td9.appendChild(mp3Button);
-    mp3Button.addEventListener("click", () => {  onGetVoiceMailsContent("mp3", tr["id"]);});
+    mp3Button.addEventListener("click", () => onGetVoiceMailsContent("mp3", tr["id"]), false);
 
     let td10 = document.createElement('td');
     tableRow.appendChild(td10);
     let button10 = document.createElement('button');
     button10.innerHTML = "Delete";
     td10.appendChild(button10);
-    button10.addEventListener("click",async () => { await deleteSelectedVoicemailRecords(tr["id"]); onGetVoiceMails(pageNumberOfVoicemails * countOnList); });
+    button10.addEventListener("click", onDeleteSelectedVoicemailRecords, false);
 
     let td11 = document.createElement('td');
     tableRow.appendChild(td11);
     let button11 = document.createElement('button');
     button11.innerHTML = "Change Status";
     td11.appendChild(button11);
-    button11.addEventListener("click",async () => { await updateSelectedVoiceMailRecordsStatus(tr["status"] == "read"? "unread": "read", tr["id"]); onGetVoiceMails(pageNumberOfVoicemails * countOnList); });
+    button11.addEventListener("click", () => onUpdateSelectedVoiceMailRecordsStatus(tr["status"] == "read"? "unread": "read", tr["id"]), false);
 }
 
 function updateList(response){
@@ -151,7 +136,6 @@ function updateList(response){
 ///////////////////////////////
 // Voicemails functions
 ///////////////////////////////
-
 function onGetVoiceMails(offset){
     getVoiceMails(offset, countOnList).then((response) => {
         updateList(response);
@@ -160,14 +144,77 @@ function onGetVoiceMails(offset){
     });
 }
 
-async function onGetVoiceMailsContent(format, id){
-    let blob = await getVoiceMailsContent(format, id);
+function onDeleteVoiceMailRecords(){
+    let status = document.getElementById("deleteStatus").value;
+    deleteVoiceMailRecords(status).then((response) => {
+        onGetVoiceMails(pageNumberOfVoicemails * countOnList);
+    }).catch((error) => {
+        console.log("Delete voicemail records failed! " + error);
+    }); 
+}
 
-    let dataUrl = window.URL.createObjectURL(blob);
-    let a = document.createElement('a');
-    a.href = dataUrl;
-    a.download = id + "." + format;
-    a.click();
+function onDeleteSelectedVoicemailRecords(){
+    deleteSelectedVoicemailRecords(tr["id"]).then((response) => {
+        onGetVoiceMails(pageNumberOfVoicemails * countOnList);
+    }).catch((error) => {
+        console.log("Delete selected voicemail records failed! " + error);
+    });
+}
+
+function onUpdateVoiceMailRecordsStatus(){
+    let status = document.getElementById("updateStatus").value
+    updateVoiceMailRecordsStatus(status).then((response) => {
+        onGetVoiceMails(pageNumberOfVoicemails * countOnList);
+    }).catch((error) => {
+        console.log("Update voicemail records status failed! " + error);
+    });
+}
+
+function onUpdateSelectedVoiceMailRecordsStatus(status, ids){
+    updateSelectedVoiceMailRecordsStatus(status, ids).then((response) => {
+        onGetVoiceMails(pageNumberOfVoicemails * countOnList);
+    }).catch((error) => {
+        console.log("Update selected voicemail records status failed! " + error);
+    });
+}
+
+function onGetVoiceMailsTotal(){
+    getVoiceMailsTotal(document.getElementById("totalStatus").value).then((response) => {
+        log(response);
+    }).catch((error) => {
+        console.log("Get voicemail total failed! " + error);
+    }); 
+        
+}
+
+function onGetVoiceMailRecord(){
+    getVoiceMailRecord(document.getElementById("id").value).then((response) => {
+        log(response);
+    }).catch((error) => {
+        console.log("Get voicemail record failed! " + error);
+    }); 
+}
+
+function onGetVoiceMailsTranscription(){
+    getVoiceMailsTranscription(tr["id"]).then((response) => {
+        log(response["text"]);
+    }).catch((error) => {
+        console.log("Get voicemails transcription failed! " + error);
+    }); 
+}
+
+function onGetVoiceMailsContent(format, id){
+    getVoiceMailsContent(format, id).then((response) => {
+        let dataUrl = window.URL.createObjectURL(response);
+        let a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = id + "." + format;
+        a.click();
+    }).catch((error) => {
+        console.log("Get voicemails content failed! " + error);
+    }); 
+
+
 }
 
 

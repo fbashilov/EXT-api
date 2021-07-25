@@ -103,3 +103,98 @@ function getCallRecsContent(organizationId, unifiedUserId, callRecId){
     return makeRequest("GET", url).then((response) => response.arrayBuffer());
 }
 
+
+///////////////////////////////
+// functions for VoiceMails
+///////////////////////////////
+
+function getVoiceMails(offset, countOnList){ 
+    let url = 'https://api.intermedia.net/voice/v2/voicemails?offset=' + offset + '&count=' + countOnList;
+
+    await makeRequest("GET", url)
+        .then((response) => response.json())
+        .then((response) => { res = response });
+    return res;
+}
+
+async function deleteVoiceMailRecords(status){
+    let url = 'https://api.intermedia.net/voice/v2/voicemails/_all?status=' + status;
+    await makeRequest("DELETE", url);
+}
+
+async function deleteSelectedVoicemailRecords(ids){
+    let url = 'https://api.intermedia.net/voice/v2/voicemails/_selected';
+    let body = { 
+        "ids": [ids] 
+    };
+
+    await makeRequest("DELETE", url, body);
+}
+
+async function updateVoiceMailRecordsStatus(status){
+    let url = 'https://api.intermedia.net/voice/v2/voicemails/_all/_metadata';
+    let body = { 
+        "status": status 
+    };
+
+    await makeRequest("POST", url, body);
+}
+
+async function updateSelectedVoiceMailRecordsStatus(status, ids){
+    let url = 'https://api.intermedia.net/voice/v2/voicemails/_selected/_metadata';
+    let body = { 
+        "ids": [ids],
+        "status": status
+    };
+
+    await makeRequest("POST", url, body);
+}
+
+async function getVoiceMailsTotal(status){
+    let url = 'https://api.intermedia.net/voice/v2/voicemails/_total?status=' + status;
+
+    let res;
+    await makeRequest("GET", url).then((response) => response.json()).then( (response) => {
+        res = response;
+    });
+
+    return res;
+}
+
+async function getVoiceMailRecord(id){
+    let url = 'https://api.intermedia.net/voice/v2/voicemails/' + id;
+    
+    let res;
+
+    await makeRequest("GET", url)
+        .then((response) => response.json())
+        .then((response) => res = response);
+    
+    return res;
+}
+
+
+async function getVoiceMailsTranscription(id){
+    let url = 'https://api.intermedia.net/voice/v2/voicemails/' + id + '/_transcript';
+   
+    let res;
+    await makeRequest("GET", url)
+        .then((response) => response.json())
+        .then( (response) => {
+            res = response["text"];
+        });
+    
+    return res;
+}
+
+async function getVoiceMailsContent(format, id){
+    let url = 'https://api.intermedia.net/voice/v2/voicemails/' + id + '/_content?format=' + format;
+
+    let res;
+    await makeRequest("GET", url)
+        .then(response => response.blob())
+        .then(blob => {
+            res = blob;
+        });
+    return res;
+}

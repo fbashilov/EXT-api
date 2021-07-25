@@ -127,7 +127,7 @@ function getVoiceMails(offset, countOnList){
 
 function deleteVoiceMailRecords(status){
     let url = 'https://api.intermedia.net/voice/v2/voicemails/_all?status=' + status;
-    return makeRequest("DELETE", url).then((response) => response.json());
+    return makeRequest("DELETE", url).then((response) => response);
 }
 
 function deleteSelectedVoicemailRecords(ids){
@@ -136,7 +136,7 @@ function deleteSelectedVoicemailRecords(ids){
         "ids": [ids] 
     };
 
-    return makeRequest("DELETE", url, body).then((response) => response.json());
+    return makeRequest("DELETE", url, body).then((response) => response);
 }
 
 function updateVoiceMailRecordsStatus(status){

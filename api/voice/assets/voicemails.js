@@ -74,7 +74,7 @@ function createNewTr(tr){
     let button8 = document.createElement('button');
     button8.innerHTML = "Transcription";
     td8.appendChild(button8);
-    button8.addEventListener("click", onGetVoiceMailsTranscription, false);
+    button8.addEventListener("click", () => onGetVoiceMailsTranscription(tr["id"]), false);
 
     let td9 = document.createElement('td');
     tableRow.appendChild(td9);
@@ -93,7 +93,7 @@ function createNewTr(tr){
     let button10 = document.createElement('button');
     button10.innerHTML = "Delete";
     td10.appendChild(button10);
-    button10.addEventListener("click", onDeleteSelectedVoicemailRecords, false);
+    button10.addEventListener("click", () => onDeleteSelectedVoicemailRecords(tr["id"]), false);
 
     let td11 = document.createElement('td');
     tableRow.appendChild(td11);
@@ -153,8 +153,8 @@ function onDeleteVoiceMailRecords(){
     }); 
 }
 
-function onDeleteSelectedVoicemailRecords(){
-    deleteSelectedVoicemailRecords(tr["id"]).then((response) => {
+function onDeleteSelectedVoicemailRecords(id){
+    deleteSelectedVoicemailRecords(id).then((response) => {
         onGetVoiceMails(pageNumberOfVoicemails * countOnList);
     }).catch((error) => {
         console.log("Delete selected voicemail records failed! " + error);
@@ -195,8 +195,8 @@ function onGetVoiceMailRecord(){
     }); 
 }
 
-function onGetVoiceMailsTranscription(){
-    getVoiceMailsTranscription(tr["id"]).then((response) => {
+function onGetVoiceMailsTranscription(id){
+    getVoiceMailsTranscription(id).then((response) => {
         log(response["text"]);
     }).catch((error) => {
         console.log("Get voicemails transcription failed! " + error);

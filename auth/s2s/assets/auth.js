@@ -9,7 +9,8 @@ document.getElementById('authorization').addEventListener("click", onAuthorizati
 function onAuthorizationS2S(){
     let clientId = document.getElementById("client-id").value;
     let clientSecret = document.getElementById("client-secret").value;
-    getS2SAccessToken(clientId, clientSecret).then((response) => {
+    let scope = document.getElementById("scope").value;
+    getS2SAccessToken(clientId, clientSecret, scope).then((response) => {
         setSessionToken(response["access_token"]);
         window.location.href = 'api-menu.html';
     }).catch((error) => {

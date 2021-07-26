@@ -1,7 +1,6 @@
 ///////////////////////////////
 // Notification hub
 ///////////////////////////////
-
 function createHubSubscription(events = ["*"], ttl = "00:30:00"){
     let url = 'https://api.intermedia.net/voice/v2/subscriptions';
     let body = {
@@ -36,7 +35,6 @@ function buildHubConnection(deliveryMethodUri){
 ///////////////////////////////
 // Devices
 ///////////////////////////////
-
 function getDevices(){
     let url = 'https://api.intermedia.net/voice/v2/devices';
     return makeRequest("GET", url).then((response) => response.json());
@@ -45,7 +43,6 @@ function getDevices(){
 ///////////////////////////////
 // Calls
 ///////////////////////////////
-
 function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
     let url = 'https://api.intermedia.net/voice/v2/calls';
     let body = {
@@ -118,7 +115,6 @@ function getCallRecsContent(organizationId, unifiedUserId, callRecId){
 ///////////////////////////////
 // Voicemails
 ///////////////////////////////
-
 function getVoiceMails(offset, countOnList){ 
     let url = 'https://api.intermedia.net/voice/v2/voicemails?offset=' + offset + '&count=' + countOnList;
 
@@ -180,4 +176,60 @@ function getVoiceMailsContent(format, id){
     let url = 'https://api.intermedia.net/voice/v2/voicemails/' + id + '/_content?format=' + format;
 
     return makeRequest("GET", url).then(response => response.blob());
+}
+
+///////////////////////////////
+// VoiceMails Settings
+///////////////////////////////
+function getGreetingContent(format, custom){ //?
+    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/greeting?format=' + format + '&custom=' + custom;
+
+    return makeRequest("GET", url)
+        .then(res => res.ok ? res : Promise.reject("Custom greeting is not found"))
+        .then(response => response.blob());
+}
+
+function resetGreetingContent(){
+    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/greeting';
+
+    return makeRequest("DELETE", url).then( (response) => res = response);        
+}
+
+function updateUserSettings(pin, hasCustomGreeting, isTranscriptionPermitted, enableTranscription, receiveEmailNotifications, emails, includeVoiceMail){
+    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/settings';
+    let body = {
+        "pin": pin,
+        "hasCustomGreeting": hasCustomGreeting,
+        "isTranscriptionPermitted": isTranscriptionPermitted,
+        "enableTranscription": enableTranscription,
+        "receiveEmailNotifications": receiveEmailNotifications,
+        "emails": [emails],
+        "includeVoiceMail": includeVoiceMail
+    }
+
+    return makeRequest("POST", url, body).then( (response) => res = response );   
+}
+
+function uploadGreetingContent(){ //?
+    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/greeting';
+    let formData = new FormData();
+
+    let selectedFile = document.getElementById('greetingFile').files[0];
+    formData.append("greetingFile", selectedFile);    
+
+    return makeRequest("POST", url, formData)
+        .then(response => response.ok ? response : Promise.reject("Something goes wrong"));
+}
+
+function getUserSettings(){
+    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/settings';
+
+    return makeRequest("GET", url).then( response => response.json());
+}
+
+function getVoicemailUsage(token){
+    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/usage';
+
+    return makeRequest(token, "GET", url)
+        .then( response => response.json());
 }

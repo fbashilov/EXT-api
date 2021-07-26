@@ -1,8 +1,10 @@
+const baseUrl = 'https://api.intermedia.net';
+
 ///////////////////////////////
 // Notification hub
 ///////////////////////////////
 function createHubSubscription(events = ["*"], ttl = "00:30:00"){
-    let url = 'https://api.intermedia.net/voice/v2/subscriptions';
+    let url = `${baseUrl}/voice/v2/subscriptions`;
     let body = {
         "events": events,
         "ttl": ttl
@@ -36,7 +38,7 @@ function buildHubConnection(deliveryMethodUri){
 // Devices
 ///////////////////////////////
 function getDevices(){
-    let url = 'https://api.intermedia.net/voice/v2/devices';
+    let url = `${baseUrl}/voice/v2/devices`;
     return makeRequest("GET", url).then((response) => response.json());
 }
 
@@ -44,7 +46,7 @@ function getDevices(){
 // Calls
 ///////////////////////////////
 function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
-    let url = 'https://api.intermedia.net/voice/v2/calls';
+    let url = `${baseUrl}/voice/v2/calls`;
     let body = {
         "deviceId": deviceId,
         "mode": mode,
@@ -57,14 +59,14 @@ function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
 }
 
 function terminateCall(callId, commandId){
-    let url = `https://api.intermedia.net/voice/v2/calls/${callId}` +
+    let url = `${baseUrl}/voice/v2/calls/${callId}` +
         (commandId ? `/commandId=${commandId}`: ``);
 
     return makeRequest('DELETE', url).then((response) => response.json());
 }
 
 function cancelCall(callId, skipToVoiceMail = true, commandId){
-    let url = `https://api.intermedia.net/voice/v2/calls/${callId}/cancel`;
+    let url = `${baseUrl}/voice/v2/calls/${callId}/cancel`;
     let body = {
         "skipToVoiceMail": skipToVoiceMail
     };
@@ -74,7 +76,7 @@ function cancelCall(callId, skipToVoiceMail = true, commandId){
 }
 
 function transferCall(callId, phoneNumber, commandId){
-    let url = `https://api.intermedia.net/voice/v2/calls/${callId}/transfer`;
+    let url = `${baseUrl}/voice/v2/calls/${callId}/transfer`;
     let body = {
         "phoneNumber": phoneNumber
     };
@@ -84,7 +86,7 @@ function transferCall(callId, phoneNumber, commandId){
 }
 
 function warmTransferCall(callId1, callId2, commandId){
-    let url = `https://api.elevate.services/voice/v2/calls/${callId1}/merge`;
+    let url = `${baseUrl}/voice/v2/calls/${callId1}/merge`;
     let body = {
         "mergeCallId": callId2
     };
@@ -94,12 +96,12 @@ function warmTransferCall(callId1, callId2, commandId){
 }
 
 function getCallRecs(organizationId, unifiedUserId, offset = 0, count = 100){
-    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings?offset=${offset}&count=${count}`;
+    let url = `${baseUrl}/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings?offset=${offset}&count=${count}`;
     return makeRequest("GET", url).then((response) => response.json());
 }
 
 function getCallRecsArchive(organizationId, unifiedUserId, ids, format = "zip"){
-    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/_selected/_content?format=${format}`;
+    let url = `${baseUrl}/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/_selected/_content?format=${format}`;
     let body = {
         "ids": ids,
     };
@@ -108,7 +110,7 @@ function getCallRecsArchive(organizationId, unifiedUserId, ids, format = "zip"){
 }
 
 function getCallRecsContent(organizationId, unifiedUserId, callRecId){
-    let url = `https://api.intermedia.net/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/${callRecId}/_content`;
+    let url = `${baseUrl}/voice/v2/organizations/${organizationId}/users/${unifiedUserId}/call-recordings/${callRecId}/_content`;
     return makeRequest("GET", url).then((response) => response.arrayBuffer());
 }
 
@@ -116,18 +118,18 @@ function getCallRecsContent(organizationId, unifiedUserId, callRecId){
 // Voicemails
 ///////////////////////////////
 function getVoiceMails(offset, countOnList){ 
-    let url = 'https://api.intermedia.net/voice/v2/voicemails?offset=' + offset + '&count=' + countOnList;
+    let url = `${baseUrl}/voice/v2/voicemails?offset=${offset}&count=${countOnList}`;
 
     return makeRequest("GET", url).then((response) => response.json());
 }
 
 function deleteVoiceMailRecords(status){
-    let url = 'https://api.intermedia.net/voice/v2/voicemails/_all?status=' + status;
+    let url = `${baseUrl}/voice/v2/voicemails/_all?status=${status}`;
     return makeRequest("DELETE", url).then((response) => response);
 }
 
 function deleteSelectedVoicemailRecords(ids){
-    let url = 'https://api.intermedia.net/voice/v2/voicemails/_selected';
+    let url = `${baseUrl}/voice/v2/voicemails/_selected`;
     let body = { 
         "ids": [ids] 
     };
@@ -136,7 +138,7 @@ function deleteSelectedVoicemailRecords(ids){
 }
 
 function updateVoiceMailRecordsStatus(status){
-    let url = 'https://api.intermedia.net/voice/v2/voicemails/_all/_metadata';
+    let url = `${baseUrl}/voice/v2/voicemails/_all/_metadata`;
     let body = { 
         "status": status 
     };
@@ -145,7 +147,7 @@ function updateVoiceMailRecordsStatus(status){
 }
 
 function updateSelectedVoiceMailRecordsStatus(status, ids){
-    let url = 'https://api.intermedia.net/voice/v2/voicemails/_selected/_metadata';
+    let url = `${baseUrl}/voice/v2/voicemails/_selected/_metadata`;
     let body = { 
         "ids": [ids],
         "status": status
@@ -155,34 +157,34 @@ function updateSelectedVoiceMailRecordsStatus(status, ids){
 }
 
 function getVoiceMailsTotal(status){
-    let url = 'https://api.intermedia.net/voice/v2/voicemails/_total?status=' + status;
+    let url = `${baseUrl}/voice/v2/voicemails/_total?status=${status}`;
 
     return makeRequest("GET", url).then((response) => response.json());
 }
 
 function getVoiceMailRecord(id){
-    let url = 'https://api.intermedia.net/voice/v2/voicemails/' + id;
+    let url = `${baseUrl}/voice/v2/voicemails/${id}`;
 
     return makeRequest("GET", url).then((response) => response.json());
 }
 
 function getVoiceMailsTranscription(id){
-    let url = 'https://api.intermedia.net/voice/v2/voicemails/' + id + '/_transcript';
+    let url = `${baseUrl}/voice/v2/voicemails/${id}/_transcript`;
    
     return makeRequest("GET", url).then((response) => response.json());
 }
 
 function getVoiceMailsContent(format, id){
-    let url = 'https://api.intermedia.net/voice/v2/voicemails/' + id + '/_content?format=' + format;
+    let url = `${baseUrl}/voice/v2/voicemails/${id}/_content?format=${format}`;
 
     return makeRequest("GET", url).then(response => response.blob());
 }
 
 ///////////////////////////////
-// VoiceMails Settings
+// Voicemails Settings
 ///////////////////////////////
-function getGreetingContent(format, custom){ //?
-    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/greeting?format=' + format + '&custom=' + custom;
+function getGreetingContent(format, custom){ 
+    let url = `${baseUrl}/voice/v2/users/_me/voicemail/greeting?format=${format}&custom=${custom}`;
 
     return makeRequest("GET", url)
         .then(res => res.ok ? res : Promise.reject("Custom greeting is not found"))
@@ -190,13 +192,13 @@ function getGreetingContent(format, custom){ //?
 }
 
 function resetGreetingContent(){
-    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/greeting';
+    let url = `${baseUrl}/voice/v2/users/_me/voicemail/greeting`;
 
     return makeRequest("DELETE", url).then( (response) => res = response);        
 }
 
 function updateUserSettings(pin, hasCustomGreeting, isTranscriptionPermitted, enableTranscription, receiveEmailNotifications, emails, includeVoiceMail){
-    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/settings';
+    let url = `${baseUrl}/voice/v2/users/_me/voicemail/settings`;
     let body = {
         "pin": pin,
         "hasCustomGreeting": hasCustomGreeting,
@@ -210,8 +212,8 @@ function updateUserSettings(pin, hasCustomGreeting, isTranscriptionPermitted, en
     return makeRequest("POST", url, body).then( (response) => res = response );   
 }
 
-function uploadGreetingContent(){ //?
-    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/greeting';
+function uploadGreetingContent(){ 
+    let url = `${baseUrl}/voice/v2/users/_me/voicemail/greeting`;
     let formData = new FormData();
 
     let selectedFile = document.getElementById('greetingFile').files[0];
@@ -222,13 +224,13 @@ function uploadGreetingContent(){ //?
 }
 
 function getUserSettings(){
-    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/settings';
+    let url = `${baseUrl}/voice/v2/users/_me/voicemail/settings`;
 
     return makeRequest("GET", url).then( response => response.json());
 }
 
 function getVoicemailUsage(){
-    let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/usage';
+    let url = `${baseUrl}/voice/v2/users/_me/voicemail/usage`;
 
     return makeRequest("GET", url).then( response => response.json());
 }

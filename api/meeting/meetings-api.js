@@ -1,4 +1,4 @@
-const baseUrl = 'https://api.intermedia.net';
+const baseUrl = 'https://api.qaintermedia.net';
 
 function startMeeting(){
     let url = `${baseUrl}/meetings/v1/meeting/start/details`;

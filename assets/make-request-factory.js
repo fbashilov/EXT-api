@@ -7,7 +7,7 @@ function makeRequest(method, url, body, reqContentType = "application/json", isS
     };
 
     if(body){
-        if(isSendFile = false){
+        if(isSendFile == false){
             options["headers"]["Content-Type"] = reqContentType;
             if(typeof body != 'string') 
                 body = JSON.stringify(body);

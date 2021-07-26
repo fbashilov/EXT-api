@@ -207,7 +207,7 @@ function updateUserSettings(pin, hasCustomGreeting, isTranscriptionPermitted, en
         "includeVoiceMail": includeVoiceMail
     }
 
-    return makeRequest("POST", url, body).then( (response) => res = response );   
+    return makeRequest("POST", url, body, undefined, true).then( (response) => res = response );   
 }
 
 function uploadGreetingContent(){ //?

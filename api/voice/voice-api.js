@@ -207,7 +207,7 @@ function updateUserSettings(pin, hasCustomGreeting, isTranscriptionPermitted, en
         "includeVoiceMail": includeVoiceMail
     }
 
-    return makeRequest("POST", url, body, undefined, true).then( (response) => res = response );   
+    return makeRequest("POST", url, body).then( (response) => res = response );   
 }
 
 function uploadGreetingContent(){ //?
@@ -217,7 +217,7 @@ function uploadGreetingContent(){ //?
     let selectedFile = document.getElementById('greetingFile').files[0];
     formData.append("greetingFile", selectedFile);    
 
-    return makeRequest("POST", url, formData)
+    return makeRequest("POST", url, formData, undefined, true)
         .then(response => response.ok ? response : Promise.reject("Something goes wrong"));
 }
 

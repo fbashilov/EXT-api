@@ -145,7 +145,7 @@ function updateVoiceMailRecordsStatus(status){
         "status": status 
     };
 
-    return makeRequest("POST", url, body).then((response) => response.json());
+    return makeRequest("POST", url, body).then((response) => response);
 }
 
 function updateSelectedVoiceMailRecordsStatus(status, ids){
@@ -155,7 +155,7 @@ function updateSelectedVoiceMailRecordsStatus(status, ids){
         "status": status
     };
 
-    return makeRequest("POST", url, body).then((response) => response.json());
+    return makeRequest("POST", url, body).then((response) => response);
 }
 
 function getVoiceMailsTotal(status){

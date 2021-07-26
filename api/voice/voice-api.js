@@ -227,9 +227,8 @@ function getUserSettings(){
     return makeRequest("GET", url).then( response => response.json());
 }
 
-function getVoicemailUsage(token){
+function getVoicemailUsage(){
     let url = 'https://api.intermedia.net/voice/v2/users/_me/voicemail/usage';
 
-    return makeRequest(token, "GET", url)
-        .then( response => response.json());
+    return makeRequest("GET", url).then( response => response.json());
 }

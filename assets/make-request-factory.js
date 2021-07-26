@@ -1,4 +1,4 @@
-function makeRequest(method, url, body, reqContentType = "application/json"){
+function makeRequest(method, url, body, reqContentType = "application/json", isSendFile = false){
     let options = {
         method: method,
         headers: {
@@ -7,9 +7,11 @@ function makeRequest(method, url, body, reqContentType = "application/json"){
     };
 
     if(body){
-        options["headers"]["Content-Type"] = reqContentType;
-        if(typeof body != 'string') 
-            body = JSON.stringify(body);
+        if(isSendFile = false){
+            options["headers"]["Content-Type"] = reqContentType;
+            if(typeof body != 'string') 
+                body = JSON.stringify(body);
+        }
         options["body"] = body;
     }
 

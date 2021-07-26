@@ -19,10 +19,7 @@ document.getElementById('getUserSettings').addEventListener("click", onGetUserSe
 
 document.getElementById('getVoicemailUsage').addEventListener("click", onGetVoicemailUsage, false);
 
-document.getElementById('resetGreetingContent').addEventListener("click",async () =>{
-    let res = await resetGreetingContent(token); 
-    log(res);
-});
+document.getElementById('resetGreetingContent').addEventListener("click", onResetGreetingContent, false);
 
 document.getElementById('updateUserSettings').addEventListener("click", onUpdateUserSettings, false);
 
@@ -36,11 +33,6 @@ function getSessionToken(){
 function setSessionToken(accessToken){
     sessionStorage.setItem('accessToken', accessToken);
 }
-
-///////////////////////////////
-// Rendering functions
-///////////////////////////////
-
 
 ///////////////////////////////
 // Voicemail settings functions
@@ -95,5 +87,13 @@ function onGetVoicemailUsage(){
         log(response);
     }).catch((error) => {
         console.log("Get voicemail usage failed! " + error);
+    });
+}
+
+function onResetGreetingContent(){
+    resetGreetingContent().then((response) => {
+        log(response);
+    }).catch((error) => {
+        console.log("Reset greeting content failed! " + error);
     });
 }

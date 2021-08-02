@@ -13,27 +13,6 @@ function createHubSubscription(events = ["*"], ttl = "00:30:00"){
     return makeRequest('POST', url, body).then((response) => response.json());
 }
 
-function buildHubConnection(deliveryMethodUri){
-    let connection = new signalR.HubConnectionBuilder()
-        .configureLogging(signalR.LogLevel.Trace)
-        .withUrl(deliveryMethodUri, {
-            accessTokenFactory: () => getSessionToken()
-        })
-        .build();
-
-    connection.on("OnEvent", data => {
-        console.log(data);
-        renderCallTableRow(data.eventType, data.callDirection, data.callId);
-    });
-    connection.on("OnCommandResult", data => {
-        console.log(data);
-    });
-    
-    // Start the connection.
-    connection.start().then(() => console.log("connected")).catch(err => console.log(err));
-
-}
-
 ///////////////////////////////
 // Devices
 ///////////////////////////////

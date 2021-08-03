@@ -1,5 +1,5 @@
 function getS2SAccessToken(clientId, clientSecret, scope, grantType = "client_credentials"){
-    let url = 'https://login.intermedia.net/user/connect/token';
+    const url = 'https://login.intermedia.net/user/connect/token';
     let body = 
         'grant_type=' + grantType + 
         '&client_id=' + clientId + 

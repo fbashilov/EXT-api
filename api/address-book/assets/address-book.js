@@ -63,37 +63,30 @@ function renderAvatarImg(byteCode, parentNode){
 // Address book functions
 ///////////////////////////////
 function onGetContacts(){
-    let params ='';
-    if(document.getElementById('query').value){
-        params = params + "&query=" + document.getElementById('query').value;
-    }
+    const query = document.getElementById('query').value;
     
-    if(document.getElementById('phone').value){
-        params = params + "&phone=" + document.getElementById('phone').value;
-    }
-    
-    if(document.getElementById('scope').value){
-        params = params + "&scope=" + document.getElementById('scope').value;
-    }
-    
-    let fields = '&fields=';
-    let getContactsid = document.getElementById('getContactsid');
+    const phone = document.getElementById('phone').value;
+
+    const scope = document.getElementById('scope').value;
+
+    let fields;
+
+    const getContactsid = document.getElementById('getContactsid');
     if(getContactsid.checked){
-        fields = fields  + getContactsid.value;
+        fields += getContactsid.value;
     }
 
-    let getContactsLegacyid = document.getElementById('getContactslegacyId');
+    const getContactsLegacyid = document.getElementById('getContactslegacyId');
     if(getContactsLegacyid.checked){
-        fields = fields  + (getContactsid.checked ? "," : '') + getContactsLegacyid.value;
+        fields += (fields ? "," : '') + getContactsLegacyid.value;
     }
 
-    let getContacts_all = document.getElementById('getContacts_all');
+    const getContacts_all = document.getElementById('getContacts_all');
     if(getContacts_all.checked){
-        fields = fields  + ((getContactsLegacyid.checked || getContactsid.checked) ? "," : '') + getContacts_all.value;
+        fields += (fields ? "," : '') + getContacts_all.value;
     }
-    params = params + (fields != '&fields='? (fields): '');
 
-    getContacts(params? ('?' + params): '').then((response) => {
+    getContacts(query, phone, scope, fields).then((response) => {
         log(response);
     }).catch((error) => {
         console.log("Get contacts failed! " + error);
@@ -101,26 +94,23 @@ function onGetContacts(){
 }
 
 function onGetUserDetails(){
-    let params ='';
-    
-    let fields = '&fields=';
-    let getContactsid = document.getElementById('getUserDetailsid');
+    let fields;
+    const getContactsid = document.getElementById('getUserDetailsid');
     if(getContactsid.checked){
-        fields = fields  + getContactsid.value;
+        fields += getContactsid.value;
     }
 
-    let getContactsLegacyid = document.getElementById('getUserDetailslegacyId');
+    const getContactsLegacyid = document.getElementById('getUserDetailslegacyId');
     if(getContactsLegacyid.checked){
-        fields = fields  + (getContactsid ? "," : '') + getContactsLegacyid.value;
+        fields += (fields ? "," : '') + getContactsLegacyid.value;
     }
 
-    let getContacts_all = document.getElementById('getUserDetails_all');
+    const getContacts_all = document.getElementById('getUserDetails_all');
     if(getContacts_all.checked){
-        fields = fields  + (getContactsLegacyid ? "," : '') + getContacts_all.value;
+        fields += (fields ? "," : '') + getContacts_all.value;
     }
-    params = params + (fields != '&fields='? (fields): '');
 
-    getUserDetails(params? ('?' + params): '').then((response) => {
+    getUserDetails(fields).then((response) => {
         log(response);
     }).catch((error) => {
         console.log("Get contacts failed! " + error);
@@ -128,26 +118,25 @@ function onGetUserDetails(){
 }
 
 function onGetContactsByJIDs(){
-    let params ='';
-    
-    let fields = '&fields=';
-    let getContactsid = document.getElementById('getContactsByJIDsid');
+    const jids = (document.getElementById('jids').value).split(",");
+
+    let fields;
+    const getContactsid = document.getElementById('getContactsByJIDsid');
     if(getContactsid.checked){
-        fields = fields  + getContactsid.value;
+        fields += getContactsid.value;
     }
 
-    let getContactsLegacyid = document.getElementById('getContactsByJIDslegacyId');
+    const getContactsLegacyid = document.getElementById('getContactsByJIDslegacyId');
     if(getContactsLegacyid.checked){
-        fields = fields  + (getContactsid ? "," : '') + getContactsLegacyid.value;
+        fields += (fields ? "," : '') + getContactsLegacyid.value;
     }
 
-    let getContacts_all = document.getElementById('getContactsByJIDs_all');
+    const getContacts_all = document.getElementById('getContactsByJIDs_all');
     if(getContacts_all.checked){
-        fields = fields  + (getContactsLegacyid ? "," : '') + getContacts_all.value;
+        fields += (fields ? "," : '') + getContacts_all.value;
     }
-    params = params + (fields != '&fields='? (fields): '');
 
-    getContactsByJIDs(document.getElementById('jids').value, params ? ('?' + params): '').then((response) => {
+    getContactsByJIDs(jids, fields).then((response) => {
         log(response);
     }).catch((error) => {
         console.log("Get contacts failed! " + error);
@@ -155,26 +144,23 @@ function onGetContactsByJIDs(){
 }
 
 function onGetSingleContact(){ 
-    let params = '';
-
-    let fields = '&fields=';
-    let getContactsid = document.getElementById('getSingleContactid');
+    let fields;
+    const getContactsid = document.getElementById('getSingleContactid');
     if(getContactsid.checked){
-        fields = fields  + getContactsid.value;
+        fields += getContactsid.value;
     }
 
-    let getContactsLegacyid = document.getElementById('getSingleContactlegacyId');
+    const getContactsLegacyid = document.getElementById('getSingleContactlegacyId');
     if(getContactsLegacyid.checked){
-        fields = fields  + (getContactsid ? "," : '') + getContactsLegacyid.value;
+        fields += (fields ? "," : '') + getContactsLegacyid.value;
     }
 
-    let getContacts_all = document.getElementById('getSingleContact_all');
+    const getContacts_all = document.getElementById('getSingleContact_all');
     if(getContacts_all.checked){
-        fields = fields  + (getContactsLegacyid ? "," : '') + getContacts_all.value;
+        fields += (fields ? "," : '') + getContacts_all.value;
     }
-    params = params + (fields != '&fields='? (fields): '');
 
-    getSingleContact(document.getElementById('id').value, params ? ('?' + params): '').then((response) => {
+    getSingleContact(document.getElementById('id').value, fields).then((response) => {
         log(response);
     }).catch((error) => {
         console.log("Get contacts failed! " + error);

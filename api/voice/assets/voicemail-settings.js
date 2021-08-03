@@ -2,7 +2,7 @@
 // on load
 ///////////////////////////////
 if(!isAuthorized()){
-    window.location.href = "../../../auth/pkce/auth.html"
+    window.location.href = "../../auth/pkce/auth.html"
 }
 
 //////////////////////////////

@@ -2,7 +2,7 @@
 // on load
 ///////////////////////////////
 if(!isAuthorized()){
-    window.location.href = "../../../auth/s2s/auth.html"
+    window.location.href = "../../auth/s2s/auth.html"
 }
 
 

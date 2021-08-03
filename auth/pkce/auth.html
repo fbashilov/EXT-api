@@ -26,7 +26,12 @@
         <pre id='out'></pre>
     </body>
     <script src='../../assets/log.js'></script>
+    <script src="../../assets/auth-session-manager.js"></script>
     <script>
+        if(isAuthorized()){
+            window.location.href = "api-menu.html";
+        }
+        console.log("after change location");
         let url = location.href.split('?')[0];
         //document.getElementById('redirectUrl').value = url.substring(0, url.lastIndexOf('/')) + '/api-menu.html'; 
         document.getElementById('redirectUrl').value = 'https://fbashilov.github.io/EXT-api/auth-code-flow-pkce/APIs-menu/APIs-menu.html'; 

@@ -5,8 +5,7 @@
         <link rel='stylesheet' href='../../assets/styles/styles.css'>
     </head>
     <body>
-        <a href="../../index.html"> Back to homepage </a> <br>
-        <a href="auth.html"> Authorize again </a> <br> <br>
+        <input id="logout" type="button" href="../../index.html"> Logout </a> <br>
 
         <div>
             <a href="../../api/voice/call-records.html"> Call Recordings </a>
@@ -16,6 +15,14 @@
             <a href="../../api/analytics/analytics.html"> Analytics </a>
         </div>
         
+        <script src='../../assets/auth-session-manager.js'></script>
+        <script>
+            if(!isAuthorized()){
+                window.location.href = "auth.html";
+            }
+
+            document.getElementById('logout').addEventListener("click", () => logout(), false);
+        </script>   
     </body>
 </html>
 

@@ -1,4 +1,12 @@
 ///////////////////////////////
+// IIFE on load 
+///////////////////////////////
+(()=>{
+    if(isAuthorized()){
+        window.location.href = "api-menu.html";
+    }
+})();
+///////////////////////////////
 // UI event handlers
 ///////////////////////////////
 document.getElementById('authorization').addEventListener("click", onAuthorizationS2S, false);

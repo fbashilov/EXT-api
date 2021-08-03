@@ -5,6 +5,7 @@ if(!isAuthorized()){
     window.location.href = "../../../auth/pkce/auth.html"
 }
 
+
 //////////////////////////////
 // UI event handlers
 //////////////////////////////

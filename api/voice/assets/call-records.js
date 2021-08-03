@@ -2,9 +2,9 @@
 // on load
 ///////////////////////////////
 if(!isAuthorized()){
-    window.location.href = "../../../auth/pkce/auth.html"
-}
-
+    window.location.href = "../../auth/s2s/auth.html"
+} 
+    
 let curCallRecsPage = 1; // Set global variable for paging 
 
 //////////////////////////////

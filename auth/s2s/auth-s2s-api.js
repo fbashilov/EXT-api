@@ -1,3 +1,4 @@
+// https://developer.intermedia.com/api/spec/analytics/index.html#dev-guide-auth-guide
 function getS2SAccessToken(clientId, clientSecret, scope, grantType = "client_credentials"){
     const url = 'https://login.intermedia.net/user/connect/token';
     let body = 

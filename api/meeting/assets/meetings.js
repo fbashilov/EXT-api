@@ -1,20 +1,20 @@
 ///////////////////////////////
-// UI event handlers
+// IIFE on load
 ///////////////////////////////
+(()=>{
+    if(!isAuthorized()){
+        window.location.href = "../../../auth/pkce/auth.html"
+    }
+})();
+
+//////////////////////////////
+// UI event handlers
+//////////////////////////////
+document.getElementById('logout').addEventListener("click", () => logout(), false);
+
 document.getElementById('start-meeting').addEventListener("click", onStartMeeting, false);
 document.getElementById('get-user-details').addEventListener("click", onGetUserDetails, false);
 document.getElementById('get-meeting-details').addEventListener("click", onGetMeetingDetails, false);
-
-///////////////////////////////
-// tokens
-///////////////////////////////
-function getSessionToken(){
-    return sessionStorage.getItem('accessToken');
-}
-
-function setSessionToken(accessToken){
-    sessionStorage.setItem('accessToken', accessToken);
-}
 
 ///////////////////////////////
 // Meeting functions

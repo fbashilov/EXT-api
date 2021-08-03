@@ -1,6 +1,6 @@
 const baseUrl = 'https://api.intermedia.net';
 
-
+// https://developer.intermedia.com/api/spec/analytics/index.html#post-/analytics/calls/call/detail
 function getDetailedCalls(dateFrom, dateTo, timezone, sortColumn, descending, offset, size, accountId, body){
     let url = `${baseUrl}/analytics/calls/call/detail`;
 
@@ -20,6 +20,7 @@ function getDetailedCalls(dateFrom, dateTo, timezone, sortColumn, descending, of
     return makeRequest("POST", url, body).then( response => response.json());
 }
 
+// https://developer.intermedia.com/api/spec/analytics/index.html#post-/analytics/calls/user
 function getUserCalls(userIds, dateFrom, dateTo, accountId, timezone){ 
     let url = `${baseUrl}/analytics/calls/user`;
 
@@ -39,6 +40,7 @@ function getUserCalls(userIds, dateFrom, dateTo, accountId, timezone){
     return makeRequest("POST", url, body).then( response => response.json());
 }
 
+// https://developer.intermedia.com/api/spec/analytics/index.html#post-/analytics/calls/user/filters
 function getUserFilters(dateFrom, dateTo, accountId, timezone){
     let url = `${baseUrl}/analytics/calls/user/filters`;
 

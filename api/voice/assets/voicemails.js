@@ -1,9 +1,20 @@
-const countOnList = 5; //amount on Voicemail list
-let pageNumberOfVoicemails = 0;
+///////////////////////////////
+// IIFE on load
+///////////////////////////////
+(()=>{
+    if(!isAuthorized()){
+        window.location.href = "../../../auth/pkce/auth.html"
+    }
+
+    const countOnList = 5; //amount on Voicemail list
+    let pageNumberOfVoicemails = 0;
+})();
 
 //////////////////////////////
 // UI event handlers
 ///////////////////////////////
+document.getElementById('logout').addEventListener("click", () => logout(), false);
+
 document.getElementById('buttonNext').addEventListener("click", () => {
     onGetVoiceMails(++pageNumberOfVoicemails * countOnList);
 });
@@ -21,17 +32,6 @@ document.getElementById('updateVoiceMailRecordsStatus').addEventListener("click"
 document.getElementById('getVoiceMailsTotal').addEventListener("click", onGetVoiceMailsTotal, false);
 
 document.getElementById('getVoiceMailRecord').addEventListener("click", onGetVoiceMailRecord, false);
-
-///////////////////////////////
-// tokens
-///////////////////////////////
-function getSessionToken(){
-    return sessionStorage.getItem('accessToken');
-}
-
-function setSessionToken(accessToken){
-    sessionStorage.setItem('accessToken', accessToken);
-}
 
 ///////////////////////////////
 // Rendering functions

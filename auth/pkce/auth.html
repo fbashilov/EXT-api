@@ -5,6 +5,8 @@
         <link rel='stylesheet' href='../../assets/styles/styles.css'>
     </head>
     <body>
+        <a href="../../index.html"> Back to homepage </a> <br>
+        
         <div>
             Configure your client redirect URL to: <br>
             <input type="text" id="redirectUrl" readonly value=". . ." />
@@ -26,7 +28,7 @@
         <pre id='out'></pre>
     </body>
     <script src='../../assets/log.js'></script>
-    <script src="../../assets/auth-session-manager.js"></script>
+    <script src="../../assets/pkce-auth-session-manager.js"></script>
     <script>
         if(isAuthorized()){
             window.location.href = "api-menu.html";

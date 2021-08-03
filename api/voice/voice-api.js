@@ -3,6 +3,8 @@ const baseUrl = 'https://api.intermedia.net';
 ///////////////////////////////
 // Notification hub
 ///////////////////////////////
+
+// https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/subscriptions
 function createHubSubscription(events = ["*"], ttl = "00:30:00"){
     const url = `${baseUrl}/voice/v2/subscriptions`;
     const body = {
@@ -16,6 +18,8 @@ function createHubSubscription(events = ["*"], ttl = "00:30:00"){
 ///////////////////////////////
 // Devices
 ///////////////////////////////
+
+// https://developer.intermedia.com/api/spec/calling/index.html#get-/devices
 function getDevices(){
     const url = `${baseUrl}/voice/v2/devices`;
     
@@ -25,6 +29,8 @@ function getDevices(){
 ///////////////////////////////
 // Calls
 ///////////////////////////////
+
+// https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/calls
 function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
     const url = `${baseUrl}/voice/v2/calls`;
     let body = {
@@ -38,6 +44,7 @@ function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
     return makeRequest('POST', url, body).then((response) => response.json());
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#delete-/voice/v2/calls/{callId}
 function terminateCall(callId, commandId){
     const url = `${baseUrl}/voice/v2/calls/${callId}` +
         (commandId ? `/commandId=${commandId}`: ``);
@@ -45,6 +52,7 @@ function terminateCall(callId, commandId){
     return makeRequest('DELETE', url).then((response) => response.json());
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/calls/{callId}/cancel
 function cancelCall(callId, skipToVoiceMail = true, commandId){
     const url = `${baseUrl}/voice/v2/calls/${callId}/cancel`;
     let body = {
@@ -55,6 +63,7 @@ function cancelCall(callId, skipToVoiceMail = true, commandId){
     return makeRequest('POST', url, body).then((response) => response.json());
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/calls/{callId}/transfer
 function transferCall(callId, phoneNumber, commandId){
     const url = `${baseUrl}/voice/v2/calls/${callId}/transfer`;
     let body = {
@@ -65,6 +74,7 @@ function transferCall(callId, phoneNumber, commandId){
     return makeRequest('POST', url, body).then((response) => response.json());
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/calls/{callId}/merge
 function warmTransferCall(callId1, callId2, commandId){
     const url = `${baseUrl}/voice/v2/calls/${callId1}/merge`;
     let body = {
@@ -97,17 +107,21 @@ function getCallRecsContent(organizationId, unifiedUserId, callRecId){
 ///////////////////////////////
 // Voicemails
 ///////////////////////////////
+
+// https://developer.intermedia.com/api/spec/calling/index.html#get-/voice/v2/voicemails
 function getVoiceMails(offset, countOnList){ 
     const url = `${baseUrl}/voice/v2/voicemails?offset=${offset}&count=${countOnList}`;
 
     return makeRequest("GET", url).then((response) => response.json());
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#delete-/voice/v2/voicemails/_all
 function deleteVoiceMailRecords(status){
     const url = `${baseUrl}/voice/v2/voicemails/_all?status=${status}`;
     return makeRequest("DELETE", url).then((response) => response);
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#delete-/voice/v2/voicemails/_selected
 function deleteSelectedVoicemailRecords(ids){
     const url = `${baseUrl}/voice/v2/voicemails/_selected`;
     const body = { 
@@ -117,6 +131,7 @@ function deleteSelectedVoicemailRecords(ids){
     return makeRequest("DELETE", url, body).then((response) => response);
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/voicemails/_all/_metadata
 function updateVoiceMailRecordsStatus(status){
     const url = `${baseUrl}/voice/v2/voicemails/_all/_metadata`;
     const body = { 
@@ -126,6 +141,7 @@ function updateVoiceMailRecordsStatus(status){
     return makeRequest("POST", url, body).then((response) => response);
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/voicemails/_selected/_metadata
 function updateSelectedVoiceMailRecordsStatus(status, ids){
     const url = `${baseUrl}/voice/v2/voicemails/_selected/_metadata`;
     const body = { 
@@ -136,24 +152,28 @@ function updateSelectedVoiceMailRecordsStatus(status, ids){
     return makeRequest("POST", url, body).then((response) => response);
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#get-/voice/v2/voicemails/_total
 function getVoiceMailsTotal(status){
     const url = `${baseUrl}/voice/v2/voicemails/_total?status=${status}`;
 
     return makeRequest("GET", url).then((response) => response.json());
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#get-/voice/v2/voicemails/{id}
 function getVoiceMailRecord(id){
     const url = `${baseUrl}/voice/v2/voicemails/${id}`;
 
     return makeRequest("GET", url).then((response) => response.json());
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#get-/voice/v2/voicemails/{id}/_transcript
 function getVoiceMailsTranscription(id){
     const url = `${baseUrl}/voice/v2/voicemails/${id}/_transcript`;
    
     return makeRequest("GET", url).then((response) => response.json());
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#get-/voice/v2/voicemails/{id}/_content
 function getVoiceMailsContent(format, id){
     const url = `${baseUrl}/voice/v2/voicemails/${id}/_content?format=${format}`;
 
@@ -163,6 +183,8 @@ function getVoiceMailsContent(format, id){
 ///////////////////////////////
 // Voicemails Settings
 ///////////////////////////////
+
+// https://developer.intermedia.com/api/spec/calling/index.html#get-/voice/v2/users/_me/voicemail/greeting
 function getGreetingContent(format, custom){ 
     const url = `${baseUrl}/voice/v2/users/_me/voicemail/greeting?format=${format}&custom=${custom}`;
 
@@ -171,12 +193,14 @@ function getGreetingContent(format, custom){
         .then(response => response.blob());
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#delete-/voice/v2/users/_me/voicemail/greeting
 function resetGreetingContent(){
     const url = `${baseUrl}/voice/v2/users/_me/voicemail/greeting`;
 
     return makeRequest("DELETE", url).then( (response) => res = response);        
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/users/_me/voicemail/settings
 function updateUserSettings(pin, hasCustomGreeting, isTranscriptionPermitted, enableTranscription, receiveEmailNotifications, emails, includeVoiceMail){
     const url = `${baseUrl}/voice/v2/users/_me/voicemail/settings`;
     const body = {
@@ -192,6 +216,7 @@ function updateUserSettings(pin, hasCustomGreeting, isTranscriptionPermitted, en
     return makeRequest("POST", url, body).then( (response) => res = response );   
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/users/_me/voicemail/greeting
 function uploadGreetingContent(){ 
     const url = `${baseUrl}/voice/v2/users/_me/voicemail/greeting`;
     let formData = new FormData();
@@ -203,12 +228,14 @@ function uploadGreetingContent(){
         .then(response => response.ok ? response : Promise.reject("Something goes wrong"));
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#get-/voice/v2/users/_me/voicemail/settings
 function getUserSettings(){
     const url = `${baseUrl}/voice/v2/users/_me/voicemail/settings`;
 
     return makeRequest("GET", url).then( response => response.json());
 }
 
+// https://developer.intermedia.com/api/spec/calling/index.html#get-/voice/v2/users/_me/voicemail/usage
 function getVoicemailUsage(){
     const url = `${baseUrl}/voice/v2/users/_me/voicemail/usage`;
 

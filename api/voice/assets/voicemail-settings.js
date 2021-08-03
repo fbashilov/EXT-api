@@ -1,6 +1,17 @@
+///////////////////////////////
+// IIFE on load
+///////////////////////////////
+(()=>{
+    if(!isAuthorized()){
+        window.location.href = "../../../auth/pkce/auth.html"
+    }
+})();
+
 //////////////////////////////
 // UI event handlers
 ///////////////////////////////
+document.getElementById('logout').addEventListener("click", () => logout(), false);
+
 document.getElementById('getDefaultGreetingContentMp3').addEventListener("click", () =>
     onGetGreetingContent("mp3", 0), false);
 
@@ -22,17 +33,6 @@ document.getElementById('getVoicemailUsage').addEventListener("click", onGetVoic
 document.getElementById('resetGreetingContent').addEventListener("click", onResetGreetingContent, false);
 
 document.getElementById('updateUserSettings').addEventListener("click", onUpdateUserSettings, false);
-
-///////////////////////////////
-// tokens
-///////////////////////////////
-function getSessionToken(){
-    return sessionStorage.getItem('accessToken');
-}
-
-function setSessionToken(accessToken){
-    sessionStorage.setItem('accessToken', accessToken);
-}
 
 ///////////////////////////////
 // Voicemail settings functions

@@ -1,29 +1,25 @@
 ///////////////////////////////
-// Set global variable for paging 
+// IIFE on load
 ///////////////////////////////
-let curCallRecsPage = 1;
+(()=>{
+    if(!isAuthorized()){
+        window.location.href = "../../../auth/pkce/auth.html"
+    }
+    // Set global variable for paging 
+    let curCallRecsPage = 1;
+})();
 
-///////////////////////////////
+//////////////////////////////
 // UI event handlers
-///////////////////////////////
+//////////////////////////////
+document.getElementById('logout').addEventListener("click", () => logout(), false);
+
 document.getElementById('get-call-recs').addEventListener("click", () => onGetCallRecs(1), false);
 document.getElementById('get-call-recs-archive').addEventListener("click", onGetCallRecsArchive, false);
 document.getElementById('get-call-recs-content').addEventListener("click", onGetCallRecsContent, false);
 
 document.getElementById('prev-page-button').addEventListener("click", prevCallRecsTablePage, false);
 document.getElementById('next-page-button').addEventListener("click", nextCallRecsTablePage, false);
-
-
-///////////////////////////////
-// Tokens
-///////////////////////////////
-function getSessionToken(){
-    return sessionStorage.getItem('accessToken');
-}
-
-function setSessionToken(accessToken){
-    sessionStorage.setItem('accessToken', accessToken);
-}
 
 ///////////////////////////////
 // Rendering functions

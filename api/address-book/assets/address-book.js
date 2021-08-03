@@ -1,6 +1,17 @@
-/////////////////////////////
+///////////////////////////////
+// IIFE on load
+///////////////////////////////
+(()=>{
+    if(!isAuthorized()){
+        window.location.href = "../../../auth/pkce/auth.html"
+    }
+})();
+
+//////////////////////////////
 // UI event handlers
-/////////////////////////////
+//////////////////////////////
+document.getElementById('logout').addEventListener("click", () => logout(), false);
+
 document.getElementById('getContacts').addEventListener("click", onGetContacts, false);
 
 document.getElementById('getUserDetails').addEventListener("click", onGetUserDetails, false);
@@ -28,18 +39,6 @@ document.getElementById('getSingleContact_all').addEventListener("click", onGetS
 document.getElementById('get-avatar').addEventListener("click", onGetAvatar, false);
 
 document.getElementById('get-multiple-avatars').addEventListener("click", onGetMultipleAvatars, false);
-
-///////////////////////////////
-// tokens
-///////////////////////////////
-function getSessionToken(){
-    return sessionStorage.getItem('accessToken');
-}
-
-function setSessionToken(accessToken){
-    sessionStorage.setItem('accessToken', accessToken);
-}
-
 
 ///////////////////////////////
 // Rendering functions

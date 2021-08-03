@@ -1,3 +1,4 @@
+// https://developer.intermedia.com/api/spec/calling/index.html#dev-guide-auth-guide
 function getAccessToken(settings){
     return new Promise((succeed, fail) => {
         const mgr = new Oidc.UserManager(settings);

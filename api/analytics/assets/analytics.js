@@ -1,22 +1,22 @@
 ///////////////////////////////
-// UI event handlers
+// IIFE on load
 ///////////////////////////////
+(()=>{
+    if(!isAuthorized()){
+        window.location.href = "../../../auth/s2s/auth.html"
+    }
+})();
+
+//////////////////////////////
+// UI event handlers
+//////////////////////////////
+document.getElementById('logout').addEventListener("click", () => logout(), false);
+
 document.getElementById('getDetailedCalls').addEventListener("click", onGetDetailedCalls, false);
 
 document.getElementById('getUserCalls').addEventListener("click", onGetUserCalls, false);
 
 document.getElementById('getUserFilters').addEventListener("click", onGetUserFilters, false);
-
-///////////////////////////////
-// tokens
-///////////////////////////////
-function getSessionToken(){
-    return sessionStorage.getItem('accessToken');
-}
-
-function setSessionToken(accessToken){
-    sessionStorage.setItem('accessToken', accessToken);
-}
 
 ///////////////////////////////
 // Analytics functions

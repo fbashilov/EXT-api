@@ -5,8 +5,7 @@
         <link rel='stylesheet' href='../../assets/styles/styles.css'>
     </head>
     <body>
-        <a href="../../index.html"> Back to homepage </a> <br>
-        <a href="auth.html"> Authorize again </a> <br> <br>
+        <input id="logout" type="button" href="../../index.html" value="Logout"> <br>
 
         <div>
             <a href="calls.html"> Сalls </a>
@@ -20,6 +19,14 @@
             <a href="voicemail-settings.html"> Voicemail settings </a>
         </div>
 
+        <script src='../../assets/pkce-auth-session-manager.js'></script>
+        <script>
+            if(!isAuthorized()){
+                window.location.href = "../../auth/pkce/auth.html"
+            }
+            
+            document.getElementById('logout').addEventListener("click", () => logout(), false);
+        </script>
     </body>
 </html>
 

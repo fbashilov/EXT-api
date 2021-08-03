@@ -5,7 +5,7 @@
         <link rel='stylesheet' href='../../assets/styles/styles.css'>
     </head>
     <body>
-        <input id="logout" type="button" href="../../index.html"> Logout </a> <br>
+        <input id="logout" type="button" href="../../index.html" value="Logout"> <br>
 
         <div>
             <a href="../../api/voice/call-records.html"> Call Recordings </a>
@@ -14,8 +14,8 @@
         <div>
             <a href="../../api/analytics/analytics.html"> Analytics </a>
         </div>
-        
-        <script src='../../assets/auth-session-manager.js'></script>
+
+        <script src='../../assets/s2s-auth-session-manager.js'></script>
         <script>
             if(!isAuthorized()){
                 window.location.href = "auth.html";

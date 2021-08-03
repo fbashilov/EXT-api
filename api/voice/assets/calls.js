@@ -1,6 +1,17 @@
-//////////////////////
-// UI event handlers
 ///////////////////////////////
+// IIFE on load
+///////////////////////////////
+(()=>{
+    if(!isAuthorized()){
+        window.location.href = "../../../auth/pkce/auth.html"
+    }
+})();
+
+//////////////////////////////
+// UI event handlers
+//////////////////////////////
+document.getElementById('logout').addEventListener("click", () => logout(), false);
+
 document.getElementById('subscribe-hub').addEventListener("click", onSubscribeNotificationHub, false);
 
 document.getElementById('get-devices').addEventListener("click", onGetDevices, false);
@@ -10,17 +21,6 @@ document.getElementById('terminate-call').addEventListener("click", onTerminateC
 document.getElementById('cancel-call').addEventListener("click", onCancelCall, false);
 document.getElementById('transfer-call').addEventListener("click", onTransferCall, false);
 document.getElementById('warm-transfer-call').addEventListener("click", onWarmTransferCall, false);
-
-///////////////////////////////
-// tokens
-///////////////////////////////
-function getSessionToken(){
-    return sessionStorage.getItem('accessToken');
-}
-
-function setSessionToken(accessToken){
-    sessionStorage.setItem('accessToken', accessToken);
-}
 
 ///////////////////////////////
 // Rendering functions

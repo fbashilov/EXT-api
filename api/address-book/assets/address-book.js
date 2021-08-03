@@ -39,6 +39,8 @@ document.getElementById('get-avatar').addEventListener("click", onGetAvatar, fal
 
 document.getElementById('get-multiple-avatars').addEventListener("click", onGetMultipleAvatars, false);
 
+document.getElementById('clearLog').addEventListener("click", () => document.getElementById('out').innerHTML = '', false);
+
 ///////////////////////////////
 // Rendering functions
 ///////////////////////////////

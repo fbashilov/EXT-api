@@ -17,6 +17,8 @@ document.getElementById('getUserCalls').addEventListener("click", onGetUserCalls
 
 document.getElementById('getUserFilters').addEventListener("click", onGetUserFilters, false);
 
+document.getElementById('clearLog').addEventListener("click", () => document.getElementById('out').innerHTML = '', false);
+
 ///////////////////////////////
 // Analytics functions
 ///////////////////////////////

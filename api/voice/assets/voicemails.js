@@ -31,6 +31,8 @@ document.getElementById('getVoiceMailsTotal').addEventListener("click", onGetVoi
 
 document.getElementById('getVoiceMailRecord').addEventListener("click", onGetVoiceMailRecord, false);
 
+document.getElementById('clearLog').addEventListener("click", () => document.getElementById('out').innerHTML = '', false);
+
 ///////////////////////////////
 // Rendering functions
 ///////////////////////////////

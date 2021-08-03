@@ -32,6 +32,8 @@ document.getElementById('resetGreetingContent').addEventListener("click", onRese
 
 document.getElementById('updateUserSettings').addEventListener("click", onUpdateUserSettings, false);
 
+document.getElementById('clearLog').addEventListener("click", () => document.getElementById('out').innerHTML = '', false);
+
 ///////////////////////////////
 // Voicemail settings functions
 ///////////////////////////////

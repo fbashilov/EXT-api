@@ -1,11 +1,9 @@
 ///////////////////////////////
-// IIFE on load
+// on load
 ///////////////////////////////
-(()=>{
-    if(!isAuthorized()){
-        window.location.href = "../../../auth/pkce/auth.html"
-    }
-})();
+if(!isAuthorized()){
+    window.location.href = "../../../auth/pkce/auth.html"
+}
 
 //////////////////////////////
 // UI event handlers

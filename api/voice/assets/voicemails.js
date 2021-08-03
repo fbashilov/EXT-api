@@ -1,14 +1,12 @@
 ///////////////////////////////
-// IIFE on load
+// on load
 ///////////////////////////////
-(()=>{
-    if(!isAuthorized()){
-        window.location.href = "../../../auth/pkce/auth.html"
-    }
+if(!isAuthorized()){
+    window.location.href = "../../../auth/pkce/auth.html"
+}
 
-    const countOnList = 5; //amount on Voicemail list
-    let pageNumberOfVoicemails = 0;
-})();
+const countOnList = 5; //amount on Voicemail list
+let pageNumberOfVoicemails = 0;
 
 //////////////////////////////
 // UI event handlers

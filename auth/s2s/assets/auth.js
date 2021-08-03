@@ -1,18 +1,17 @@
 ///////////////////////////////
-// IIFE on load 
+// on load 
 ///////////////////////////////
-(()=>{
-    if(isAuthorized()){
-        window.location.href = "api-menu.html";
-    }
-})();
+if(isAuthorized()){
+    window.location.href = "api-menu.html";
+}
+
 ///////////////////////////////
 // UI event handlers
 ///////////////////////////////
 document.getElementById('authorization').addEventListener("click", onAuthorizationS2S, false);
 
 ///////////////////////////////
-// Auth and tokens
+// Auth
 ///////////////////////////////
 function onAuthorizationS2S(){
     let clientId = document.getElementById("client-id").value;
@@ -25,12 +24,3 @@ function onAuthorizationS2S(){
         console.log("Error!!! " + error);
     });
 }
-
-function getSessionToken(){
-    return sessionStorage.getItem('accessToken');
-}
-
-function setSessionToken(accessToken){
-    sessionStorage.setItem('accessToken', accessToken);
-}
-

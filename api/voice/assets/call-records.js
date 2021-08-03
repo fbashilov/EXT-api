@@ -1,13 +1,11 @@
 ///////////////////////////////
-// IIFE on load
+// on load
 ///////////////////////////////
-(()=>{
-    if(!isAuthorized()){
-        window.location.href = "../../../auth/pkce/auth.html"
-    }
-    // Set global variable for paging 
-    let curCallRecsPage = 1;
-})();
+if(!isAuthorized()){
+    window.location.href = "../../../auth/pkce/auth.html"
+}
+
+let curCallRecsPage = 1; // Set global variable for paging 
 
 //////////////////////////////
 // UI event handlers

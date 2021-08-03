@@ -12,5 +12,5 @@ function isAuthorized(){
 
 function logout(){
     sessionStorage.removeItem('s2sAccessToken');
-    window.location.href = "/";
+    window.location.reload();
 }

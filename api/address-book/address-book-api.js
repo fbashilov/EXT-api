@@ -4,14 +4,14 @@ const baseUrl = 'https://api.intermedia.net';
 function getContacts(query, phone, scope, fields){ 
     let url = `${baseUrl}/address-book/v3/contacts`;
 
-    let searchParams = new URLSearchParams('?');
+    let searchParams = new URLSearchParams();
     if(query) searchParams.append("query", query);
     if(phone) searchParams.append("phone", phone);
     if(scope) searchParams.append("scope", scope);
     if(fields) searchParams.append("fields", fields);
 
     if(searchParams.toString()){
-        url += searchParams.toString();
+        url += `?${searchParams.toString()}`;
     }
        
     return makeRequest("GET", url).then((response) => response.json());

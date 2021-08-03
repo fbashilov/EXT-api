@@ -4,7 +4,7 @@ const baseUrl = 'https://api.intermedia.net';
 function getDetailedCalls(dateFrom, dateTo, timezone, sortColumn, descending, offset, size, accountId, body){
     let url = `${baseUrl}/analytics/calls/call/detail`;
 
-    let searchParams = new URLSearchParams('?');
+    let searchParams = new URLSearchParams();
 
     searchParams.append("dateFrom", dateFrom + 'Z');
     searchParams.append("dateTo", dateTo + 'Z');
@@ -15,7 +15,7 @@ function getDetailedCalls(dateFrom, dateTo, timezone, sortColumn, descending, of
     if(size) searchParams.append("size", size);
     if(accountId) searchParams.append("accountId", accountId);
 
-    url += searchParams.toString();
+    url += `?${searchParams.toString()}`;
 
     return makeRequest("POST", url, body).then( response => response.json());
 }
@@ -23,14 +23,14 @@ function getDetailedCalls(dateFrom, dateTo, timezone, sortColumn, descending, of
 function getUserCalls(userIds, dateFrom, dateTo, accountId, timezone){ 
     let url = `${baseUrl}/analytics/calls/user`;
 
-    let searchParams = new URLSearchParams('?');
+    let searchParams = new URLSearchParams();
 
     searchParams.append("dateFrom", dateFrom);
     searchParams.append("dateTo", dateTo);
     if(timezone) searchParams.append("timezone", timezone);
     if(accountId) searchParams.append("accountId", accountId);
 
-    url += searchParams.toString();
+    url += `?${searchParams.toString()}`;
 
     const body = {
         "userIds": userIds
@@ -42,14 +42,14 @@ function getUserCalls(userIds, dateFrom, dateTo, accountId, timezone){
 function getUserFilters(dateFrom, dateTo, accountId, timezone){
     let url = `${baseUrl}/analytics/calls/user/filters`;
 
-    let searchParams = new URLSearchParams('?');
+    let searchParams = new URLSearchParams();
 
     searchParams.append("dateFrom", dateFrom + 'Z');
     searchParams.append("dateTo", dateTo + 'Z');
     if(timezone) searchParams.append("timezone", timezone);
     if(accountId) searchParams.append("accountId", accountId);
 
-    url += searchParams.toString();
+    url += `?${searchParams.toString()}`;
 
     return makeRequest("POST", url).then( response => response.json());
 }

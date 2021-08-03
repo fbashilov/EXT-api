@@ -7,24 +7,27 @@
     <body>
         <a href="../../index.html"> Back to homepage </a> <br>
         
-        <div>
-            Configure your client redirect URL to: <br>
-            <input type="text" id="redirectUrl" readonly value=". . ." />
+        <div id="auth-window">
+            <div>
+                Configure your client redirect URL to: <br>
+                <input type="text" id="redirectUrl" readonly value=". . ." />
+            </div>
+            <hr>
+            <ul>
+                <li><label>Authority: </label><input type="text" id="authority"  placeholder="https://demo.identityserver.io/"/></li>
+                <li><label>ClientId: </label><input type="text" id="clientId"  /></li>
+                <li><label>Scopes: </label><input type="text" id="scopes"  placeholder="openid offline_access"/></li>
+                <li><label>DeviceID: </label><input type="text" id="deviceId" placeholder="1824D326-43CE-4676-8168-83AEC699F677"/></li>
+                <li><label>Login Hint: </label><input type="text" id="login"  placeholder="user@mail.com"/></li>
+            </ul>
+            <hr>
+            <button id="load"> Load configuration </button>
+            <button id="submit"> Apply configuration </button>
+            <hr>
+            <a href="https://fbashilov.github.io/EXT-api/auth-code-flow-pkce/APIs-menu/APIs-menu.html"> Run OIDC-Client to authorize using code-flow with PKCE </a>
+            <hr>
         </div>
-        <hr>
-        <ul>
-            <li><label>Authority: </label><input type="text" id="authority"  placeholder="https://demo.identityserver.io/"/></li>
-            <li><label>ClientId: </label><input type="text" id="clientId"  /></li>
-            <li><label>Scopes: </label><input type="text" id="scopes"  placeholder="openid offline_access"/></li>
-            <li><label>DeviceID: </label><input type="text" id="deviceId" placeholder="1824D326-43CE-4676-8168-83AEC699F677"/></li>
-            <li><label>Login Hint: </label><input type="text" id="login"  placeholder="user@mail.com"/></li>
-        </ul>
-        <hr>
-        <button id="load"> Load configuration </button>
-        <button id="submit"> Apply configuration </button>
-        <hr>
-        <a href="https://fbashilov.github.io/EXT-api/auth-code-flow-pkce/APIs-menu/APIs-menu.html"> Run OIDC-Client to authorize using code-flow with PKCE </a>
-        <hr>
+
         <pre id='out'></pre>
     </body>
     <script src='../../assets/log.js'></script>

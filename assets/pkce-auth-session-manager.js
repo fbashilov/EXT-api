@@ -12,4 +12,5 @@ function isAuthorized(){
 
 function logout(){
     sessionStorage.removeItem('pkceAccessToken');
+    window.location.href = "/";
 }

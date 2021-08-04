@@ -9,15 +9,11 @@
 
         <div class="content">
             <h3>Authorization</h3>
-            <div class="input-field">
-                <label>client_id: </label><input type="text" id="client-id" value=""/>
-            </div>
-            <div class="input-field">
-                <label>client_secret: </label><input type="text" id="client-secret" value="" /> 
-            </div>
-            <div class="input-field">
-                <label>scope: </label><input type="text" id="scope" value="" /> 
-            </div>
+            <ul>
+                <li><label>client_id: </label><input type="text" id="client-id"  placeholder="https://demo.identityserver.io/"/></li>
+                <li><label>client_secret: </label><input type="text" id="client-secret"  /></li>
+                <li><label>scope: </label><input type="text" id="scope"  placeholder="openid offline_access"/></li>
+            </ul>
             <button id="authorization"> Authorization </button>
             <a class="link-to-guide" 
                 href="https://developer.intermedia.com/api/spec/calling/index.html#dev-guide-auth-guide" 

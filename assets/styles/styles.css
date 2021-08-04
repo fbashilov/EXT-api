@@ -177,3 +177,12 @@ button, input[type=button]{
     cursor: pointer;
 }
 
+#nav-bar{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+    #nav-bar *{
+        margin-bottom: 3px;
+    }
+

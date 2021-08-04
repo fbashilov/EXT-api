@@ -33,6 +33,7 @@
 
     getAccessToken(settings).then((response) => {
         setSessionToken(response);
+        window.location.href = "api-menu.html";
     }).catch((error) => {
         console.log("Error!!! " + error);
         window.location.href = "auth.html";

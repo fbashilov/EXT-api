@@ -15,12 +15,14 @@ document.getElementById('start-meeting').addEventListener("click", onStartMeetin
 document.getElementById('get-user-details').addEventListener("click", onGetUserDetails, false);
 document.getElementById('get-meeting-details').addEventListener("click", onGetMeetingDetails, false);
 
+document.getElementById('clearLog').addEventListener("click", () => document.getElementById('out').innerHTML = '', false);
+
 ///////////////////////////////
 // Meeting functions
 ///////////////////////////////
 function onStartMeeting(){
     startMeeting().then((response) => {
-        console.log(response);
+        log(response);
     }).catch((error) => {
         console.log("Start meeting failed! " + error);
     });
@@ -28,7 +30,7 @@ function onStartMeeting(){
 
 function onGetUserDetails(){
     getUserDetails().then((response) => {
-        console.log(response);
+        log(response);
     }).catch((error) => {
         console.log("Start meeting failed! " + error);
     });
@@ -38,7 +40,7 @@ function onGetMeetingDetails(){
     let meetingCode = document.getElementById("meeting-code").value;
 
     getMeetingDetails(meetingCode).then((response) => {
-        console.log(response);
+        log(response);
     }).catch((error) => {
         console.log("Start meeting failed! " + error);
     });

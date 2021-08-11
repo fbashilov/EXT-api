@@ -1,4 +1,4 @@
-const baseUrl = 'https://api.qaintermedia.net';
+const baseUrl = 'https://api.intermedia.net';
 
 // https://developer.intermedia.com/api/spec/meeting/index.html#post-/meetings/v1/meeting/start/details
 function startMeeting(){

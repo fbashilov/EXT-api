@@ -33,6 +33,8 @@
             acr_values: localStorage.getItem('cfg-acr') 
         }
     };
+    console.log(settings);
+    alert(settings);
 
     getAccessToken(settings).then((response) => {
         setSessionToken(response);

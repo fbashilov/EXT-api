@@ -10,7 +10,7 @@
     Oidc.Log.level = Oidc.Log.DEBUG;
     console.log("Using oidc-client version: ", Oidc.Version);
     
-    let settings = new Oidc.SigninRequest({
+    let settings = {
         authority: localStorage.getItem('cfg-authority'),
         client_id: localStorage.getItem('cfg-clientId'),
         redirect_uri: location.href.split('?')[0],
@@ -26,16 +26,11 @@
         loadUserInfo: false,
         revokeAccessTokenOnSignout : true,
     
-        acr_values : localStorage.getItem('cfg-acr'),
-        login_hint: localStorage.getItem('cfg-login'),
-        lqqwhiqwdqdwqdwqdqnt: localStorage.getItem('cfg-login'),
         extraTokenParams: { 
             login_hint: localStorage.getItem('cfg-login'),
             acr_values: localStorage.getItem('cfg-acr') 
         }
-    });
-    console.log(settings);
-    alert(settings);
+    };
 
     getAccessToken(settings).then((response) => {
         setSessionToken(response);

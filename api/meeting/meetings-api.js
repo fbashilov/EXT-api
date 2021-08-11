@@ -1,4 +1,4 @@
-const baseUrl = 'https://extend-api-blue.azure-api.net/';
+const baseUrl = 'https://extend-api-blue.azure-api.net';
 
 // https://developer.intermedia.com/api/spec/meeting/index.html#post-/meetings/v1/meeting/start/details
 function startMeeting(){

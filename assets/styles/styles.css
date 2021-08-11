@@ -187,3 +187,6 @@ button, input[type=button]{
         margin-bottom: 3px;
     }
 
+    #nav-bar #logout{
+        margin-bottom: 20px;
+    }

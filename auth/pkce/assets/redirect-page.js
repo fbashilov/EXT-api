@@ -27,8 +27,11 @@
         revokeAccessTokenOnSignout : true,
     
         acr_values : localStorage.getItem('cfg-acr'),
-        login_hint: localStorage.getItem('cfg-login'),
-        extraTokenParams: { acr_values: localStorage.getItem('cfg-acr') }
+        
+        extraTokenParams: { 
+            login_hint: localStorage.getItem('cfg-login'),
+            acr_values: localStorage.getItem('cfg-acr') 
+        }
     };
 
     getAccessToken(settings).then((response) => {

@@ -28,19 +28,20 @@
     
         acr_values : localStorage.getItem('cfg-acr'),
         login_hint: localStorage.getItem('cfg-login'),
+        lqqwhiqwdqdwqdwqdqnt: localStorage.getItem('cfg-login'),
         extraTokenParams: { 
             login_hint: localStorage.getItem('cfg-login'),
             acr_values: localStorage.getItem('cfg-acr') 
         }
     };
     console.log(settings);
-    alert(settings);
 
-    getAccessToken(settings).then((response) => {
-        setSessionToken(response);
-        window.location.href = "api-menu.html";
-    }).catch((error) => {
-        console.log("Error!!! " + error);
-        window.location.href = "auth.html";
-    });
+
+    // getAccessToken(settings).then((response) => {
+    //     setSessionToken(response);
+    //     window.location.href = "api-menu.html";
+    // }).catch((error) => {
+    //     console.log("Error!!! " + error);
+    //     window.location.href = "auth.html";
+    // });
 })();

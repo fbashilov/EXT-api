@@ -10,7 +10,7 @@
     Oidc.Log.level = Oidc.Log.DEBUG;
     console.log("Using oidc-client version: ", Oidc.Version);
     
-    let settings = new SigninRequest({
+    let settings = new Oidc.SigninRequest({
         authority: localStorage.getItem('cfg-authority'),
         client_id: localStorage.getItem('cfg-clientId'),
         redirect_uri: location.href.split('?')[0],

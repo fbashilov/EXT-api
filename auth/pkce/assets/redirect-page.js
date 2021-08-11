@@ -10,7 +10,7 @@
     Oidc.Log.level = Oidc.Log.DEBUG;
     console.log("Using oidc-client version: ", Oidc.Version);
     
-    let settings = {
+    let settings = new SigninRequest({
         authority: localStorage.getItem('cfg-authority'),
         client_id: localStorage.getItem('cfg-clientId'),
         redirect_uri: location.href.split('?')[0],
@@ -33,15 +33,15 @@
             login_hint: localStorage.getItem('cfg-login'),
             acr_values: localStorage.getItem('cfg-acr') 
         }
-    };
+    });
     console.log(settings);
+    alert(settings);
 
-
-    // getAccessToken(settings).then((response) => {
-    //     setSessionToken(response);
-    //     window.location.href = "api-menu.html";
-    // }).catch((error) => {
-    //     console.log("Error!!! " + error);
-    //     window.location.href = "auth.html";
-    // });
+    getAccessToken(settings).then((response) => {
+        setSessionToken(response);
+        window.location.href = "api-menu.html";
+    }).catch((error) => {
+        console.log("Error!!! " + error);
+        window.location.href = "auth.html";
+    });
 })();

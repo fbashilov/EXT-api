@@ -1,4 +1,4 @@
-const baseUrl = 'https://api.qaintermedia.net';
+const baseUrl = 'https://api.intermedia.net';
 
 ///////////////////////////////
 // Notification hub

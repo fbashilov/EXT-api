@@ -1,4 +1,4 @@
-const baseUrl = 'https://api.intermedia.net';
+const baseUrl = 'https://api.devintermedia.net';
 
 ///////////////////////////////
 // Notification hub

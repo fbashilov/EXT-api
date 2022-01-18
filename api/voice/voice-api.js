@@ -1,4 +1,4 @@
-const baseUrl = 'https://api.devintermedia.net';
+const baseUrl = ' https://extend-api-dev.azure-api.net';
 
 ///////////////////////////////
 // Notification hub

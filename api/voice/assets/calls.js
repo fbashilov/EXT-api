@@ -143,7 +143,7 @@ function startHubConnection(deliveryMethodUri){
     // Start the connection.
     connection.start().then(() => {
         console.log("connected");
-        connection.invoke('GetUserPresence').done(function (status) {
+        connection.server.GetCallStatus().done(function (status) {
             console.log ('Invocation of GetUserPresence succeeded', status);
         }).fail(function (error) {
             console.log('Invocation of GetUserPresence failed. Error: ' + error);

@@ -117,11 +117,7 @@ function onWarmTransferCall(){
 // Notifications Hub
 ///////////////////////////////
 function onSubscribeNotificationHub(){
-    createHubSubscription().then((response) => {
-        startHubConnection(response.deliveryMethod.uri);
-    }).catch((error) => {
-        console.log("Subscribe failed!" + error);
-    });
+        startHubConnection("");
 }
 
 function startHubConnection(deliveryMethodUri){
@@ -136,6 +132,11 @@ function startHubConnection(deliveryMethodUri){
         console.log(data);
         renderCallTableRow(data.eventType, data.callDirection, data.callId);
     });
+
+    connection.on("OnPresenceEvent", data => {
+        console.log(data);
+    });
+    
     connection.on("OnCommandResult", data => {
         console.log(data);
     });
@@ -143,10 +144,5 @@ function startHubConnection(deliveryMethodUri){
     // Start the connection.
     connection.start().then(() => {
         console.log("connected");
-        connection.server.GetCallStatus().done(function (status) {
-            console.log ('Invocation of GetUserPresence succeeded', status);
-        }).fail(function (error) {
-            console.log('Invocation of GetUserPresence failed. Error: ' + error);
-        });
     }).catch(err => console.log(err));
 }

@@ -21,7 +21,7 @@ function createHubSubscription(events = ["*"], ttl = "00:30:00"){
 
 // https://developer.intermedia.com/api/spec/calling/index.html#get-/devices
 function getDevices(){
-    const url = `${baseUrl}/voice/v2/devices`;
+    const url = `http://localhost:33000/v2/devices`;
     
     return makeRequest("GET", url).then((response) => response.json());
 }
@@ -32,7 +32,7 @@ function getDevices(){
 
 // https://developer.intermedia.com/api/spec/calling/index.html#post-/voice/v2/calls
 function makeCall(deviceId, phoneNumber, mode = "placeCall", callId, commandId){
-    const url = `${baseUrl}/voice/v2/calls`;
+    const url = `http://localhost:33000/v2/calls`;
     let body = {
         "deviceId": deviceId,
         "mode": mode,

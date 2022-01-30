@@ -117,7 +117,11 @@ function onWarmTransferCall(){
 // Notifications Hub
 ///////////////////////////////
 function onSubscribeNotificationHub(){
-        startHubConnection("");
+    createHubSubscription().then((response) => {
+        startHubConnection(response.deliveryMethod.uri);
+    }).catch((error) => {
+        console.log("Subscribe failed!" + error);
+    });
 }
 
 function startHubConnection(deliveryMethodUri){
